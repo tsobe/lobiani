@@ -14,7 +14,7 @@ This is a personal exercise to gain/improve skills in various software engineeri
 # User story
 TODO
 
-# Ubiqutous language
+# Ubiquitous language
 TODO
 
 # High level architecture
