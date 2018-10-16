@@ -14,37 +14,29 @@ This project is a personal exercise to gain/improve skills in various software e
 # High level requirements
 Develop eCommerce system capable of:
 
- - adding items to inventory
- - providing ways of searching and browsing through the available products and purchasing them
- - recommending products to customers based on their purchase history
-
-## User stories
-
-- As an inventory manager I want to add item(s) to the inventory so that make them available for sale
-- As an inventory manager I want to mark item(s) saleable/unsaleable to control which items can be sold 
-- As a customer I want to add product to basket so that they can be purchased later
-- As a customer I want to remove product from basket to control the products I want to purchase 
-- As a customer I want to purchase products from the basket
+ - Managing inventory items
+ - Providing ways of searching and browsing through the available products and purchasing them
+ - Recommending products to customers based on their purchase history
 
 # Doman model
 ## Bounded contexts
 Following are listed fairly good candidates for bounded contexts (clear from the requirements):
 
-- Inventory - adding items to the inventory
+- Inventory - managing inventory items
 - Sales - searching and purchasing products
 - Recommender - recommending products to customers
 
 ## Ubiquitous language
 ### Inventory
 - Inventory - collection of potentially saleable items
-- Manager - person who's responsible of adding items to inventory
+- Manager - person who's responsible of adding items to inventory and then updating them as needed
 - Manager adds item(s) to inventory
 - Manager marks item(s) as saleable/unsaleable
 
 ### Sales
 - Product - representation of saleable inventory item
 - Customer - person who's willing to purchase products
-- Basket - container for products to be purchased at once
+- Basket - container for products to be purchased later at once
 - Customer adds product to basket
 - Customer removes product from basket
 - Customer purchases product(s) from basket 
@@ -64,3 +56,11 @@ TODO
 
 # Backlog
 TODO
+
+# Resources
+- [Microservices, bounded context, cohesion. What do they have in common?](https://hackernoon.com/microservices-bounded-context-cohesion-what-do-they-have-in-common-1107b70342b3)
+- [Introduction into Microservices](https://specify.io/concepts/microservices)
+- [Example of Service Boundaries Identification Part 1](https://hackernoon.com/example-of-service-boundaries-identification-e9077c513560)
+- [Example of Service Boundaries Identification Part 2](https://hackernoon.com/service-boundaries-identification-example-in-e-commerce-a2c01a1b8ee9)
+- [Tackling Complexity in Microservices](https://vladikk.com/2018/02/28/microservices/)
+- [Bounded Contexts are NOT Microservices](https://vladikk.com/2018/01/21/bounded-contexts-vs-microservices/)
