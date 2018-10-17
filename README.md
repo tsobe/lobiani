@@ -60,7 +60,8 @@ TODO
 # Resources
 - [Microservices, bounded context, cohesion. What do they have in common?](https://hackernoon.com/microservices-bounded-context-cohesion-what-do-they-have-in-common-1107b70342b3)
 - [Introduction into Microservices](https://specify.io/concepts/microservices)
-- [Example of Service Boundaries Identification Part 1](https://hackernoon.com/example-of-service-boundaries-identification-e9077c513560)
-- [Example of Service Boundaries Identification Part 2](https://hackernoon.com/service-boundaries-identification-example-in-e-commerce-a2c01a1b8ee9)
+- [Example of Service Boundaries Identification Example 1](https://hackernoon.com/example-of-service-boundaries-identification-e9077c513560)
+- [Example of Service Boundaries Identification Example 2](https://hackernoon.com/service-boundaries-identification-example-in-e-commerce-a2c01a1b8ee9)
 - [Tackling Complexity in Microservices](https://vladikk.com/2018/02/28/microservices/)
 - [Bounded Contexts are NOT Microservices](https://vladikk.com/2018/01/21/bounded-contexts-vs-microservices/)
+- [Backend for frontend](https://samnewman.io/patterns/architectural/bff/)
