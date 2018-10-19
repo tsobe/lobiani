@@ -65,3 +65,4 @@ TODO
 - [Tackling Complexity in Microservices](https://vladikk.com/2018/02/28/microservices/)
 - [Bounded Contexts are NOT Microservices](https://vladikk.com/2018/01/21/bounded-contexts-vs-microservices/)
 - [Backend for frontend](https://samnewman.io/patterns/architectural/bff/)
+- [Service mesh](https://www.thoughtworks.com/radar/techniques/service-mesh)
