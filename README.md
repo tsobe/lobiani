@@ -14,32 +14,41 @@ This project is a personal exercise to gain/improve skills in various software e
 # High level requirements
 Develop eCommerce system capable of:
 
- - Managing inventory items
+ - Managing stock levels in warehouse
  - Providing ways of searching and browsing through the available products and purchasing them
+ - Handling billing and shipping
  - Recommending products to customers based on their purchase history
 
 # Doman model
 ## Bounded contexts
-Following are listed fairly good candidates for bounded contexts (clear from the requirements):
+Below are listed fairly good candidates for bounded contexts:
 
-- Inventory - managing inventory items
-- Sales - searching and purchasing products
+- Warehouse - managing stock levels
+- Sales - searching and collecting products to be purchased
+- Billing - executing purchases initiated by customers
+- Shipping - delivering purchased products
 - Recommender - recommending products to customers
 
 ## Ubiquitous language
-### Inventory
-- Inventory - collection of potentially saleable items
-- Manager - person who's responsible of adding items to inventory and then updating them as needed
-- Manager adds item(s) to inventory
-- Manager marks item(s) as saleable/unsaleable
+### Warehouse
+- Warehouse - collection of items to be sold
+- Manager - person who's responsible for adding items to warehouse
+- Manager adds item to inventory
 
 ### Sales
-- Product - representation of saleable inventory item
+- Product - representation of warehouse item
 - Customer - person who's willing to purchase products
 - Basket - container for products to be purchased later at once
 - Customer adds product to basket
 - Customer removes product from basket
-- Customer purchases product(s) from basket 
+- Customer proceeds to checkout
+
+### Billing
+- Account - personal and payment information about customer
+- Product - pricing information about product
+
+## Shipping
+- 
 
 ### Recommender
 - Product - product which was purchased previously
@@ -66,3 +75,4 @@ TODO
 - [Bounded Contexts are NOT Microservices](https://vladikk.com/2018/01/21/bounded-contexts-vs-microservices/)
 - [Backend for frontend](https://samnewman.io/patterns/architectural/bff/)
 - [Service mesh](https://www.thoughtworks.com/radar/techniques/service-mesh)
+- [Scaling Microservices with an Event Stream](https://www.thoughtworks.com/de/insights/blog/scaling-microservices-event-stream)
