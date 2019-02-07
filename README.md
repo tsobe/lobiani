@@ -5,6 +5,7 @@ This project is a personal exercise to gain/improve skills in various software e
 # Desired areas to examine
 - Event Sourcing
 - DDD/CQRS
+- Ports and Adapters
 - Machine Learning
 - Microservices
 - TDD/BDD
@@ -76,3 +77,4 @@ TODO
 - [Backend for frontend](https://samnewman.io/patterns/architectural/bff/)
 - [Service mesh](https://www.thoughtworks.com/radar/techniques/service-mesh)
 - [Scaling Microservices with an Event Stream](https://www.thoughtworks.com/de/insights/blog/scaling-microservices-event-stream)
+- [Ports and Adapters](https://softwarecampament.wordpress.com/portsadapters/)
