@@ -6,11 +6,11 @@ This project is a personal exercise to gain/improve skills in various software e
 - Event Sourcing
 - DDD/CQRS
 - Ports and Adapters
-- Machine Learning
-- Microservices
 - TDD/BDD
+- Machine Learning
+- Microservices and Service Mesh
 - CI/CD
-- Monitoring
+- Cloud native
 
 # High level requirements
 Develop eCommerce system capable of:
