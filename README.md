@@ -47,7 +47,7 @@ Below are listed fairly good candidates for bounded contexts:
 ### Billing
 - Account - personal and payment information about customer
 - Product - pricing information about product
-- Product delivery is requested for provided account info
+- Customer confirms the purchase and payment is made
 - Customer cancels the purchase
 
 ### Shipping
