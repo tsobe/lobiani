@@ -69,7 +69,16 @@ TODO
 TODO
 
 # Backlog
-TODO
+- As a warehouse manager I want to add item to the inventory so that it can be purchased by customers
+- As a customer I want to browse through the list of all available products so that I can get some idea about what's available in the inventory
+- As a customer I want to search a particular product(s) by name or description so that I can filter out irrelevant items
+- As a customer I want to see the details of the particular product so that I can get more information
+- As a customer I want to add product to the basket so that I can purchase it later
+- As a customer I want to remove possibly mistakenly added prouct from the basket so that I can select a better option
+- As a customer I want to proceed to payment so that I can see the summary before I actually pay
+- As a customer I want to cancel the purchase if I changed my mind
+- As a customer I want to fill billing and shipping information so that I can be charged and product will be deilvered
+- As a customer I want to see recommended products based on my purchase history so that suggestions are personalized for me
 
 # Resources
 - [Microservices, bounded context, cohesion. What do they have in common?](https://hackernoon.com/microservices-bounded-context-cohesion-what-do-they-have-in-common-1107b70342b3)
