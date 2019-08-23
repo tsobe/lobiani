@@ -7,10 +7,10 @@ This project is a personal exercise to gain/improve skills in various software e
 - DDD/CQRS
 - Ports and Adapters
 - TDD/BDD
-- Machine Learning
 - Microservices and Service Mesh
 - CI/CD
-- Cloud native
+- Cloud native solutions
+- Machine Learning
 
 # High level requirements
 Develop eCommerce system capable of:
@@ -37,19 +37,23 @@ Below are listed fairly good candidates for bounded contexts:
 - Manager adds item to inventory
 
 ### Sales
-- Product - representation of warehouse item
+- Product - representation of saleable warehouse item
 - Customer - person who's willing to purchase products
 - Basket - container for products to be purchased later at once
 - Customer adds product to basket
 - Customer removes product from basket
-- Customer proceeds to checkout
+- Customer proceeds to payment
 
 ### Billing
 - Account - personal and payment information about customer
 - Product - pricing information about product
+- Product delivery is requested for provided account info
+- Customer cancels the purchase
 
-## Shipping
-- 
+### Shipping
+- Address - address do deliver purchased products
+- Product - description of a product to deliver
+- Product is shipped to specified address
 
 ### Recommender
 - Product - product which was purchased previously
