@@ -10,6 +10,7 @@ This project is a personal exercise to gain/improve skills in various software e
 - Microservices and Service Mesh
 - CI/CD
 - Cloud native solutions
+- BPMN workflows
 - Machine Learning
 
 # High level requirements
