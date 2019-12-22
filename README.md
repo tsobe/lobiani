@@ -35,33 +35,58 @@ Below are listed fairly good candidates for bounded contexts:
 ### Warehouse
 - Warehouse - collection of items to be sold
 - Manager - person who's responsible for adding items to warehouse
-- Manager adds item to inventory
 
 ### Sales
+- Manager - person who defines and publishes products
 - Product - representation of saleable warehouse item
 - Customer - person who's willing to purchase products
 - Basket - container for products to be purchased later at once
-- Customer adds product to basket
-- Customer removes product from basket
-- Customer proceeds to payment
 
 ### Billing
 - Account - personal and payment information about customer
 - Product - pricing information about product
-- Customer confirms the purchase and payment is made
-- Customer cancels the purchase
 
 ### Shipping
-- Address - address do deliver purchased products
+- Address - address to deliver purchased products
 - Product - description of a product to deliver
-- Product is shipped to specified address
+- Courrier - entity who delivers purchased products to the specified address
 
 ### Recommender
 - Product - product which was purchased previously
 - Customer - person who purchased product
-- Product is associated to customers who purchased it
-- Customer has list of products they purchased
 - Recommendation - recommended product for specific customer
+
+## Event storming
+- Warehouse item defined
+- Warehouse item(s) added
+- Product described in the sales
+- Product published/unpublished in the sales
+- Product added to the basket
+- Product removed from the basket
+- Products reserved in the warehouse
+	- Billing information added
+	- Shipping information added
+		- Purchase confirmed by customer
+			- Customer recommendations updated
+				- Customer charged successfully
+					- Courrier is notified
+					- Courrier starts delivery
+					- Customer is notified that product(s) have shipped
+					- Courrier updates delivery progress
+					- Product(s) failed to be delivered at the specified address
+						- Customer is notified
+						- Reservation removed in the warehouse
+					- Purchase delivered
+						- Customer is notified - successfull end of story
+				- Customer charge failed
+				   - Customer is notified
+				   - Reervation removed in the warehouse
+	   - Purchase cancelled by customer
+- Products' reservation failed in the warehouse
+	- Customer is notified
+
+
+
 
 # High level architecture
 TODO
@@ -70,15 +95,18 @@ TODO
 TODO
 
 # Backlog
-- As a warehouse manager I want to add item to the inventory so that it can be purchased by customers
-- As a customer I want to browse through the list of all available products so that I can get some idea about what's available in the inventory
+- As a warehouse manager I want to define item so that actual items can be added later
+- As a warehouse manager I want to add item so that it can be purchased by customers
+- As a sales manager I want to describe product so that all the important information is presented to the customer
+- As a sales manager I want to publish/unpublish product to control whether a product will be visible (and hence sellable) to customer
+- As a customer I want to browse through the list of all available products so that I can get some idea about what's available for sale
 - As a customer I want to search a particular product(s) by name or description so that I can filter out irrelevant items
 - As a customer I want to see the details of the particular product so that I can get more information
 - As a customer I want to add product to the basket so that I can purchase it later
 - As a customer I want to remove possibly mistakenly added prouct from the basket so that I can select a better option
 - As a customer I want to proceed to payment so that I can see the summary before I actually pay
 - As a customer I want to cancel the purchase if I changed my mind
-- As a customer I want to fill billing and shipping information so that I can be charged and product will be deilvered
+- As a customer I want to fill billing and shipping information so that I can be charged and product is deilvered
 - As a customer I want to see recommended products based on my purchase history so that suggestions are personalized for me
 
 # Resources
