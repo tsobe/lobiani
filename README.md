@@ -7,7 +7,7 @@ This project is a personal exercise to gain/improve skills in various software e
 - DDD/CQRS
 - Ports and Adapters
 - TDD/BDD
-- Microservices and Service Mesh
+- Microservices
 - CI/CD
 - Cloud native solutions
 - BPMN workflows
@@ -16,14 +16,14 @@ This project is a personal exercise to gain/improve skills in various software e
 # High level requirements
 Develop eCommerce system capable of:
 
- - Managing stock levels in warehouse
+ - Managing stock levels in the warehouse
  - Providing ways of searching and browsing through the available products and purchasing them
  - Handling billing and shipping
  - Recommending products to customers based on their purchase history
 
 # Doman model
 ## Bounded contexts
-Below are listed fairly good candidates for bounded contexts:
+Below are bounded context candidates:
 
 - Warehouse - managing stock levels
 - Sales - searching and collecting products to be purchased
@@ -34,10 +34,10 @@ Below are listed fairly good candidates for bounded contexts:
 ## Ubiquitous language
 ### Warehouse
 - Warehouse - collection of items to be sold
-- Manager - person who's responsible for adding items to warehouse
+- Operator - responsible for adding items to warehouse
 
 ### Sales
-- Manager - person who defines and publishes products
+- Manager - defines and publishes products
 - Product - representation of saleable warehouse item
 - Customer - person who's willing to purchase products
 - Basket - container for products to be purchased later at once
@@ -47,12 +47,12 @@ Below are listed fairly good candidates for bounded contexts:
 - Product - pricing information about product
 
 ### Shipping
-- Address - address to deliver purchased products
+- Address - address to deliver purchased products to
 - Product - description of a product to deliver
-- Courrier - entity who delivers purchased products to the specified address
+- Courrier - delivers purchased products to the specified address
 
 ### Recommender
-- Product - product which was purchased previously
+- Product - product that was purchased previously
 - Customer - person who purchased product
 - Recommendation - recommended product for specific customer
 
@@ -61,6 +61,7 @@ Below are listed fairly good candidates for bounded contexts:
 - Warehouse item(s) added
 - Product described in the sales
 - Product published/unpublished in the sales
+- Pricing info defined in Billing
 - Product added to the basket
 - Product removed from the basket
 - Products reserved in the warehouse
@@ -95,10 +96,11 @@ TODO
 TODO
 
 # Backlog
-- As a warehouse manager I want to define item so that actual items can be added later
-- As a warehouse manager I want to add item so that it can be purchased by customers
+- As a warehouse operator I want to define the item so that instances of items can be added later
+- As a warehouse operator I want to add item so that it can be purchased by customers
 - As a sales manager I want to describe product so that all the important information is presented to the customer
 - As a sales manager I want to publish/unpublish product to control whether a product will be visible (and hence sellable) to customer
+- As a billing manager I want to assign price to a product so that customer can be charged appropriately
 - As a customer I want to browse through the list of all available products so that I can get some idea about what's available for sale
 - As a customer I want to search a particular product(s) by name or description so that I can filter out irrelevant items
 - As a customer I want to see the details of the particular product so that I can get more information
@@ -108,6 +110,7 @@ TODO
 - As a customer I want to cancel the purchase if I changed my mind
 - As a customer I want to fill billing and shipping information so that I can be charged and product is deilvered
 - As a customer I want to see recommended products based on my purchase history so that suggestions are personalized for me
+- As a courrier I want to update delivery status so that customers see the progress
 
 # Resources
 - [Microservices, bounded context, cohesion. What do they have in common?](https://hackernoon.com/microservices-bounded-context-cohesion-what-do-they-have-in-common-1107b70342b3)
