@@ -14,7 +14,7 @@ jobs:
     executor: worker
     steps:
       - checkout
-      - with_cache
+      - with_cache:
           steps:
             - run:
                 command: ./gradlew assemble
