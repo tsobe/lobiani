@@ -7,7 +7,7 @@ executors:
   worker:
     docker:
       - image: circleci/python:3.6
-      working_directory: /tmp
+    working_directory: /tmp
 
 jobs:
   assemble-executable-jar:
