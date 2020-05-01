@@ -1,16 +1,39 @@
 version: 2.1
+
 orbs:
-  gradle: circleci/gradle@2.1.0
   docker: circleci/docker@1.0.1
+
+executors:
+  worker:
+    docker:
+      - image: circleci/python:3.6
+      working_directory: /tmp
+
 jobs:
-  build-and-push:
-    executor: docker/docker
+  assemble-executable-jar:
+    executor: worker
     steps:
+      - checkout
+      - with_cache
+          steps:
+            - run:
+                command: ./gradlew assemble
+                working_directory: warehouse
+      - persist_to_workspace:
+          root: warehouse
+          paths:
+            - build/libs/warehouse-*.jar
+
+  build-and-publish-docker-image:
+    executor: worker
+    steps:
+      - attach_workspace:
+          at: /tmp/warehouse
       - setup_remote_docker
       - checkout
       - docker/check
       - docker/build:
-          path: warehouse
+          path: /tmp/warehouse
           image: sevteen/lobiani-warehouse
       - docker/push:
           digest-path: /tmp/digest.txt
@@ -18,10 +41,9 @@ jobs:
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
+
 workflows:
   deploy:
     jobs:
-      - gradle/run:
-          app_src_directory: warehouse
-          command: assemble
-      - build-and-push
+      - assemble-executable-jar
+      - build-and-publish-docker-image
