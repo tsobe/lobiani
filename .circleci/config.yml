@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   docker: circleci/docker@1.0.1
+  gradle: circleci/gradle@2.1.0
 
 executors:
   worker:
@@ -14,7 +15,7 @@ jobs:
     executor: worker
     steps:
       - checkout
-      - with_cache:
+      - gradle/with_cache:
           steps:
             - run:
                 command: ./gradlew assemble
