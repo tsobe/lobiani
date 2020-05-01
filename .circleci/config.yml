@@ -10,6 +10,7 @@ jobs:
       - checkout
       - docker/check
       - docker/build:
+          path: warehouse
           image: sevteen/lobiani-warehouse
       - docker/push:
           digest-path: /tmp/digest.txt
