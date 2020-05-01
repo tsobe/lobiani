@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   gradle: circleci/gradle@2.1.0
-  docker: circleci/docker@x.y.z
+  docker: circleci/docker@1.0.1
 jobs:
   build-and-push:
     executor: docker/docker
