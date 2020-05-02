@@ -5,24 +5,38 @@ orbs:
 
 commands:
   with_gradle_cache:
+    description: |
+      Run a set of steps with gradle dependencies cached.
+      This command will first restore a cache of gradle dependencies, if one was
+      saved by a previous build. The provided `steps` will then be executed, and
+      if successful, then a fresh cache will be saved, if required.
+      The contents of the `~/.gradle` directory is cached, which will substantially
+      improve build times for projects with many dependencies.
+      The cache-key is generated from any files named `build.gradle` (can be overriden by `build_file` parameter)
+      that are present in the `working_directory`.
+    parameters:
+      steps:
+        type: steps
+      cache_key:
+        description: Add a custom suffix to your cache key in the event you need to work with multiple gradle caches.
+        type: string
+        default: 'v1'
+      build_file:
+        description: Override gradle build file name (for example with `build.gradle.kts`)
+        type: string
+        default: 'build.gradle'
     steps:
       - run:
-          command: >-
-            find . -name 'build.gradle.kts' | sort | xargs cat | shasum | awk '{print
-            $1}' > /tmp/gradle_cache_seed
           name: Generate Cache Checksum
+          command: find . -name '<< parameters.build_file >>' | sort | xargs cat | shasum | awk '{print $1}' > /tmp/gradle_cache_seed
       - restore_cache:
-          key: >-
-            gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed"
-            }}-{{ checksum ".circleci/config.yml" }}
+          key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed" }}-{{ checksum ".circleci/config.yml" }}
       - steps: << parameters.steps >>
       - save_cache:
-          key: >-
-            gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed"
-            }}-{{ checksum ".circleci/config.yml" }}
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
+          key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed" }}-{{ checksum ".circleci/config.yml" }}
 
 jobs:
   assemble-warehouse-executable-jar:
@@ -31,6 +45,7 @@ jobs:
     steps:
       - checkout
       - with_gradle_cache:
+          build_file: 'build.gradle.kts'
           steps:
             - run:
                 command: ./gradlew assemble
