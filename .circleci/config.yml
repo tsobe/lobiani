@@ -2,14 +2,35 @@ version: 2.1
 
 orbs:
   docker: circleci/docker@1.0.1
-  gradle: circleci/gradle@2.1.0
+
+commands:
+  with_gradle_cache:
+    steps:
+      - run:
+          command: >-
+            find . -name 'build.gradle.kts' | sort | xargs cat | shasum | awk '{print
+            $1}' > /tmp/gradle_cache_seed
+          name: Generate Cache Checksum
+      - restore_cache:
+          key: >-
+            gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed"
+            }}-{{ checksum ".circleci/config.yml" }}
+      - steps: << parameters.steps >>
+      - save_cache:
+          key: >-
+            gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed"
+            }}-{{ checksum ".circleci/config.yml" }}
+          paths:
+            - ~/.gradle/caches
+            - ~/.gradle/wrapper
 
 jobs:
   assemble-warehouse-executable-jar:
-    executor: gradle/default
+    docker:
+      - image: 'cimg/openjdk:14.0'
     steps:
       - checkout
-      - gradle/with_cache:
+      - with_gradle_cache:
           steps:
             - run:
                 command: ./gradlew assemble
