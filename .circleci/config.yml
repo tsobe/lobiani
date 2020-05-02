@@ -79,10 +79,10 @@ jobs:
       - image: 'cimg/base:stable'
     steps:
       - checkout
-      - kube-orb/install-kubectl
-      - kube-orb/install-kubeconfig:
+      - kubernetes/install-kubectl
+      - kubernetes/install-kubeconfig:
           kubeconfig: KUBECONFIG_DATA
-      - kube-orb/create-or-update-resource:
+      - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: warehouse/kube-resources.yaml
           resource-name: deployment/lobiani-warehouse
