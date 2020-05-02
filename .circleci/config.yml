@@ -4,15 +4,9 @@ orbs:
   docker: circleci/docker@1.0.1
   gradle: circleci/gradle@2.1.0
 
-executors:
-  worker:
-    docker:
-      - image: circleci/python:3.6
-    working_directory: /tmp
-
 jobs:
-  assemble-executable-jar:
-    executor: worker
+  assemble-warehouse-executable-jar:
+    executor: gradle/default
     steps:
       - checkout
       - gradle/with_cache:
@@ -21,20 +15,20 @@ jobs:
                 command: ./gradlew assemble
                 working_directory: warehouse
       - persist_to_workspace:
-          root: warehouse
+          root: /tmp/workspace
           paths:
-            - build/libs/warehouse-*.jar
+            - warehouse/build/libs/warehouse-*.jar
 
   build-and-publish-docker-image:
-    executor: worker
+    executor: docker/docker
     steps:
       - attach_workspace:
-          at: /tmp/warehouse
+          at: /tmp/workspace
       - setup_remote_docker
       - checkout
       - docker/check
       - docker/build:
-          path: /tmp/warehouse
+          path: /tmp/workspace/warehouse
           image: sevteen/lobiani-warehouse
       - docker/push:
           digest-path: /tmp/digest.txt
@@ -46,5 +40,5 @@ jobs:
 workflows:
   deploy:
     jobs:
-      - assemble-executable-jar
+      - assemble-warehouse-executable-jar
       - build-and-publish-docker-image
