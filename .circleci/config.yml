@@ -8,7 +8,9 @@ jobs:
   assemble-warehouse-executable-jar:
     executor: gradle/default
     steps:
-      - run: mkdir -p /tmp/workspace
+      - run:
+          name: Prepare workspace
+          command: mkdir -p /tmp/workspace
       - checkout
       - gradle/with_cache:
           steps:
