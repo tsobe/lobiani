@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: lobiani-warehouse
+  labels:
+    app: lobiani-warehouse
+spec:
+  selector:
+    app: lobiani-warehouse
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lobiani-warehouse
+  labels:
+    app: lobiani-warehouse
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lobiani-warehouse
+  template:
+    metadata:
+      labels:
+        app: lobiani-warehouse
+    spec:
+      containers:
+        - name: lobiani-warehouse
+          image: sevteen/lobiani-warehouse
+          imagePullPolicy: Always
+          ports:
+            - port: 8080
+              containerPort: 8080
+          env:
+            - name: LOG_LEVEL
+              value: info
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: basic-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - backend:
+              serviceName: lobiani-warehouse
+              servicePort: 8080

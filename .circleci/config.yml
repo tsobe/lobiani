@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   docker: circleci/docker@1.0.1
+  kubernetes: circleci/kubernetes@0.11.0
 
 commands:
   with_gradle_cache:
@@ -73,6 +74,21 @@ jobs:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
 
+  deploy-to-k8s:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - kube-orb/install-kubectl
+      - kube-orb/install-kubeconfig:
+          kubeconfig: KUBECONFIG_DATA
+      - kube-orb/create-or-update-resource:
+          get-rollout-status: true
+          resource-file-path: warehouse/kube-resources.yaml
+          resource-name: deployment/lobiani-warehouse
+          show-kubectl-command: true
+          namespace: sevteen
+
 workflows:
   deploy:
     jobs:
@@ -80,3 +96,6 @@ workflows:
       - build-and-publish-docker-image:
           requires:
             - assemble-warehouse-executable-jar
+      - deploy-to-k8s:
+          requires:
+            - build-and-publish-docker-image
