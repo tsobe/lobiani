@@ -17,6 +17,7 @@ jobs:
             - run:
                 command: ./gradlew assemble
                 working_directory: warehouse
+      - run: cp warehouse/build/libs/warehouse-*.jar /tmp/workspace/
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
