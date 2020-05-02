@@ -8,20 +8,18 @@ jobs:
   assemble-warehouse-executable-jar:
     executor: gradle/default
     steps:
-      - run:
-          name: Prepare workspace
-          command: mkdir -p /tmp/workspace
+      - run: mkdir -p /tmp/workspace
       - checkout
       - gradle/with_cache:
           steps:
             - run:
                 command: ./gradlew assemble
                 working_directory: warehouse
-      - run: cp warehouse/build/libs/warehouse-*.jar /tmp/workspace/
+      - run: cp -r warehouse/build /tmp/workspace/
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
-            - warehouse/build/libs/warehouse-*.jar
+            - build/libs/warehouse-*.jar
 
   build-and-publish-docker-image:
     executor: docker/docker
@@ -32,7 +30,7 @@ jobs:
       - checkout
       - docker/check
       - docker/build:
-          path: /tmp/workspace/warehouse
+          path: /tmp/workspace/
           image: sevteen/lobiani-warehouse
       - docker/push:
           digest-path: /tmp/digest.txt
