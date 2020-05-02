@@ -70,6 +70,7 @@ jobs:
       - docker/push:
           digest-path: /tmp/digest.txt
           image: sevteen/lobiani-warehouse
+          tag: '$CIRCLE_SHA1,latest'
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
