@@ -8,6 +8,7 @@ jobs:
   assemble-warehouse-executable-jar:
     executor: gradle/default
     steps:
+      - run: mkdir -p /tmp/workspace
       - checkout
       - gradle/with_cache:
           steps:
@@ -41,4 +42,6 @@ workflows:
   deploy:
     jobs:
       - assemble-warehouse-executable-jar
-      - build-and-publish-docker-image
+      - build-and-publish-docker-image:
+          requires:
+            - assemble-warehouse-executable-jar
