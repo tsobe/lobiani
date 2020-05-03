@@ -1,3 +1,3 @@
 rootProject.name = "lobiani"
 
-include("warehouse")
+include("app")

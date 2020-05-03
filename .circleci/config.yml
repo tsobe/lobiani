@@ -40,7 +40,7 @@ commands:
           key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed" }}-{{ checksum ".circleci/config.yml" }}
 
 jobs:
-  assemble-warehouse-executable-jar:
+  build-app-executable-jar:
     docker:
       - image: 'cimg/openjdk:14.0'
     steps:
@@ -51,9 +51,9 @@ jobs:
             - run:
                 command: ./gradlew build
       - persist_to_workspace:
-          root: warehouse
+          root: app
           paths:
-            - build/libs/warehouse-*.jar
+            - build/libs/app-*.jar
 
   build-and-publish-docker-image:
     executor: docker/docker
@@ -62,13 +62,13 @@ jobs:
       - checkout
       - docker/check
       - attach_workspace:
-          at: warehouse
+          at: app
       - docker/build:
-          path: warehouse
-          image: sevteen/lobiani-warehouse
+          path: app
+          image: sevteen/lobiani-app
       - docker/push:
           digest-path: /tmp/digest.txt
-          image: sevteen/lobiani-warehouse
+          image: sevteen/lobiani-app
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
@@ -83,18 +83,18 @@ jobs:
           kubeconfig: KUBECONFIG_DATA
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: warehouse/kube-resources.yaml
-          resource-name: deployment/lobiani-warehouse
+          resource-file-path: app/kube-resources.yaml
+          resource-name: deployment/lobiani-app
           show-kubectl-command: true
           namespace: sevteen
 
 workflows:
   deploy:
     jobs:
-      - assemble-warehouse-executable-jar
+      - build-app-executable-jar
       - build-and-publish-docker-image:
           requires:
-            - assemble-warehouse-executable-jar
+            - build-app-executable-jar
       - deploy-to-k8s:
           requires:
             - build-and-publish-docker-image

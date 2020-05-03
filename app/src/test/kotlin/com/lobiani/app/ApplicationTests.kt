@@ -1,10 +1,10 @@
-package com.lobiani.warehouse
+package com.lobiani.app
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class WarehouseApplicationTests {
+class ApplicationTests {
 
 	@Test
 	fun contextLoads() {

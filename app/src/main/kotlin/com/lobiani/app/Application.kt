@@ -1,11 +1,11 @@
-package com.lobiani.warehouse
+package com.lobiani.app
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class WarehouseApplication
+class Application
 
 fun main(args: Array<String>) {
-	runApplication<WarehouseApplication>(*args)
+	runApplication<Application>(*args)
 }
