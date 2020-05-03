@@ -35,7 +35,8 @@ spec:
     spec:
       containers:
         - name: lobiani-app
-          image: sevteen/lobiani-app:latest
+          image: sevteen/lobiani-app
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
               protocol: TCP
