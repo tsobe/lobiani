@@ -123,8 +123,8 @@ workflows:
     jobs:
       - build-init
       - build-app-executable-jar
-        requires:
-          - build-init
+          requires:
+            - build-init
       - build-and-publish-docker-image:
           requires:
             - build-app-executable-jar
