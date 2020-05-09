@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
         - name: lobiani-app
-          image: sevteen/lobiani-app:51072fd027186a1568c879186d3b87712f2ec9cd
+          image: sevteen/lobiani-app@sha256:97355edcb179435c634516108ed7484c3b7634398a33aa90ed83c08e291f4bfb
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
