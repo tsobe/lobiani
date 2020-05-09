@@ -40,6 +40,36 @@ commands:
           key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed" }}-{{ checksum ".circleci/config.yml" }}
 
 jobs:
+  build-init:
+    docker:
+      - image: 'circleci/base:stable'
+    steps:
+      - checkout
+      - run:
+          name: Determine if changes require rebuild
+          command: |
+            # Identify modified directories
+            LAST_SUCCESSFUL_BUILD_URL="https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/tree/$CIRCLE_BRANCH?filter=completed&limit=1"
+            LAST_SUCCESSFUL_COMMIT=`curl -Ss -u "$CIRCLE_TOKEN:" $LAST_SUCCESSFUL_BUILD_URL | jq -r '.[0]["vcs_revision"]'`
+
+            # First commit in a branch
+            if [[ ${LAST_SUCCESSFUL_COMMIT} == "null" ]]; then
+              COMMITS="origin/master"
+            else
+              COMMITS="${CIRCLE_SHA1}..${LAST_SUCCESSFUL_COMMIT}"
+            fi
+
+            git diff --name-only $COMMITS | cut -d/ -f1 | sort -u > modified-dirs
+            echo -e "Modified directories:\n`cat modified-dirs`\n"
+
+            code_dir="app"
+
+            if ! grep -Fxq $code_dir modified-dirs
+            then
+              echo "No changes made to $code_dir, cancelling build"
+              circleci-agent step halt
+            fi
+
   build-app-executable-jar:
     docker:
       - image: 'cimg/openjdk:14.0'
@@ -89,12 +119,15 @@ jobs:
           namespace: sevteen
 
 workflows:
-  deploy:
+  build:
     jobs:
+      - build-init
       - build-app-executable-jar
+        requires:
+          - build-init
       - build-and-publish-docker-image:
           requires:
             - build-app-executable-jar
-      - deploy-to-k8s:
-          requires:
-            - build-and-publish-docker-image
+#      - deploy-to-k8s:
+#          requires:
+#            - build-and-publish-docker-image
