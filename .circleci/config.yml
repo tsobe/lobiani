@@ -57,55 +57,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Determine if changes require rebuild
-          command: |
-            function trigger_pipeline {
-              local check=$1
-              local build=$2
-              local deploy=$3
-              curl -s -u ${CIRCLE_API_USER_TOKEN}: \
-                   -H "Content-Type: application/json" \
-                   -d "{
-                          \"parameters\": {
-                              \"check\": $check,
-                              \"build\": $build,
-                              \"deploy\": $deploy
-                          }
-                       }" \
-                   https://circleci.com/api/v2/project/$PROJECT_SLUG/pipeline
-            }
-
-            # Identify modified directories
-            PROJECT_SLUG="bitbucket/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
-            LAST_COMPLETED_BUILD_URL="https://circleci.com/api/v1.1/project/$PROJECT_SLUG/tree/$CIRCLE_BRANCH?filter=completed&limit=1"
-            LAST_SUCCESSFUL_COMMIT=`curl -Ss -u "$CIRCLE_API_USER_TOKEN:" $LAST_COMPLETED_BUILD_URL | jq -r '.[0]["vcs_revision"]'`
-
-            # First commit in a branch
-            if [[ ${LAST_SUCCESSFUL_COMMIT} == "null" ]]; then
-              COMMITS="origin/master"
-            else
-              COMMITS="${CIRCLE_SHA1}..${LAST_SUCCESSFUL_COMMIT}"
-            fi
-
-            git diff --name-only $COMMITS | cut -d/ -f1 | sort -u > modified-dirs
-            echo -e "Modified directories:\n`cat modified-dirs`\n"
-
-            code_dir="app"
-            infra_dir="infra-config"
-
-            if  grep -Fxq $code_dir modified-dirs; then
-              echo "Triggering the build for $code_dir"
-              trigger_pipeline false true false
-            else
-              echo "No changes made to $code_dir, not triggering the build"
-            fi
-
-            if grep -Fxq $infra_dir modified-dirs; then
-              echo "Triggering the deploy"
-              trigger_pipeline false false true
-            else
-              echo "No changes made to $infra_dir, not triggering the deploy"
-            fi
+          name: Determine if changes made to VCS require build or deployment
+          command: .circleci/check.sh
   build-app-executable-jar:
     docker:
       - image: 'cimg/openjdk:14.0'
