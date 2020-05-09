@@ -46,7 +46,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Determine if changes require rebuild
+          name: Determine if changes require rebuild (blah)
           command: |
             # Identify modified directories
             LAST_COMPLETED_BUILD_URL="https://circleci.com/api/v1.1/project/bitbucket/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/tree/$CIRCLE_BRANCH?filter=completed&limit=1"
