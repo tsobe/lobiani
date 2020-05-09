@@ -59,6 +59,22 @@ jobs:
       - run:
           name: Determine if changes require rebuild
           command: |
+            function trigger_pipeline {
+              local check=$1
+              local build=$2
+              local deploy=$3
+              curl -s -u ${CIRCLE_API_USER_TOKEN}: \
+                   -H "Content-Type: application/json" \
+                   -d "{
+                          \"parameters\": {
+                              \"check\": $check,
+                              \"build\": $build,
+                              \"deploy\": $deploy
+                          }
+                       }" \
+                   https://circleci.com/api/v2/project/$PROJECT_SLUG/pipeline
+            }
+
             # Identify modified directories
             PROJECT_SLUG="bitbucket/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
             LAST_COMPLETED_BUILD_URL="https://circleci.com/api/v1.1/project/$PROJECT_SLUG/tree/$CIRCLE_BRANCH?filter=completed&limit=1"
@@ -79,30 +95,14 @@ jobs:
 
             if  grep -Fxq $code_dir modified-dirs; then
               echo "Triggering the build for $code_dir"
-              curl -s -u ${CIRCLE_API_USER_TOKEN}: \
-                   -H "Content-Type: application/json" \
-                   -d '{
-                          "parameters": {
-                              "check": false,
-                              "build": true
-                          }
-                       }' \
-                   https://circleci.com/api/v2/project/$PROJECT_SLUG/pipeline
+              trigger_pipeline false true false
             else
               echo "No changes made to $code_dir, not triggering the build"
             fi
 
             if grep -Fxq $infra_dir modified-dirs; then
               echo "Triggering the deploy"
-              curl -s -u ${CIRCLE_API_USER_TOKEN}: \
-                   -H "Content-Type: application/json" \
-                   -d '{
-                          "parameters": {
-                              "check": false,
-                              "deploy": true
-                          }
-                       }' \
-                   https://circleci.com/api/v2/project/$PROJECT_SLUG/pipeline
+              trigger_pipeline false false true
             else
               echo "No changes made to $infra_dir, not triggering the deploy"
             fi
