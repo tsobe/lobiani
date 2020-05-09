@@ -73,7 +73,7 @@ jobs:
               echo "Triggering the build"
               curl -s -u ${CIRCLE_API_USER_TOKEN}: \
                    -d '{"parameters": {"build_image": true}}' \
-                  https://circleci.com/api/v2/project/bitbucket/sevteen/lobiani/pipeline
+                  https://circleci.com/api/v2/project/bitbucket/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pipeline
             else
               echo "No changes made to $code_dir, not triggering the build"
             fi
@@ -127,6 +127,7 @@ jobs:
           namespace: sevteen
 
 workflows:
+  version: 2
   check:
     unless: << pipeline.parameters.build_image >>
     jobs:
