@@ -42,7 +42,7 @@ commands:
 jobs:
   build-init:
     docker:
-      - image: 'circleci/base:stable'
+      - image: 'cimg/base:stable'
     steps:
       - checkout
       - run:
