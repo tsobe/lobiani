@@ -35,14 +35,11 @@ spec:
     spec:
       containers:
         - name: lobiani-app
-          image: sevteen/lobiani-app
+          image: sevteen/lobiani-app:51072fd027186a1568c879186d3b87712f2ec9cd
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
               protocol: TCP
-          env:
-            - name: LOG_LEVEL
-              value: info
           resources:
             limits:
               cpu: 1
@@ -55,7 +52,7 @@ spec:
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: basic-ingress
+  name: app-lobiani
 spec:
   rules:
     - http:
