@@ -54,7 +54,8 @@ jobs:
           name: Determine if changes require rebuild
           command: |
             # Identify modified directories
-            LAST_COMPLETED_BUILD_URL="https://circleci.com/api/v1.1/project/bitbucket/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/tree/$CIRCLE_BRANCH?filter=completed&limit=1"
+            PROJECT_SLUG="bitbucket/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
+            LAST_COMPLETED_BUILD_URL="https://circleci.com/api/v1.1/project/$PROJECT_SLUG/tree/$CIRCLE_BRANCH?filter=completed&limit=1"
             LAST_SUCCESSFUL_COMMIT=`curl -Ss -u "$CIRCLE_API_USER_TOKEN:" $LAST_COMPLETED_BUILD_URL | jq -r '.[0]["vcs_revision"]'`
 
             # First commit in a branch
@@ -72,8 +73,13 @@ jobs:
             if  grep -Fxq $code_dir modified-dirs; then
               echo "Triggering the build"
               curl -s -u ${CIRCLE_API_USER_TOKEN}: \
-                   -d '{"parameters": {"build_image": true}}' \
-                  https://circleci.com/api/v2/project/bitbucket/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pipeline
+                   -H "Content-Type: application/json" \
+                   -d '{
+                          "parameters": {
+                              "build_image": true
+                          }
+                       }' \
+                  https://circleci.com/api/v2/project/$PROJECT_SLUG/pipeline
             else
               echo "No changes made to $code_dir, not triggering the build"
             fi
@@ -127,7 +133,6 @@ jobs:
           namespace: sevteen
 
 workflows:
-  version: 2
   check:
     unless: << pipeline.parameters.build_image >>
     jobs:
