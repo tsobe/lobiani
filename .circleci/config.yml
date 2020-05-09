@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   docker: circleci/docker@1.0.1
   kubernetes: circleci/kubernetes@0.11.0
+  jq: circleci/jq@2.0.2
 
 commands:
   with_gradle_cache:
@@ -45,6 +46,7 @@ jobs:
       - image: 'cimg/base:stable'
     steps:
       - checkout
+      - jq/install
       - run:
           name: Determine if changes require rebuild
           command: |
