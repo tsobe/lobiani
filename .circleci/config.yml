@@ -103,7 +103,6 @@ jobs:
           resource-file-path: infra-config/kube-resources.yaml
           resource-name: deployment/lobiani-app
           show-kubectl-command: true
-          namespace: sevteen
 
 workflows:
   check:
