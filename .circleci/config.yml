@@ -5,7 +5,13 @@ orbs:
   kubernetes: circleci/kubernetes@0.11.0
 
 parameters:
-  build_image:
+  check:
+    type: boolean
+    default: true
+  build:
+    type: boolean
+    default: false
+  deploy:
     type: boolean
     default: false
 
@@ -69,21 +75,37 @@ jobs:
             echo -e "Modified directories:\n`cat modified-dirs`\n"
 
             code_dir="app"
+            infra_dir="infra-config"
 
             if  grep -Fxq $code_dir modified-dirs; then
-              echo "Triggering the build"
+              echo "Triggering the build for $code_dir"
               curl -s -u ${CIRCLE_API_USER_TOKEN}: \
                    -H "Content-Type: application/json" \
                    -d '{
                           "parameters": {
-                              "build_image": true
+                              "check": false,
+                              "build": true
                           }
                        }' \
-                  https://circleci.com/api/v2/project/$PROJECT_SLUG/pipeline
+                   https://circleci.com/api/v2/project/$PROJECT_SLUG/pipeline
             else
               echo "No changes made to $code_dir, not triggering the build"
             fi
 
+            if grep -Fxq $infra_dir modified-dirs; then
+              echo "Triggering the deploy"
+              curl -s -u ${CIRCLE_API_USER_TOKEN}: \
+                   -H "Content-Type: application/json" \
+                   -d '{
+                          "parameters": {
+                              "check": false,
+                              "deploy": true
+                          }
+                       }' \
+                   https://circleci.com/api/v2/project/$PROJECT_SLUG/pipeline
+            else
+              echo "No changes made to $infra_dir, not triggering the deploy"
+            fi
   build-app-executable-jar:
     docker:
       - image: 'cimg/openjdk:14.0'
@@ -98,7 +120,6 @@ jobs:
           root: app
           paths:
             - build/libs/app-*.jar
-
   build-and-publish-docker-image:
     executor: docker/docker
     steps:
@@ -116,8 +137,7 @@ jobs:
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
-
-  deploy-to-k8s:
+  deploy:
     docker:
       - image: 'cimg/base:stable'
     steps:
@@ -127,23 +147,24 @@ jobs:
           kubeconfig: KUBECONFIG_DATA
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: app/kube-resources.yaml
+          resource-file-path: infra-config/kube-resources.yaml
           resource-name: deployment/lobiani-app
           show-kubectl-command: true
           namespace: sevteen
 
 workflows:
   check:
-    unless: << pipeline.parameters.build_image >>
+    when: << pipeline.parameters.check >>
     jobs:
       - check-build-needed
   build:
-    when: << pipeline.parameters.build_image >>
+    when: << pipeline.parameters.build >>
     jobs:
       - build-app-executable-jar
       - build-and-publish-docker-image:
           requires:
             - build-app-executable-jar
-#      - deploy-to-k8s:
-#          requires:
-#            - build-and-publish-docker-image
+  deploy:
+    when: << pipeline.parameters.deploy >>
+    jobs:
+      - deploy
