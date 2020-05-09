@@ -30,6 +30,8 @@ spec:
       app: lobiani-app
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         app: lobiani-app
     spec:
