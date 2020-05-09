@@ -4,6 +4,11 @@ orbs:
   docker: circleci/docker@1.0.1
   kubernetes: circleci/kubernetes@0.11.0
 
+parameters:
+  build_image:
+    type: boolean
+    default: false
+
 commands:
   with_gradle_cache:
     description: |
@@ -40,7 +45,7 @@ commands:
           key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed" }}-{{ checksum ".circleci/config.yml" }}
 
 jobs:
-  build-init:
+  check-build-needed:
     docker:
       - image: 'cimg/base:stable'
     steps:
@@ -64,10 +69,13 @@ jobs:
 
             code_dir="app"
 
-            if ! grep -Fxq $code_dir modified-dirs
-            then
-              echo "No changes made to $code_dir, cancelling build"
-              circleci-agent step halt
+            if  grep -Fxq $code_dir modified-dirs; then
+              echo "Triggering the build"
+              curl -s -u ${CIRCLE_API_USER_TOKEN}: \
+                   -d '{"parameters": {"build_image": true}}' \
+                  https://circleci.com/api/v2/project/bitbucket/sevteen/lobiani/pipeline
+            else
+              echo "No changes made to $code_dir, not triggering the build"
             fi
 
   build-app-executable-jar:
@@ -119,12 +127,14 @@ jobs:
           namespace: sevteen
 
 workflows:
-  build:
+  check:
+    unless: << pipeline.parameters.build_image >>
     jobs:
-      - build-init
-      - build-app-executable-jar:
-          requires:
-            - build-init
+      - check-build-needed
+  build:
+    when: << pipeline.parameters.build_image >>
+    jobs:
+      - build-app-executable-jar
       - build-and-publish-docker-image:
           requires:
             - build-app-executable-jar
