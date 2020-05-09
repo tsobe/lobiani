@@ -97,7 +97,7 @@ jobs:
       - checkout
       - kubernetes/install-kubectl
       - kubernetes/install-kubeconfig:
-          kubeconfig: KUBECONFIG_DATA
+          kubeconfig: KUBECONFIG_DATA_DO
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: infra-config/kube-resources.yaml
