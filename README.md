@@ -1,5 +1,4 @@
 # Motivation
-
 This project is a personal exercise to gain/improve skills in various software engineering practices, will it be coding disciplines, architecture, technologies and anything in between or around them.
 
 # Desired areas to examine
@@ -21,17 +20,18 @@ Develop eCommerce system capable of:
  - Handling billing and shipping
  - Recommending products to customers based on their purchase history
 
-# Doman model
-## Bounded contexts
-Below are bounded context candidates:
+# Domain model
+Disclaimer: I don't have a practical experience in the eCommerce domain, so model described may seem utterly inadequate.
+However for the exercise purpose, I believe it should be fine.   
 
+## Bounded contexts
 - Warehouse - managing stock levels
 - Sales - searching and collecting products to be purchased
 - Billing - executing purchases initiated by customers
 - Shipping - delivering purchased products
-- Recommender - recommending products to customers
+- Personalization - recommending products to customers
 
-## Ubiquitous language
+## Glossary
 ### Warehouse
 - Warehouse - collection of items to be sold
 - Operator - responsible for adding items to warehouse
@@ -49,14 +49,14 @@ Below are bounded context candidates:
 ### Shipping
 - Address - address to deliver purchased products to
 - Product - description of a product to deliver
-- Courrier - delivers purchased products to the specified address
+- Courier - delivers purchased products to the specified address
 
-### Recommender
+### Personalization
 - Product - product that was purchased previously
 - Customer - person who purchased product
 - Recommendation - recommended product for specific customer
 
-## Event storming
+## Ubiquitous language (brief Event storming)
 - Warehouse item defined
 - Warehouse item(s) added
 - Product described in the sales
@@ -70,30 +70,22 @@ Below are bounded context candidates:
 		- Purchase confirmed by customer
 			- Customer recommendations updated
 				- Customer charged successfully
-					- Courrier is notified
-					- Courrier starts delivery
+					- Courier is notified
+					- Courier starts delivery
 					- Customer is notified that product(s) have shipped
-					- Courrier updates delivery progress
+					- Courier updates delivery progress
 					- Product(s) failed to be delivered at the specified address
 						- Customer is notified
 						- Reservation removed in the warehouse
 					- Purchase delivered
-						- Customer is notified - successfull end of story
+						- Customer is notified - successful end of story
 				- Customer charge failed
 				   - Customer is notified
-				   - Reervation removed in the warehouse
+				   - Reservation released from the warehouse
 	   - Purchase cancelled by customer
+	       - Reservation released from the warehouse
 - Products' reservation failed in the warehouse
 	- Customer is notified
-
-
-
-
-# High level architecture
-TODO
-
-# Building and running
-TODO
 
 # Backlog
 - As a warehouse operator I want to define the item so that instances of items can be added later
@@ -111,6 +103,25 @@ TODO
 - As a customer I want to fill billing and shipping information so that I can be charged and product is deilvered
 - As a customer I want to see recommended products based on my purchase history so that suggestions are personalized for me
 - As a courrier I want to update delivery status so that customers see the progress
+
+
+# Development process roadmap
+Monolith-first approach will be used where initially entire application will be delivered as
+a single deployment unit, however it will be still modular internally, to allow easier transition
+to microservices
+
+## Milestones
+### Milestone 1 objectives
+- System allows to add warehouse items
+- System allows to see the products available for sale
+- Basic metrics such as HTTP success rate, latency and etc. are available 
+- Basic CI/CD pipeline exists 
+    - Build and deployment is automated, preferably via GitOps approach
+    - Deployments are made after end-to-end tests pass in staging env (can be manual)
+    - No blue/green and canary deployments
+    - No automatic rollback in case of production failures
+
+
 
 # Resources
 - [Microservices, bounded context, cohesion. What do they have in common?](https://hackernoon.com/microservices-bounded-context-cohesion-what-do-they-have-in-common-1107b70342b3)
