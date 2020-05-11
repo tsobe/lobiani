@@ -19,7 +19,7 @@ class TestController {
     }
 
     @GetMapping
-    fun sum(@RequestParam a: Int, b: Int): Int {
+    fun sum(@RequestParam a: Int, @RequestParam b: Int): Int {
         return a + b
     }
 
