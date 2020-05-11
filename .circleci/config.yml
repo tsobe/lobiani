@@ -70,6 +70,8 @@ jobs:
           root: app
           paths:
             - build/libs/app-*.jar
+      - store_test_results:
+          path: app/build/reports/tests/test
   build-and-publish-docker-image:
     executor: docker/docker
     steps:
