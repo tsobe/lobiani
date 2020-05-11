@@ -11,9 +11,6 @@ parameters:
   build:
     type: boolean
     default: false
-  deploy:
-    type: boolean
-    default: false
 
 commands:
   with_gradle_cache:
@@ -57,7 +54,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Determine if changes made to VCS require build or deployment
+          name: Determine if changes made to VCS require build
           command: .circleci/check.sh
   build-app-executable-jar:
     docker:
@@ -90,19 +87,6 @@ jobs:
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
-  deploy:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
-      - checkout
-      - kubernetes/install-kubectl
-      - kubernetes/install-kubeconfig:
-          kubeconfig: KUBECONFIG_DATA_DO
-      - kubernetes/create-or-update-resource:
-          get-rollout-status: true
-          resource-file-path: infra-config/kube-resources.yaml
-          resource-name: deployment/lobiani-app
-          show-kubectl-command: true
 
 workflows:
   check:
@@ -116,7 +100,3 @@ workflows:
       - build-and-publish-docker-image:
           requires:
             - build-app-executable-jar
-  deploy:
-    when: << pipeline.parameters.deploy >>
-    jobs:
-      - deploy

@@ -7,15 +7,13 @@ PROJECT_SLUG="bitbucket/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
 function trigger_pipeline {
 	local check=$1
 	local build=$2
-	local deploy=$3
 
     curl -s -u ${CIRCLE_API_USER_TOKEN}: \
 	   -H "Content-Type: application/json" \
 	   -d "{
 			  \"parameters\": {
 				  \"check\": $check,
-				  \"build\": $build,
-				  \"deploy\": $deploy
+				  \"build\": $build
 			  }
 		   }" \
 	   https://circleci.com/api/v2/project/$PROJECT_SLUG/pipeline
@@ -50,16 +48,7 @@ code_dir="app"
 if was_modified $code_dir
 then
 	echo "Triggering the build"
-  	trigger_pipeline false true false
+  	trigger_pipeline false true
 else
   	echo "No changes made to $code_dir, not triggering the build"
-fi
-
-infra_dir="infra-config"
-if was_modified $infra_dir
-then
-	echo "Triggering the deploy"
-  	trigger_pipeline false false true
-else
-  	echo "No changes made to $infra_dir, not triggering the deploy"
 fi
