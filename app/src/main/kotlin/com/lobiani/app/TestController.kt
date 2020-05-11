@@ -13,12 +13,12 @@ class TestController {
         throw IllegalArgumentException("Boom");
     }
 
-    @GetMapping("/hello")
+    @GetMapping
     fun hello(@RequestParam(defaultValue = "John") name: String): String {
         return "Hello $name"
     }
 
-    @GetMapping("/sum")
+    @GetMapping
     fun sum(@RequestParam a: Int, @RequestParam b: Int): Int {
         return a + b
     }
