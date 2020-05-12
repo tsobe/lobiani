@@ -97,12 +97,12 @@ However for the exercise purpose, I believe it should be fine.
 - As a customer I want to search a particular product(s) by name or description so that I can filter out irrelevant items
 - As a customer I want to see the details of the particular product so that I can get more information
 - As a customer I want to add product to the basket so that I can purchase it later
-- As a customer I want to remove possibly mistakenly added prouct from the basket so that I can select a better option
+- As a customer I want to remove possibly mistakenly added პროდუცტ from the basket so that I can select a better option
 - As a customer I want to proceed to payment so that I can see the summary before I actually pay
 - As a customer I want to cancel the purchase if I changed my mind
-- As a customer I want to fill billing and shipping information so that I can be charged and product is deilvered
+- As a customer I want to fill billing and shipping information so that I can be charged and product is delivered
 - As a customer I want to see recommended products based on my purchase history so that suggestions are personalized for me
-- As a courrier I want to update delivery status so that customers see the progress
+- As a courier I want to update delivery status so that customers see the progress
 
 
 # Development process roadmap
