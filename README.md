@@ -15,7 +15,7 @@ This project is a personal exercise to gain/improve skills in various software e
 # High level requirements
 Develop eCommerce system capable of:
 
- - Managing stock levels in the warehouse
+ - Managing stock levels in the inventory
  - Providing ways of searching and browsing through the available products and purchasing them
  - Handling billing and shipping
  - Recommending products to customers based on their purchase history
@@ -25,20 +25,20 @@ Disclaimer: I don't have a practical experience in the eCommerce domain, so mode
 However for the exercise purpose, I believe it should be fine.   
 
 ## Bounded contexts
-- Warehouse - managing stock levels
+- Inventory - managing stock levels
 - Sales - searching and collecting products to be purchased
 - Billing - executing purchases initiated by customers
 - Shipping - delivering purchased products
 - Personalization - recommending products to customers
 
 ## Glossary
-### Warehouse
-- Warehouse - collection of items to be sold
-- Operator - responsible for adding items to warehouse
+### Inventory
+- Inventory - collection of items to be sold
+- Operator - responsible for adding items to inventory
 
 ### Sales
 - Manager - defines and publishes products
-- Product - representation of saleable warehouse item
+- Product - representation of saleable inventory item
 - Customer - person who's willing to purchase products
 - Basket - container for products to be purchased later at once
 
@@ -57,14 +57,14 @@ However for the exercise purpose, I believe it should be fine.
 - Recommendation - recommended product for specific customer
 
 ## Ubiquitous language (brief Event storming)
-- Warehouse item defined
-- Warehouse item(s) added
+- Inventory item defined
+- Inventory item(s) added
 - Product described in the sales
 - Product published/unpublished in the sales
 - Pricing info defined in Billing
 - Product added to the basket
 - Product removed from the basket
-- Products reserved in the warehouse
+- Products reserved in the inventory
 	- Billing information added
 	- Shipping information added
 		- Purchase confirmed by customer
@@ -76,20 +76,20 @@ However for the exercise purpose, I believe it should be fine.
 					- Courier updates delivery progress
 					- Product(s) failed to be delivered at the specified address
 						- Customer is notified
-						- Reservation removed in the warehouse
+						- Reservation released in the inventory
 					- Purchase delivered
 						- Customer is notified - successful end of story
 				- Customer charge failed
 				   - Customer is notified
-				   - Reservation released from the warehouse
+				   - Reservation released from the inventory
 	   - Purchase cancelled by customer
-	       - Reservation released from the warehouse
-- Products' reservation failed in the warehouse
+	       - Reservation released from the inventory
+- Products' reservation failed in the inventory
 	- Customer is notified
 
 # Backlog
-- As a warehouse operator I want to define the item so that instances of items can be added later
-- As a warehouse operator I want to add item so that it can be purchased by customers
+- As a inventory operator I want to define the item so that instances of items can be added later
+- As a inventory operator I want to add item so that it can be purchased by customers
 - As a sales manager I want to describe product so that all the important information is presented to the customer
 - As a sales manager I want to publish/unpublish product to control whether a product will be visible (and hence sellable) to customer
 - As a billing manager I want to assign price to a product so that customer can be charged appropriately
@@ -97,7 +97,7 @@ However for the exercise purpose, I believe it should be fine.
 - As a customer I want to search a particular product(s) by name or description so that I can filter out irrelevant items
 - As a customer I want to see the details of the particular product so that I can get more information
 - As a customer I want to add product to the basket so that I can purchase it later
-- As a customer I want to remove possibly mistakenly added პროდუცტ from the basket so that I can select a better option
+- As a customer I want to remove possibly mistakenly added product from the basket so that I can select a better option
 - As a customer I want to proceed to payment so that I can see the summary before I actually pay
 - As a customer I want to cancel the purchase if I changed my mind
 - As a customer I want to fill billing and shipping information so that I can be charged and product is delivered
@@ -112,7 +112,7 @@ to microservices
 
 ## Milestones
 ### Milestone 1 objectives
-- System allows to add warehouse items
+- System allows to add inventory items
 - System allows to see the products available for sale
 - Basic metrics such as HTTP success rate, latency and etc. are available 
 - Basic CI/CD pipeline exists 
