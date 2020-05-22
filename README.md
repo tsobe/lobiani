@@ -134,3 +134,5 @@ to microservices
 - [Service mesh](https://www.thoughtworks.com/radar/techniques/service-mesh)
 - [Scaling Microservices with an Event Stream](https://www.thoughtworks.com/de/insights/blog/scaling-microservices-event-stream)
 - [Ports and Adapters](https://softwarecampament.wordpress.com/portsadapters/)
+- [Domain-Driven Design: Everything You Always Wanted to Know About it, But Were Afraid to Ask](https://medium.com/ssense-tech/domain-driven-design-everything-you-always-wanted-to-know-about-it-but-were-afraid-to-ask-a85e7b74497a)
+- [Feature flags](https://featureflags.io/)
