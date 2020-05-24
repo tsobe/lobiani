@@ -7,14 +7,15 @@ plugins {
     kotlin("plugin.spring") version "1.3.71"
 }
 
-sourceSets.create("e2eTest")
+val gebVersion = "3.4"
+val seleniumVersion = "3.141.59"
+val e2eSourceSet = "e2eTest"
+
+sourceSets.create(e2eSourceSet)
 
 val e2eTestImplementation by configurations.getting {
     extendsFrom(configurations.testImplementation.get())
 }
-
-val gebVersion = "3.4"
-val seleniumVersion = "3.141.59"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -30,12 +31,17 @@ dependencies {
     e2eTestImplementation("org.seleniumhq.selenium:selenium-remote-driver:$seleniumVersion")
 }
 
+val defaultBaseUrl = "http://host.docker.internal:8080/"
+val defaultWebDriverUrl = "http://localhost:4444/wd/hub"
+
 tasks.register<Test>("e2eTestRemote") {
     description = "Runs e2e tests against the remote WebDriver"
     group = JavaBasePlugin.VERIFICATION_GROUP
     outputs.upToDateWhen { false }
-    testClassesDirs = sourceSets["e2eTest"].output.classesDirs
-    classpath = sourceSets["e2eTest"].runtimeClasspath
+    testClassesDirs = sourceSets[e2eSourceSet].output.classesDirs
+    classpath = sourceSets[e2eSourceSet].runtimeClasspath
     shouldRunAfter("test")
     systemProperty("geb.env", "remote")
+    systemProperty("geb.build.baseUrl", System.getProperty("geb.build.baseUrl", defaultBaseUrl))
+    systemProperty("remote.webdriver.url", System.getProperty("remote.webdriver.url", defaultWebDriverUrl))
 }

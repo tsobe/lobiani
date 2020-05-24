@@ -13,12 +13,8 @@ environments {
             capabilities.version = "80.0"
             capabilities.setCapability("enableVNC", true)
             capabilities.setCapability("enableVideo", false)
-
-            new RemoteWebDriver(getWebDriverURL(), capabilities)
+            new RemoteWebDriver(URI.create(System.getProperty("remote.webdriver.url")).toURL(), capabilities)
         }
     }
 }
 
-static def getWebDriverURL() {
-    URI.create(System.getProperty("remote.webdriver.url", "http://localhost:4444/wd/hub")).toURL()
-}
