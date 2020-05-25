@@ -21,7 +21,7 @@ Develop eCommerce system capable of:
  - Recommending products to customers based on their purchase history
 
 # Domain model
-Disclaimer: I don't have a practical experience in the eCommerce domain, so model described may seem utterly inadequate.
+Disclaimer: I don't have a practical experience in the eCommerce domain, so model described here may seem utterly inadequate.
 However for the exercise purpose, I believe it should be fine.   
 
 ## Bounded contexts
@@ -56,7 +56,7 @@ However for the exercise purpose, I believe it should be fine.
 - Customer - person who purchased product
 - Recommendation - recommended product for specific customer
 
-## Ubiquitous language (brief Event storming)
+## Ubiquitous language (brief event storming)
 - Inventory item defined
 - Inventory item(s) added
 - Product described in the sales
@@ -88,8 +88,8 @@ However for the exercise purpose, I believe it should be fine.
 	- Customer is notified
 
 # Backlog
-- As a inventory operator I want to define the item so that instances of items can be added later
-- As a inventory operator I want to add item so that it can be purchased by customers
+- As an inventory operator I want to define the item so that instances of items can be added later
+- As an inventory operator I want to add item so that it can be purchased by customers
 - As a sales manager I want to describe product so that all the important information is presented to the customer
 - As a sales manager I want to publish/unpublish product to control whether a product will be visible (and hence sellable) to customer
 - As a billing manager I want to assign price to a product so that customer can be charged appropriately
