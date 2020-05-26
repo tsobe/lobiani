@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventory item definitions</title>
+</head>
+<body>
+<a id="new-definition" th:href="@{/inventory/item-definitions/new}">New definition</a>
+<div class="definitions">
+    <div class="definition" th:each="def : ${definitions}">
+        <span th:text="${def}"></span>
+        <a th:href="@{/inventory/item-definitions/delete(slug=${def})}" class="delete">Delete</a>
+    </div>
+</div>
+</body>
+</html>

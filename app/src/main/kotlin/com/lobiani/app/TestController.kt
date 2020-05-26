@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class TestController {
 
-    @GetMapping("/error")
+    @GetMapping("/make-error")
     fun error() {
-        throw IllegalArgumentException("Boom");
+        throw IllegalArgumentException("Boom")
     }
 
     @GetMapping("/hello")
