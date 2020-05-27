@@ -10,22 +10,25 @@ plugins {
 val gebVersion = "3.4"
 val seleniumVersion = "3.141.59"
 val e2eSourceSet = "e2eTest"
+val spockVersion = "2.0-M2-groovy-2.5"
 
 sourceSets.create(e2eSourceSet)
 
-val e2eTestImplementation by configurations.getting {
-    extendsFrom(configurations.testImplementation.get())
-}
+val e2eTestImplementation by configurations.getting {}
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
-    testImplementation("org.spockframework:spock-core:2.0-M2-groovy-2.5")
+    testImplementation("org.spockframework:spock-core:$spockVersion")
+
+    e2eTestImplementation("org.spockframework:spock-core:$spockVersion")
     e2eTestImplementation("org.gebish:geb-spock:$gebVersion") {
         exclude(group = "org.codehaus.groovy")
     }
