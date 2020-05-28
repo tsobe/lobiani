@@ -4,16 +4,18 @@ import geb.spock.GebSpec
 
 class InventorySpec extends GebSpec {
 
-    def "new inventory item defined"() {
+    def "new inventory item defined and then deleted"() {
         given:
         def slug = "the-matrix-trilogy-blu-ray"
         def definitionsPage = to InventoryItemDefinitionsPage
+
 
         when:
         definitionsPage.openNewItemDefinitionPage()
 
         then:
         at NewInventoryItemDefinitionPage
+
 
         def newDefinitionPage = page as NewInventoryItemDefinitionPage
 
@@ -25,10 +27,19 @@ class InventorySpec extends GebSpec {
         at definitionsPage
         definitionsPage.hasDefinition slug
 
-        cleanup:
+
+        when:
         definitionsPage.deleteDefinition slug
+
+        then:
         at definitionsPage
-        assert !definitionsPage.hasDefinition(slug)
+        !definitionsPage.hasDefinition(slug)
+
+
+        cleanup:
+        if (definitionsPage.hasDefinition(slug)) {
+            definitionsPage.deleteDefinition slug
+        }
     }
 
 }
