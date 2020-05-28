@@ -27,6 +27,7 @@ class InventorySpec extends GebSpec {
 
         cleanup:
         definitionsPage.deleteDefinition slug
+        at definitionsPage
         assert !definitionsPage.hasDefinition(slug)
     }
 
