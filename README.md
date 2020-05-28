@@ -104,7 +104,6 @@ However for the exercise purpose, I believe it should be fine.
 - As a customer I want to see recommended products based on my purchase history so that suggestions are personalized for me
 - As a courier I want to update delivery status so that customers see the progress
 
-
 # Development process roadmap
 Monolith-first approach will be used where initially entire application will be delivered as
 a single deployment unit, however it will be still modular internally, to allow easier transition
@@ -121,7 +120,35 @@ to microservices
     - No blue/green and canary deployments
     - No automatic rollback in case of production failures
 
+# Building and running
+## See in action 
+* Build and test
+```
+./gradlew build
+```
 
+* Start [Axon server](https://axoniq.io/)
+```
+docker run -d --name axonserver -p 8024:8024 -p 8124:8124 axoniq/axonserver
+```
+
+* After running the command below, you can access the page on `http://localhost:8080/inventory/item-definitions`
+```
+./gradlew bootRun
+```
+
+## Run e2e tests
+* Download and start [selenoid](https://github.com/aerokube/selenoid) and optionally [selenoid-ui](https://github.com/aerokube/selenoid-ui)
+```
+curl -s https://aerokube.com/cm/bash | bash \
+    && ./cm selenoid start --vnc --tmpfs 128 \
+    && ./cm selenoid-ui start
+```
+* First ensure the app is running, then execute the tests 
+```
+./gradlew e2eTestRemote
+```
+ 
 
 # Resources
 - [Microservices, bounded context, cohesion. What do they have in common?](https://hackernoon.com/microservices-bounded-context-cohesion-what-do-they-have-in-common-1107b70342b3)
