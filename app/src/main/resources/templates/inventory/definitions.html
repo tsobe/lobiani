@@ -8,8 +8,8 @@
 <a id="new-definition" th:href="@{/inventory/item-definitions/new}">New definition</a>
 <div class="definitions">
     <div class="definition" th:each="def : ${definitions}">
-        <span th:text="${def}"></span>
-        <a th:href="@{/inventory/item-definitions/delete(slug=${def})}" class="delete">Delete</a>
+        <span th:text="${def.slug}"></span>
+        <a th:href="@{/inventory/item-definitions/delete(id=${def.id})}" class="delete">Delete</a>
     </div>
 </div>
 </body>

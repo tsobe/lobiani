@@ -10,6 +10,7 @@ plugins {
 val gebVersion = "3.4"
 val seleniumVersion = "3.141.59"
 val e2eSourceSet = "e2eTest"
+val axonVersion = "4.2.1"
 val spockVersion = "2.0-M2-groovy-2.5"
 
 sourceSets.create(e2eSourceSet)
@@ -20,12 +21,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("org.axonframework:axon-spring-boot-starter:$axonVersion")
+// Unfortunately Axon Server doesn't work with DevTools
+//    developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
+    testImplementation("org.axonframework:axon-test:$axonVersion")
     testImplementation("org.spockframework:spock-core:$spockVersion")
 
     e2eTestImplementation("org.spockframework:spock-core:$spockVersion")
