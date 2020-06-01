@@ -22,7 +22,7 @@ Develop eCommerce system capable of:
 
 # Domain model
 Disclaimer: I don't have a practical experience in the eCommerce domain, so model described here may seem utterly inadequate.
-However for the exercise purpose, I believe it should be fine.   
+However for the sake of this exercise, I believe it should be fine.   
 
 ## Bounded contexts
 - Inventory - managing stock levels
@@ -40,7 +40,7 @@ However for the exercise purpose, I believe it should be fine.
 - Manager - defines and publishes products
 - Product - representation of saleable inventory item
 - Customer - person who's willing to purchase products
-- Basket - container for products to be purchased later at once
+- Cart - container for products to be purchased later at once
 
 ### Billing
 - Account - personal and payment information about customer
@@ -62,8 +62,8 @@ However for the exercise purpose, I believe it should be fine.
 - Product described in the sales
 - Product published/unpublished in the sales
 - Pricing info defined in Billing
-- Product added to the basket
-- Product removed from the basket
+- Product added to the cart
+- Product removed from the cart
 - Products reserved in the inventory
 	- Billing information added
 	- Shipping information added
@@ -96,11 +96,11 @@ However for the exercise purpose, I believe it should be fine.
 - As a customer I want to browse through the list of all available products so that I can get some idea about what's available for sale
 - As a customer I want to search a particular product(s) by name or description so that I can filter out irrelevant items
 - As a customer I want to see the details of the particular product so that I can get more information
-- As a customer I want to add product to the basket so that I can purchase it later
-- As a customer I want to remove possibly mistakenly added product from the basket so that I can select a better option
+- As a customer I want to add product to the cart so that I can purchase it later
+- As a customer I want to remove possibly mistakenly added product from the cart so that I can select a better option
 - As a customer I want to proceed to payment so that I can see the summary before I actually pay
 - As a customer I want to cancel the purchase if I changed my mind
-- As a customer I want to fill billing and shipping information so that I can be charged and product is delivered
+- As a customer I want to fill billing and shipping information so that I can be charged and product can be shipped
 - As a customer I want to see recommended products based on my purchase history so that suggestions are personalized for me
 - As a courier I want to update delivery status so that customers see the progress
 
@@ -116,7 +116,7 @@ to microservices
 - Basic metrics such as HTTP success rate, latency and etc. are available 
 - Basic CI/CD pipeline exists 
     - Build and deployment is automated, preferably via GitOps approach
-    - Deployments are made after end-to-end tests pass in staging env (can be manual)
+    - Deployments are made after end-to-end tests pass in staging env
     - No blue/green and canary deployments
     - No automatic rollback in case of production failures
 
