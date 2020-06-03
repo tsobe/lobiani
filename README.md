@@ -129,7 +129,7 @@ to microservices
 
 * Start [Axon server](https://axoniq.io/)
 ```
-docker run -d --name axonserver -p 8024:8024 -p 8124:8124 axoniq/axonserver
+docker run -d --restart unless-stopped --name axonserver -p 8024:8024 -p 8124:8124 axoniq/axonserver
 ```
 
 * After running the command below, you can access the page on `http://localhost:8080/inventory/item-definitions`
