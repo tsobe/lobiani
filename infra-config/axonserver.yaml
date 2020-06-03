@@ -67,6 +67,7 @@ spec:
     - name: gui
       port: 8024
       targetPort: 8024
+      nodePort:
   selector:
     app: axonserver
 ---
