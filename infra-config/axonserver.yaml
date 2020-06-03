@@ -96,7 +96,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /axonserver-gui
+          - path: /axonserver-gui/*
             backend:
               serviceName: axonserver-gui
               servicePort: 8024
