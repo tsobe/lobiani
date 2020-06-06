@@ -7,38 +7,38 @@ class InventorySpec extends GebSpec {
     def "new inventory item defined and then deleted"() {
         given:
         def slug = "the-matrix-trilogy-blu-ray"
-        def definitionsPage = to InventoryItemDefinitionsPage
+        def itemsPage = to InventoryItemsPage
 
 
         when:
-        definitionsPage.openNewItemDefinitionPage()
+        itemsPage.openNewItemPage()
 
         then:
-        at NewInventoryItemDefinitionPage
+        at NewInventoryItemPage
 
 
-        def newDefinitionPage = page as NewInventoryItemDefinitionPage
+        def newItemPage = page as NewInventoryItemPage
 
         when:
-        newDefinitionPage.enterSlug(slug)
-        newDefinitionPage.save()
+        newItemPage.enterSlug(slug)
+        newItemPage.save()
 
         then:
-        at definitionsPage
-        definitionsPage.hasDefinition slug
+        at itemsPage
+        itemsPage.hasItem slug
 
 
         when:
-        definitionsPage.deleteDefinition slug
+        itemsPage.deleteItem slug
 
         then:
-        at definitionsPage
-        !definitionsPage.hasDefinition(slug)
+        at itemsPage
+        !itemsPage.hasItem(slug)
 
 
         cleanup:
-        if (definitionsPage?.hasDefinition(slug)) {
-            definitionsPage.deleteDefinition slug
+        if (itemsPage?.hasItem(slug)) {
+            itemsPage.deleteItem slug
         }
     }
 

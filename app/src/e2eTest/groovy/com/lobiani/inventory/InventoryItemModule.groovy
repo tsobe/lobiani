@@ -1,6 +1,6 @@
 package com.lobiani.inventory
 
-class ItemDefinitionModule extends geb.Module {
+class InventoryItemModule extends geb.Module {
 
     static content = {
         slug { $("span").text() }

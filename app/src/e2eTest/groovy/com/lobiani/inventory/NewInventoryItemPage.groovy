@@ -2,12 +2,12 @@ package com.lobiani.inventory
 
 import geb.Page
 
-class NewInventoryItemDefinitionPage extends Page {
+class NewInventoryItemPage extends Page {
 
     static at = { !form.empty }
 
     static content = {
-        form { $(".new-definition-form") }
+        form { $(".new-item-form") }
         slugInput { $(".slug") }
         saveBtn { $(".add") }
     }
