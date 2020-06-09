@@ -1,5 +1,6 @@
 package com.lobiani.app.inventory.query
 
+import com.lobiani.app.inventory.api.InventoryItemAddedToStock
 import com.lobiani.app.inventory.api.InventoryItemDefined
 import com.lobiani.app.inventory.api.InventoryItemDeleted
 import com.lobiani.app.inventory.api.QueryAllInventoryItems
@@ -20,6 +21,11 @@ class InventoryItemProjection {
     @EventHandler
     fun on(e: InventoryItemDeleted) {
         items.removeIf { it.id == e.id }
+    }
+
+    @EventHandler
+    fun on(e: InventoryItemAddedToStock) {
+        items.find { it.id == e.inventoryItemId }?.increaseStockLevelBy(e.quantity.value)
     }
 
     @QueryHandler

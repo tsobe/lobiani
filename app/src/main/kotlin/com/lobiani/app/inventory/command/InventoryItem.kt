@@ -1,9 +1,6 @@
 package com.lobiani.app.inventory.command
 
-import com.lobiani.app.inventory.api.DefineInventoryItem
-import com.lobiani.app.inventory.api.DeleteInventoryItem
-import com.lobiani.app.inventory.api.InventoryItemDefined
-import com.lobiani.app.inventory.api.InventoryItemDeleted
+import com.lobiani.app.inventory.api.*
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
@@ -29,6 +26,11 @@ class InventoryItem {
     @CommandHandler
     private fun delete(c: DeleteInventoryItem) {
         apply(InventoryItemDeleted(id, slug))
+    }
+
+    @CommandHandler
+    private fun add(c: AddInventoryItemToStock) {
+        apply(InventoryItemAddedToStock(c.inventoryItemId, c.quantity))
     }
 
     @EventSourcingHandler

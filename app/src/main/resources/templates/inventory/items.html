@@ -7,10 +7,13 @@
 <body>
 <a id="new-item" th:href="@{/inventory-items/new}">New item</a>
 <div class="items">
-    <div class="item" th:each="it : ${items}">
-        <span th:text="${it.slug}"></span>
+    <form method="post" th:action="@{/inventory-items/{id}/stock(id=${it.id})}" class="item" th:each="it : ${items}">
+        <span th:text="${it.slug}" class="slug"></span>
+        <span th:text="${it.stockLevel}" class="stock-level"></span>
+        <input type="number" name="count"/>
+        <input type="submit" class="add-to-stock" value="Add to stock"/>
         <a th:href="@{/inventory-items/delete(id=${it.id})}" class="delete">Delete</a>
-    </div>
+    </form>
 </div>
 </body>
 </html>

@@ -88,7 +88,7 @@ However for the sake of this exercise, I believe it should be fine.
 	- Customer is notified
 
 # Backlog
-- As an inventory operator I want to define the item so that actual items can be added later
+- As an inventory operator I want to define an item so that actual items can be added to stock
 - As an inventory operator I want to add item to stock so that it can be purchased by customers
 - As a sales manager I want to describe product so that all the important information is presented to the customer
 - As a sales manager I want to publish/unpublish product to control whether a product will be visible (and hence sellable) to customer

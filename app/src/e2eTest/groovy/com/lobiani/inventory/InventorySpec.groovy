@@ -4,7 +4,7 @@ import geb.spock.GebSpec
 
 class InventorySpec extends GebSpec {
 
-    def "new inventory item defined and then deleted"() {
+    def "new inventory item defined, added to stock and then deleted"() {
         given:
         def slug = "the-matrix-trilogy-blu-ray"
         def itemsPage = to InventoryItemsPage
@@ -26,6 +26,22 @@ class InventorySpec extends GebSpec {
         then:
         at itemsPage
         itemsPage.hasItem slug
+
+
+        when:
+        itemsPage.addItemToStock(slug, 100)
+
+        then:
+        at itemsPage
+        itemsPage.getItemStockLevel(slug) == 100
+
+
+        when:
+        itemsPage.addItemToStock(slug, 10)
+
+        then:
+        at itemsPage
+        itemsPage.getItemStockLevel(slug) == 110
 
 
         when:

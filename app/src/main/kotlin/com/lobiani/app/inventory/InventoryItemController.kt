@@ -1,18 +1,13 @@
 package com.lobiani.app.inventory
 
-import com.lobiani.app.inventory.api.DefineInventoryItem
-import com.lobiani.app.inventory.api.DeleteInventoryItem
-import com.lobiani.app.inventory.api.QueryAllInventoryItems
+import com.lobiani.app.inventory.api.*
 import com.lobiani.app.inventory.query.InventoryItem
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @Controller
@@ -25,6 +20,12 @@ class InventoryItemController(
     fun items(model: ModelMap): String {
         model.addAttribute("items", getAllItems())
         return "inventory/items"
+    }
+
+    @PostMapping("/{id}/stock")
+    fun items(@PathVariable id: UUID, @RequestParam count: Int): String {
+        commandGateway.sendAndWait<Void>(AddInventoryItemToStock(id, Quantity.count(count)))
+        return "redirect:/inventory-items"
     }
 
     @GetMapping("/new")
