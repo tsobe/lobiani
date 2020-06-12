@@ -35,7 +35,7 @@ class InventoryItemTest {
     }
 
     @Test
-    internal fun `should add inventory items`() {
+    internal fun `should add inventory item to stock`() {
         val count = Quantity.count(10)
         fixture.given(InventoryItemDefined(id, slug))
                 .`when`(AddInventoryItemToStock(id, count))
