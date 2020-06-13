@@ -111,7 +111,7 @@ to microservices
 
 ## Milestones
 ### Milestone 1 objectives
-- System allows to add inventory items
+- System allows to define and add inventory items to stock
 - System allows to see the products available for sale
 - Basic metrics such as HTTP success rate, latency and etc. are available 
 - Basic CI/CD pipeline exists 
