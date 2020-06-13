@@ -78,13 +78,14 @@ metadata:
   namespace: moon
 spec:
   rules:
-    - http:
+    - host: moon.baybay.dev
+      http:
         paths:
           - path: /wd/hub
             backend:
               serviceName: moon
               servicePort: 4444
-          - path: /moon(/?)(.*)
+          - path: /
             backend:
               serviceName: moon
               servicePort: 8080
