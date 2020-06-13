@@ -100,7 +100,14 @@ kind: Ingress
 metadata:
   namespace: axonserver
   name: axonserver
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
 spec:
+  tls:
+    - hosts:
+        - axonserver-gui.lobiani.baybay.dev
+      secretName: axonserver-gui-tls
   rules:
     - host: axonserver-gui.lobiani.baybay.dev
       http:
