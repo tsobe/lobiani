@@ -110,7 +110,7 @@ spec:
           args: ["-namespace", "moon", "-license-file", "/license/license.key"]
           resources:
             limits:
-              cpu: "0.2"
+              cpu: "0.1"
               memory: "512Mi"
           ports:
             - containerPort: 4444
@@ -136,7 +136,7 @@ spec:
           resources:
             limits:
               cpu: "0.1"
-              memory: "512Mi"
+              memory: "200Mi"
           ports:
             - containerPort: 8888
           volumeMounts:
@@ -152,7 +152,7 @@ spec:
           resources:
             limits:
               cpu: "0.1"
-              memory: "512Mi"
+              memory: "150Mi"
           ports:
             - name: selenoid-ui
               containerPort: 8080
