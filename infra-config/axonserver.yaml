@@ -91,13 +91,12 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: axonserver
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
-    - http:
+    - host: axonserver-gui.lobiani.baybay.dev
+      http:
         paths:
-          - path: /axonserver-gui(/?)(.*)
+          - path: /
             backend:
               serviceName: axonserver-gui
               servicePort: 8024
