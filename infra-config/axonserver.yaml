@@ -1,3 +1,4 @@
+# Taken from https://docs.axoniq.io/reference-guide/operations-guide/setting-up-axon-server/launch#starting-axon-server-in-kubernetes-and-minikube
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -96,7 +97,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /axonserver-gui(/|$)(.*)
+          - path: /axonserver-gui(/?)(.*)
             backend:
               serviceName: axonserver-gui
               servicePort: 8024
