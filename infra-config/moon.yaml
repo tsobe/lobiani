@@ -80,7 +80,7 @@ spec:
   tls:
     - hosts:
         - moon.lobiani.baybay.dev
-    secretName: moon-tls
+      secretName: moon-tls
   rules:
     - host: moon.lobiani.baybay.dev
       http:
