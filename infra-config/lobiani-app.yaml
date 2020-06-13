@@ -73,7 +73,7 @@ spec:
   tls:
     - hosts:
         - lobiani.baybay.dev
-      secretName: quickstart-example-tls
+      secretName: lobiani-tls
   rules:
     - host: lobiani.baybay.dev
       http:
