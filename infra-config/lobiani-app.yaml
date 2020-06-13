@@ -1,20 +1,12 @@
 apiVersion: v1
-kind: Service
+kind: Namespace
 metadata:
-  name: lobiani-app
-  labels:
-    app: lobiani-app
-spec:
-  selector:
-    app: lobiani-app
-  ports:
-    - port: 8080
-      protocol: TCP
-      targetPort: 8080
+  name: lobiani
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: lobiani
   name: lobiani-app
   labels:
     app: lobiani-app
@@ -54,9 +46,25 @@ spec:
               memory: 200Mi
 
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: lobiani
+  name: lobiani-app
+  labels:
+    app: lobiani-app
+spec:
+  selector:
+    app: lobiani-app
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
+  namespace: lobiani
   name: app-lobiani
 spec:
   rules:
