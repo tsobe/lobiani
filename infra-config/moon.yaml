@@ -110,7 +110,7 @@ spec:
           args: ["-namespace", "moon", "-license-file", "/license/license.key"]
           resources:
             limits:
-              cpu: "0.5"
+              cpu: "0.2"
               memory: "512Mi"
           ports:
             - containerPort: 4444
@@ -135,7 +135,7 @@ spec:
           args: ["-namespace", "moon", "-license-file", "/license/license.key", "-listen", ":8888"]
           resources:
             limits:
-              cpu: "0.5"
+              cpu: "0.2"
               memory: "512Mi"
           ports:
             - containerPort: 8888
@@ -151,7 +151,7 @@ spec:
           args: ["-status-uri", "http://localhost:8888", "-webdriver-uri", "http://localhost:4444"]
           resources:
             limits:
-              cpu: "0.5"
+              cpu: "0.2"
               memory: "512Mi"
           ports:
             - name: selenoid-ui
