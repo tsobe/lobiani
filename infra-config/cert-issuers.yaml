@@ -1,5 +1,5 @@
 apiVersion: cert-manager.io/v1alpha2
-  kind: Issuer
+  kind: ClusterIssuer
   metadata:
     name: letsencrypt-staging
   spec:
@@ -11,4 +11,4 @@ apiVersion: cert-manager.io/v1alpha2
       solvers:
         - http01:
             ingress:
-              class:  nginx
+              class: nginx
