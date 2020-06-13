@@ -33,7 +33,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: AXON_AXONSERVER_SERVERS
-              value: axonserver
+              value: axonserver.axonserver
           ports:
             - containerPort: 8080
               protocol: TCP
