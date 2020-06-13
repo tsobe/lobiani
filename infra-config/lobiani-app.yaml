@@ -39,12 +39,15 @@ spec:
               protocol: TCP
           resources:
             limits:
-              cpu: 1
+              cpu: 500m
               memory: 324Mi
             requests:
-              cpu: 20m
+              cpu: 100m
               memory: 200Mi
-
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /inventory-items
 ---
 apiVersion: v1
 kind: Service
