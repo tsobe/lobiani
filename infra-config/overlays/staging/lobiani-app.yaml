@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  namespace: lobiani
+  name: app-lobiani
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+spec:
+  tls:
+    - hosts:
+        - lobiani-staging.baybay.dev
+      secretName: lobiani-tls
+  rules:
+    - host: lobiani-staging.baybay.dev
+      http:
+        paths:
+          - backend:
+              serviceName: lobiani-app
+              servicePort: 8080

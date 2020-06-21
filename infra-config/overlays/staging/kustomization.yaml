@@ -1,0 +1,6 @@
+bases:
+  - ../../base
+patchesStrategicMerge:
+  - axonserver.yaml
+  - lobiani-app.yaml
+  - moon.yaml

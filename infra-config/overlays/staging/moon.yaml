@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+  name: moon
+  namespace: moon
+spec:
+  tls:
+    - hosts:
+        - moon-staging.lobiani.baybay.dev
+      secretName: moon-tls
+  rules:
+    - host: moon-staging.lobiani.baybay.dev
+      http:
+        paths:
+          - path: /wd/hub
+            backend:
+              serviceName: moon
+              servicePort: 4444
+          - path: /
+            backend:
+              serviceName: moon
+              servicePort: 8080
