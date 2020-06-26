@@ -122,32 +122,30 @@ to microservices
 
 # Building and running
 ## See in action 
-* Build and test
-```
-./gradlew build
-```
-
-* Start [Axon server](https://axoniq.io/)
-```
-docker run -d --restart unless-stopped --name axonserver -p 8024:8024 -p 8124:8124 axoniq/axonserver
-```
-
-* After running the command below, you can access the page on `http://localhost:8080/inventory-items`
-```
-./gradlew bootRun
-```
+1. Build and test
+    ```
+    ./gradlew build
+    ```
+2. Start [Axon server](https://axoniq.io/)
+    ```
+    docker run -d --restart unless-stopped --name axonserver -p 8024:8024 -p 8124:8124 axoniq/axonserver
+    ```
+3. After running the command below, you can access the page on `http://localhost:8080/inventory-items`
+    ```
+    ./gradlew bootRun
+    ```
 
 ## Run e2e tests
-* Download and start [selenoid](https://github.com/aerokube/selenoid) and optionally [selenoid-ui](https://github.com/aerokube/selenoid-ui)
-```
-curl -s https://aerokube.com/cm/bash | bash \
-    && ./cm selenoid start --vnc --tmpfs 128 \
-    && ./cm selenoid-ui start
-```
-* First ensure the app is running, then execute the tests 
-```
-./gradlew e2eTestRemote
-```
+1. Download and start [selenoid](https://github.com/aerokube/selenoid) and optionally [selenoid-ui](https://github.com/aerokube/selenoid-ui)
+    ```
+    curl -s https://aerokube.com/cm/bash | bash \
+        && ./cm selenoid start --vnc --tmpfs 128 \
+        && ./cm selenoid-ui start
+    ```
+2. First ensure the app is running, then execute the tests 
+    ```
+    ./gradlew e2eTestRemote
+    ```
  
 
 # Resources
