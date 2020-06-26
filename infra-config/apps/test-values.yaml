@@ -1,0 +1,7 @@
+spec:
+  destination:
+    server: https://1c46776f-9364-46e1-948a-76b81ef034fc.k8s.ondigitalocean.com
+  source:
+    repoURL: git@bitbucket.org:sevteen/lobiani
+    targetRevision: master
+  env: test

@@ -1,0 +1,7 @@
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: git@bitbucket.org:sevteen/lobiani
+    targetRevision: production
+  env: production
