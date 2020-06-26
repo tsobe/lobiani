@@ -98,19 +98,25 @@ jobs:
 
 workflows:
   check:
-    branches:
-      only:
-        - master
     when: << pipeline.parameters.check >>
     jobs:
-      - check-build-needed
+      - check-build-needed:
+          filters:
+            branches:
+              only:
+                - master
   build:
-    branches:
-      only:
-        - master
     when: << pipeline.parameters.build >>
     jobs:
-      - build-app-executable-jar
+      - build-app-executable-jar:
+          filters:
+            branches:
+              only:
+                - master
       - build-and-publish-docker-image:
+          filters:
+            branches:
+              only:
+                - master
           requires:
             - build-app-executable-jar
