@@ -98,6 +98,9 @@ jobs:
 
 workflows:
   check:
+    branches:
+      only:
+        - master
     when: << pipeline.parameters.check >>
     jobs:
       - check-build-needed
