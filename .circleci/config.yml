@@ -102,6 +102,9 @@ workflows:
     jobs:
       - check-build-needed
   build:
+    branches:
+      only:
+        - master
     when: << pipeline.parameters.build >>
     jobs:
       - build-app-executable-jar
