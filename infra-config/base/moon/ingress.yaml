@@ -11,16 +11,16 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
   name: moon
   namespace: moon
 spec:
   tls:
     - hosts:
-        - moon-staging.lobiani.baybay.dev
+        - moon.lobiani.baybay.dev
       secretName: moon-tls
   rules:
-    - host: moon-staging.lobiani.baybay.dev
+    - host: moon.lobiani.baybay.dev
       http:
         paths:
           - path: /wd/hub
