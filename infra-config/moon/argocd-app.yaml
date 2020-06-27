@@ -13,9 +13,9 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: infra-config/base/moon
+    path: infra-config/moon
     repoURL: {{ .Values.spec.source.repoURL }}
-    targetRevision: production
+    targetRevision: master
   syncPolicy:
     automated:
       prune: true
