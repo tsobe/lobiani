@@ -4,7 +4,7 @@ metadata:
   name: moon
   namespace: moon
 spec:
-  type: ClusterIp
+  type: ClusterIP
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
