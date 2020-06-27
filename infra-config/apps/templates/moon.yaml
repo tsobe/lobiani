@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-moon
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    environment: test
+spec:
+  destination:
+    namespace: moon
+    server: https://1c46776f-9364-46e1-948a-76b81ef034fc.k8s.ondigitalocean.com
+  project: default
+  source:
+    path: infra-config/base/moon
+    repoURL: {{ .Values.spec.source.repoURL }}
+    targetRevision: master
+  syncPolicy:
+    automated:
+      prune: true

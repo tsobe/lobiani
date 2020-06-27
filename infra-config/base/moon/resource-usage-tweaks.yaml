@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moon
+  namespace: moon
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: moon
+          resources:
+            limits:
+              cpu: "0.1"
+              memory: "512Mi"
+        - name: moon-api
+          resources:
+            limits:
+              cpu: "0.1"
+              memory: "200Mi"
+        - name: selenoid-ui
+          resources:
+            limits:
+              cpu: "0.1"
+              memory: "150Mi"
