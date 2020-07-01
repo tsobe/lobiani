@@ -63,24 +63,3 @@ spec:
     - port: 8080
       protocol: TCP
       targetPort: 8080
----
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  namespace: lobiani
-  name: app-lobiani
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/cluster-issuer: "letsencrypt-staging"
-spec:
-  tls:
-    - hosts:
-        - lobiani.baybay.dev
-      secretName: lobiani-tls
-  rules:
-    - host: lobiani.baybay.dev
-      http:
-        paths:
-          - backend:
-              serviceName: lobiani-app
-              servicePort: 8080

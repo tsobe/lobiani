@@ -1,7 +1,0 @@
-resources:
-  - axonserver.yaml
-  - cert-issuers.yaml
-  - cert-manager.yml
-  - ingress-controller-nginx-do.yaml
-  - lobiani-app.yaml
-  - moon.yaml
