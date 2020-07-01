@@ -4,14 +4,16 @@ metadata:
   namespace: axonserver
   name: axonserver
   annotations:
+    kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    acme.cert-manager.io/http01-edit-in-place: "true"
 spec:
   tls:
     - hosts:
-        - axonserver-gui-staging.lobiani.baybay.dev
+        - test-axonserver-gui.lobiani.baybay.dev
       secretName: axonserver-gui-tls
   rules:
-    - host: axonserver-gui-staging.lobiani.baybay.dev
+    - host: test-axonserver-gui.lobiani.baybay.dev
       http:
         paths:
           - path: /
