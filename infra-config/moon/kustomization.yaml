@@ -3,7 +3,8 @@ kind: Kustomization
 
 resources:
   - moon.yaml
+  - ingress.yaml
 
 patchesStrategicMerge:
   - resource-usage-tweaks.yaml
-  - ingress.yaml
+  - service.yaml
