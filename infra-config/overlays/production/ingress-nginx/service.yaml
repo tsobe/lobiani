@@ -4,5 +4,5 @@ metadata:
   name: ingress-nginx-nginx-ingress
   namespace: ingress-nginx
   annotations:
-    service.beta.kubernetes.io/do-loadbalancer-name: lobiani-test-lb
+    service.beta.kubernetes.io/do-loadbalancer-name: lobiani-production-lb
 
