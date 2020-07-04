@@ -13,7 +13,7 @@ spec:
     server: {{ .Values.spec.destination.server }}
   project: default
   source:
-    path: infra-config/base/ingress-nginx
+    path: infra-config/overlays/{{ .Values.spec.env }}/ingress-nginx
     repoURL: {{ .Values.spec.source.repoURL }}
     targetRevision: {{ .Values.spec.source.targetRevision }}
   syncPolicy:
