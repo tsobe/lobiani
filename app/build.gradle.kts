@@ -51,6 +51,7 @@ tasks.register<Test>("e2eTestRemote") {
     systemProperty("geb.env", "remote")
     systemProperty("geb.build.baseUrl", System.getProperty("geb.build.baseUrl", defaultBaseUrl))
     systemProperty("remote.webdriver.url", System.getProperty("remote.webdriver.url", defaultWebDriverUrl))
-    systemProperty("remote.webdriver.enable-video", System.getProperty("remote.webdriver.enable-video", "false"))
+    systemProperty("remote.webdriver.acceptInsecure", System.getProperty("remote.webdriver.acceptInsecure"))
+    systemProperty("remote.webdriver.enableVideo", System.getProperty("remote.webdriver.enableVideo", "false"))
 }
 

@@ -12,7 +12,8 @@ environments {
             capabilities.browserName = "chrome"
             capabilities.version = "80.0"
             capabilities.setCapability("enableVNC", true)
-            capabilities.setCapability("enableVideo", Boolean.getBoolean("remote.webdriver.enable-video"))
+            capabilities.setCapability("enableVideo", Boolean.getBoolean("remote.webdriver.enableVideo"))
+            capabilities.setAcceptInsecureCerts(Boolean.getBoolean("remote.webdriver.acceptInsecure"))
             new RemoteWebDriver(URI.create(System.getProperty("remote.webdriver.url")).toURL(), capabilities)
         }
     }
