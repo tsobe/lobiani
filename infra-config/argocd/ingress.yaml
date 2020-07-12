@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: argocd-server-http-ingress
+  namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  rules:
+    - http:
+        paths:
+          - backend:
+              serviceName: argocd-server
+              servicePort: http
+      host: argocd.baybay.dev
+  tls:
+    - hosts:
+        - argocd.baybay.dev
+      secretName: argocd-gui-secret
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: argocd-server-grpc-ingress
+  namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+spec:
+  rules:
+    - http:
+        paths:
+          - backend:
+              serviceName: argocd-server
+              servicePort: https
+      host: grpc.argocd.baybay.dev
+  tls:
+    - hosts:
+        - grpc.argocd.baybay.dev
+      secretName: argocd-grpc-secret
