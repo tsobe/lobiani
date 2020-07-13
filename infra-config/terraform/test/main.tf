@@ -1,5 +1,15 @@
 variable "do_token" {}
 
+terraform {
+  backend "remote" {
+    organization = "lobiani"
+
+    workspaces {
+      name = "lobiani-test-fra1"
+    }
+  }
+}
+
 module "platform" {
   source = "../modules/platform"
   do_token = var.do_token
