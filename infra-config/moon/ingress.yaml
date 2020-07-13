@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - moon.lobiani.baybay.dev
+        - moon.baybay.dev
       secretName: moon-tls
   rules:
-    - host: moon.lobiani.baybay.dev
+    - host: moon.baybay.dev
       http:
         paths:
           - path: /wd/hub
