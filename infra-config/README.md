@@ -1,29 +1,46 @@
 # Infrastructure setup
+## Bring up the production cluster
+
+Run `terraform apply` in `infra-config/terraform/prod`. This will bring 
+up the cluster dedicated for production environment and other utility tools
+(Argo CD and Moon)
+
 ## Set up Argo CD
 
 [Argo CD](https://argoproj.github.io/argo-cd/) is deployed in the production environment. These instructions assumes that kubeconfig is already
 configured and current context is set to production cluster
 
-1. Install argo-cd to a Kubernetes, quoting [official instructions](https://argoproj.github.io/argo-cd/getting_started/#1-install-argo-cd)
+1. Install Argo CD
     ```
-    kubectl create namespace argocd
-    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    kubectl apply -n argocd -k argocd
     ```
+   
     and the CLI
     
     ```
     brew tap argoproj/tap
     brew install argoproj/tap/argocd
     ```
-    
-2. Add a private repository
+2. Expose Argo CD on localhost via port-forwarding. This is needed initially until 
+   the ingress is configured and endpoint is exposed to the public (after bootstrapping production env below)
+    ```
+    kubectl port-forward svc/argocd-server -n argocd 8480:80
+    ```
+3. Log in
+    ```
+    argocd login localhost:8480
+    ```
+   Initial password is the the name of argocd pod. It can be obtained as
+   `kubectl get pod -l app.kubernetes.io/name=argocd-server -n argocd`
+4. Add a private repository
     ```
     argocd repo add git@bitbucket.org:sevteen/lobiani --ssh-private-key-path ~/.ssh/argocd_rsa
     ``` 
    
 ## Set up Moon
 
-Similar to Argo CD, [Moon](https://aerokube.com/moon/) is deployed in production environment
+Similar to Argo CD, [Moon](https://aerokube.com/moon/) is deployed in production environment 
+(but as an  Argo CD app)
    
  
 ```
@@ -45,7 +62,7 @@ It should produce similar output
     Outputs:
     
     cluster_endpoint = https://985e2b0e-b70f-4c94-b68a-a96256fc371b.k8s.ondigitalocean.com
-    ```   
+    ```
 
 2. Capture the `cluster_endpoint` in `TEST_CLUSTER_ENDPOINT` environment variable and run
     ```
@@ -59,7 +76,6 @@ It should produce similar output
     ```
 
 ## Production env
-for `production` environment: 
 ```
 argocd app create production-apps --repo git@bitbucket.org:sevteen/lobiani \
     --path infra-config/apps --dest-namespace argocd \
