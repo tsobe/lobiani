@@ -28,7 +28,7 @@ output "cluster_endpoint" {
 
 module "argocd_regcluster" {
   source = "../modules/argocd_regcluster"
-  argocd_k8s_cluster_name = "lobiani-production"
+  argocd_k8s_cluster_name = "lobiani-prod"
   new_cluster_name = "test-lobiani"
   new_cluster_token = module.platform.cluster_token
   new_cluster_endpoint = module.platform.cluster_endpoint
