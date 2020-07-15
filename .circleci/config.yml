@@ -107,7 +107,7 @@ jobs:
           path: infra-config/terraform/test
           backend_config: token=${TF_API_TOKEN}
           workspace: lobiani-test-fra1
-          auto_approve: true
+          auto_approve: false
   run-e2e-tests:
     docker:
       - image: 'cimg/openjdk:14.0'
