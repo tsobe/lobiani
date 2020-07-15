@@ -7,7 +7,7 @@ up the cluster dedicated for production environment and other utility tools
 
 ## Set up Argo CD
 
-[Argo CD](https://argoproj.github.io/argo-cd/) is deployed in the production environment. These instructions assumes that kubeconfig is already
+[Argo CD](https://argoproj.github.io/argo-cd/) is deployed in the production environment. These instructions assume that kubeconfig is already
 configured and current context is set to production cluster
 
 1. Install Argo CD
