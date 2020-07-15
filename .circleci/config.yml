@@ -3,7 +3,6 @@ version: 2.1
 orbs:
   docker: circleci/docker@1.0.1
   kubernetes: circleci/kubernetes@0.11.0
-  terraform: ovotech/terraform@1.6.7
 
 parameters:
   check:
@@ -100,14 +99,14 @@ jobs:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
   spin-up-test-env:
-    executor: terraform/terraform-0_12
+    docker:
+      - image: hashicorp/terraform:0.12.28
     steps:
       - checkout
-      - terraform/apply:
-          path: infra-config/terraform/test
-          backend_config: token=${TF_API_TOKEN}
-          workspace: lobiani-test-fra1
-          auto_approve: false
+      - run:
+          command: |
+            terraform init -backend-config="token=${TF_API_TOKEN}"
+            terraform apply --auto-approve=false
   run-e2e-tests:
     docker:
       - image: 'cimg/openjdk:14.0'
