@@ -36,6 +36,17 @@ configured and current context is set to production cluster
     ```
     argocd repo add git@bitbucket.org:sevteen/lobiani --ssh-private-key-path ~/.ssh/argocd_rsa
     ``` 
+5. Configure API access
+   
+   Add following entry under the `data` element of `argocd-cm` ConfigMap
+   ```
+   accounts.lobiani: apiKey, login
+   ```
+   And then generate a token
+   ```
+   argocd account generate-token --account lobiani
+   ```
+    
    
 ## Set up Moon
 
