@@ -3,12 +3,16 @@ version: 2.1
 orbs:
   docker: circleci/docker@1.0.1
   kubernetes: circleci/kubernetes@0.11.0
+  terraform: ovotech/terraform@1.6.7
 
 parameters:
   check:
     type: boolean
     default: true
   build:
+    type: boolean
+    default: false
+  run_e2e_tests:
     type: boolean
     default: false
 
@@ -95,6 +99,23 @@ jobs:
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
+  spin-up-test-env:
+    executor: terraform/terraform-0_12
+    steps:
+      - checkout
+      - terraform/apply:
+          path: infra-config/terraform/test
+          backend_config: token=${TF_API_TOKEN}
+          workspace: lobiani-test-fra1
+          auto_approve: true
+  run-e2e-tests:
+    docker:
+      - image: 'cimg/openjdk:14.0'
+    steps:
+      - checkout
+      - run:
+          command: ./gradlew app:e2eTestRemote
+
 
 workflows:
   check:
@@ -120,3 +141,20 @@ workflows:
                 - master
           requires:
             - build-app-executable-jar
+  e2e-test:
+    when: << pipeline.parameters.run_e2e_tests >>
+    jobs:
+      - spin-up-test-env:
+          filters:
+            branches:
+              only:
+                - master
+      - run-e2e-tests:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - spin-up-test-env
+
+
