@@ -1,5 +1,3 @@
-variable "do_token" {}
-
 terraform {
   backend "remote" {
     organization = "lobiani"
@@ -12,7 +10,6 @@ terraform {
 
 module "platform" {
   source = "../modules/platform"
-  do_token = var.do_token
   env = "test"
 }
 

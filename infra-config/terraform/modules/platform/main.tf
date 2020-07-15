@@ -1,6 +1,5 @@
 provider "digitalocean" {
   version = "~> 1.20"
-  token = var.do_token
 }
 
 resource "digitalocean_vpc" "vcp" {
