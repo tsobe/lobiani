@@ -101,5 +101,3 @@ argocd app create production-apps --repo git@bitbucket.org:sevteen/lobiani \
     resource. Read more [here](https://github.com/jetstack/cert-manager/issues/2517)
     
     Nginx ingress controller now is set up by [Terraform module](https://registry.terraform.io/modules/byuoitav/nginx-ingress-controller/kubernetes/0.1.5)
-
-Dummy change
