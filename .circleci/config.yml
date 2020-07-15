@@ -104,10 +104,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Spin up the test environment
           command: |
             cd infra-config/terraform/test
             terraform init -backend-config="token=${TF_API_TOKEN}"
-            terraform apply --auto-approve=false
+            terraform apply --auto-approve=true
             cd -
   run-e2e-tests:
     docker:
