@@ -106,7 +106,7 @@ jobs:
       - run:
           command: |
             terraform init -backend-config="token=${TF_API_TOKEN}"
-            terraform apply --auto-approve=false
+            terraform apply --auto-approve=false infra-config/terraform/test
   run-e2e-tests:
     docker:
       - image: 'cimg/openjdk:14.0'
