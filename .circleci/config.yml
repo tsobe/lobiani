@@ -109,7 +109,7 @@ jobs:
             cd infra-config/terraform/test
             terraform init -backend-config="token=${TF_API_TOKEN}"
             terraform apply --auto-approve=true
-            terraform output | cut -d'=' | awk '{print $2}' > cluster_endpoint.txt
+             terraform output | cut -d = -f 2 > cluster_endpoint.txt
             cd -
       - persist_to_workspace:
           root: infra-config
