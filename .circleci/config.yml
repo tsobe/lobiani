@@ -123,7 +123,8 @@ jobs:
           at: infra-config
       - run:
           name: Capture test cluster endpoint
-          command: export TEST_CLUSTER_ENDPOINT=`cat infra-config/terraform/test/cluster_endpoint.txt`
+          command: |
+            export TEST_CLUSTER_ENDPOINT=`cat infra-config/terraform/test/cluster_endpoint.txt`
       - run:
           name: Download Argo CD CLI
           command: |
