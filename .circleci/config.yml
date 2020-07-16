@@ -129,7 +129,8 @@ jobs:
           name: Download Argo CD CLI
           command: |
             # ARGOCD_AUTH_TOKEN env is expected by argocd
-            curl -sSL -o /usr/local/bin/argocd https://argocd.baybay.dev/download/argocd-linux-amd64
+            sudo curl -sSL -o /usr/local/bin/argocd https://argocd.baybay.dev/download/argocd-linux-amd64
+            sudo chmod +x /usr/local/bin/argocd
       - run:
           name: Deploy app of apps to test environment
           command: |
