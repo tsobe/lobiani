@@ -131,6 +131,7 @@ jobs:
             # ARGOCD_AUTH_TOKEN env is expected by argocd
             sudo curl -sSL -o /usr/local/bin/argocd https://argocd.baybay.dev/download/argocd-linux-amd64
             sudo chmod +x /usr/local/bin/argocd
+            export ARGOCD_OPTS="--insecure --server grpc.argocd.baybay.dev"
       - run:
           name: Deploy app of apps to test environment
           command: |
@@ -141,12 +142,13 @@ jobs:
                 --revision $CIRCLE_BRANCH \
                 --helm-set spec.destination.server=$TEST_CLUSTER_ENDPOINT \
                 --values test-values.yaml \
+                $ARGOCD_OPTS \
                 --upsert
       - run:
           name: Sync and wait
           command: |
-            argocd app sync test-apps
-            argocd app wait -l app.kubernetes.io/instance=test-apps
+            argocd app sync test-apps $ARGOCD_OPTS
+            argocd app wait -l app.kubernetes.io/instance=test-apps $ARGOCD_OPTS
   run-e2e-tests:
     docker:
       - image: 'cimg/openjdk:14.0'
