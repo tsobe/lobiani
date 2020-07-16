@@ -109,16 +109,40 @@ jobs:
             cd infra-config/terraform/test
             terraform init -backend-config="token=${TF_API_TOKEN}"
             terraform apply --auto-approve=true
+            terraform output | cut -d'=' | awk '{print $2}' > cluster_endpoint.txt
             cd -
+      - persist_to_workspace:
+          root: infra-config
+          paths:
+            - terraform/test/cluster_endpoint.txt
   deploy-to-test-env:
     docker:
       - image: 'cimg/base:stable'
     steps:
+      - attach_workspace:
+          at: infra-config
       - run:
-          name: Deploy to test environment
+          name: Capture test cluster endpoint
+          command: export TEST_CLUSTER_ENDPOINT=`cat infra-config/terraform/test/cluster_endpoint.txt`
+      - run:
+          name: Download Argo CD CLI
           command: |
-#           ARGOCD_AUTH_TOKEN=<JWT token generated from project>
+            # ARGOCD_AUTH_TOKEN env is expected by argocd
             curl -sSL -o /usr/local/bin/argocd https://${ARGOCD_SERVER}/download/argocd-linux-amd64
+      - run:
+          name: Deploy app of apps to test environment
+          command: |
+            argocd app create test-apps --repo git@bitbucket.org:sevteen/lobiani \
+                --path infra-config/apps --dest-namespace argocd \
+                --dest-server https://kubernetes.default.svc \
+                --sync-policy automated --auto-prune -l environment=test \
+                --revision $CIRCLE_BRANCH \
+                --helm-set spec.destination.server=$TEST_CLUSTER_ENDPOINT \
+                --values test-values.yaml \
+                --upsert
+      - run:
+          name: Sync and wait
+          command: |
             argocd app sync test-apps
             argocd app wait -l app.kubernetes.io/instance=test-apps
   run-e2e-tests:
@@ -127,8 +151,8 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Run e2e tests
           command: ./gradlew app:e2eTestRemote
-
 
 workflows:
   check:
@@ -175,5 +199,3 @@ workflows:
           requires:
             - spin-up-test-env
             - deploy-to-test-env
-
-
