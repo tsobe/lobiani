@@ -119,5 +119,3 @@ argocd app create production-apps --repo git@bitbucket.org:sevteen/lobiani \
     resource. Read more [here](https://github.com/jetstack/cert-manager/issues/2517)
     
     Note: Nginx ingress controller now is set up using [Terraform helm provider](https://www.terraform.io/docs/providers/helm/index.html)
-
-Dummy change
