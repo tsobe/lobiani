@@ -119,7 +119,6 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     steps:
-      - checkout
       - attach_workspace:
           at: infra-config
       - run:
