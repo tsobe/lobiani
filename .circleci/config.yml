@@ -122,10 +122,6 @@ jobs:
       - attach_workspace:
           at: infra-config
       - run:
-          name: Capture test cluster endpoint
-          command: |
-            export TEST_CLUSTER_ENDPOINT=`cat infra-config/terraform/test/cluster_endpoint.txt`
-      - run:
           name: Download Argo CD CLI
           command: |
             # ARGOCD_AUTH_TOKEN env is expected by argocd
@@ -134,6 +130,7 @@ jobs:
       - run:
           name: Deploy app of apps to test environment
           command: |
+            export TEST_CLUSTER_ENDPOINT=`cat infra-config/terraform/test/cluster_endpoint.txt`
             argocd app create test-apps --repo git@bitbucket.org:sevteen/lobiani \
                 --path infra-config/apps --dest-namespace argocd \
                 --dest-server https://kubernetes.default.svc \
