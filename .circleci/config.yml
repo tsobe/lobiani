@@ -130,7 +130,7 @@ jobs:
           name: Download Argo CD CLI
           command: |
             # ARGOCD_AUTH_TOKEN env is expected by argocd
-            curl -sSL -o /usr/local/bin/argocd https://${ARGOCD_SERVER}/download/argocd-linux-amd64
+            curl -sSL -o /usr/local/bin/argocd https://argocd.baybay.dev/download/argocd-linux-amd64
       - run:
           name: Deploy app of apps to test environment
           command: |
@@ -193,11 +193,12 @@ workflows:
             branches:
               only:
                 - master
+          requires:
+            - spin-up-test-env
       - run-e2e-tests:
           filters:
             branches:
               only:
                 - master
           requires:
-            - spin-up-test-env
             - deploy-to-test-env
