@@ -131,7 +131,7 @@ jobs:
           name: Deploy app of apps to test environment
           command: |
             # Workaround for issue https://github.com/argoproj/argo-cd/issues/3896
-            argocd cluster list --insecure --server grpc.argocd.baybay.dev > /dev/nukk || true
+            argocd cluster list --insecure --server grpc.argocd.baybay.dev > /dev/null || true
 
             export TEST_CLUSTER_ENDPOINT=`cat infra-config/terraform/test/cluster_endpoint.txt | sed -E 's/(^\s+|\s+$)//g'`
             argocd app create test-apps --repo git@bitbucket.org:sevteen/lobiani \
