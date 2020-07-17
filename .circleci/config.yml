@@ -162,7 +162,10 @@ jobs:
       - checkout
       - run:
           name: Run e2e tests
-          command: ./gradlew app:e2eTestRemote
+          command: |
+            ./gradlew app:e2eTestRemote -Dgeb.build.baseUrl=https://test-lobiani.baybay.dev/ \
+              -Dremote.webdriver.url=https://moon.baybay.dev/wd/hub \
+              -Dremote.webdriver.acceptInsecure=true \
       - save_test_results:
           dst_location: e2e-test-results
 
