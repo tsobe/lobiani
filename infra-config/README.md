@@ -42,6 +42,13 @@ configured and current context is set to production cluster
    ```
    accounts.lobiani: apiKey, login
    ```
+   
+   And for `argocd-rbac-cm`:
+   ```
+   policy.csv: |
+     p, lobiani, applications, *, */*, allow
+   ```
+   
    And then generate a token
    ```
    argocd account generate-token --account lobiani
