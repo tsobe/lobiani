@@ -51,17 +51,17 @@ commands:
           key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed" }}-{{ checksum ".circleci/config.yml" }}
   save_test_results:
     parameters:
-        dst_location:
-          type: string
+      dst_location:
+        type: string
     steps:
       - run:
           name: Save test results
           command: |
-            mkdir -p ~/<<dst_location>>/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/<<dst_location>>/junit/ \;
+            mkdir -p ~/<< parameters.dst_location >>/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/<< parameters.dst_location >>/junit/ \;
           when: always
       - store_test_results:
-          path: ~/<<dst_location>>
+          path: ~/<< parameters.dst_location >>
 
 jobs:
   check-build-needed:
