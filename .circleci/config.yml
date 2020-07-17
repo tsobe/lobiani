@@ -49,6 +49,19 @@ commands:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
           key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed" }}-{{ checksum ".circleci/config.yml" }}
+  save_test_results:
+    parameters:
+        dst_location:
+          type: string
+    steps:
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/<<dst_location>>/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/<<dst_location>>/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/<<dst_location>>
 
 jobs:
   check-build-needed:
@@ -73,14 +86,8 @@ jobs:
           root: app
           paths:
             - build/libs/app-*.jar
-      - run:
-          name: Save test results
-          command: |
-            mkdir -p ~/test-results/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
-          when: always
-      - store_test_results:
-          path: ~/test-results
+      - save_test_results:
+          dst_location: unit-test-results
   build-and-publish-docker-image:
     executor: docker/docker
     steps:
@@ -156,6 +163,8 @@ jobs:
       - run:
           name: Run e2e tests
           command: ./gradlew app:e2eTestRemote
+      - save_test_results:
+          dst_location: e2e-test-results
 
 workflows:
   check:
