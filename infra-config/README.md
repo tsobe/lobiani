@@ -26,7 +26,7 @@ configured and current context is set to production cluster
     ```
     kubectl port-forward svc/argocd-server -n argocd 8480:80
     ```
-3. Log in
+3. Log in as `admin`
     ```
     argocd login localhost:8480
     ```
@@ -49,7 +49,7 @@ configured and current context is set to production cluster
      p, lobiani, applications, *, */*, allow
    ```
    
-   And then generate a token
+   And then generate a token that will be used by CLI access from CI 
    ```
    argocd account generate-token --account lobiani
    ```
