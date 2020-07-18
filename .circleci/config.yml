@@ -173,7 +173,7 @@ workflows:
   check:
     when: << pipeline.parameters.check >>
     jobs:
-      - check-build-needed: &master_only
+      - check-build-needed:
           filters:
             branches:
               only:
@@ -182,21 +182,16 @@ workflows:
     when: << pipeline.parameters.build >>
     jobs:
       - build-app-executable-jar:
-          <<: *master_only
       - build-and-publish-docker-image:
-          <<: *master_only
           requires:
             - build-app-executable-jar
   e2e-test:
     when: << pipeline.parameters.run_e2e_tests >>
     jobs:
       - spin-up-test-env:
-          <<: *master_only
       - deploy-to-test-env:
-          <<: *master_only
           requires:
             - spin-up-test-env
       - run-e2e-tests:
-          <<: *master_only
           requires:
             - deploy-to-test-env
