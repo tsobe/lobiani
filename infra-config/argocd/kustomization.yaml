@@ -8,3 +8,4 @@ resources:
 
 patchesStrategicMerge:
   - argocd-server-insecure.yaml
+  - node-selectors.yaml

@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moon
+  namespace: moon
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node-type: cicd-tools-pool
