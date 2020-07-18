@@ -14,12 +14,12 @@ data:
             "port": "4444",
             "resources": {
               "limits": {
-                "cpu": "800m",
-                "memory": "1.5Gi"
+                "cpu": "550m",
+                "memory": "1.2Gi"
               },
               "requests": {
                 "cpu": "200m",
-                "memory": "1Gi"
+                "memory": "800Mi"
               }
             },
             "nodeSelector": {
