@@ -12,10 +12,19 @@ data:
           "80.0": {
             "image": "selenoid/vnc_chrome:80.0",
             "port": "4444",
-            "nodeSelector": {
-              "node-type": "cicd-tools-pool"
+            "resources": {
+              "limits": {
+                "cpu": "800m",
+                "memory": "1.5Gi"
+              },
+              "requests": {
+                "cpu": "200m",
+                "memory": "1Gi"
+              },
+              "nodeSelector": {
+                "node-type": "cicd-tools-pool"
+              }
             }
           }
         }
       }
-    }
