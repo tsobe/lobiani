@@ -66,7 +66,7 @@ commands:
 jobs:
   check-build-needed:
     docker:
-      - image: 'cimg/base:stable'
+      - image: &base_image cimg/base:stable
     steps:
       - checkout
       - run:
@@ -74,11 +74,11 @@ jobs:
           command: .circleci/check.sh
   build-app-executable-jar:
     docker:
-      - image: 'cimg/openjdk:14.0'
+      - image: &jdk_image cimg/openjdk:14.0
     steps:
       - checkout
       - with_gradle_cache:
-          build_file: 'build.gradle.kts'
+          build_file: build.gradle.kts
           steps:
             - run:
                 command: ./gradlew build
@@ -116,7 +116,7 @@ jobs:
             cd infra-config/terraform/test
             terraform init -backend-config="token=${TF_API_TOKEN}"
             terraform apply --auto-approve=true
-             terraform output | cut -d = -f 2 > cluster_endpoint.txt
+            terraform output | cut -d = -f 2 > cluster_endpoint.txt
             cd -
       - persist_to_workspace:
           root: infra-config
@@ -124,7 +124,7 @@ jobs:
             - terraform/test/cluster_endpoint.txt
   deploy-to-test-env:
     docker:
-      - image: 'cimg/base:stable'
+      - image: *base_image
     steps:
       - attach_workspace:
           at: infra-config
@@ -157,7 +157,7 @@ jobs:
             argocd app wait -l app.kubernetes.io/instance=test-apps --insecure --server grpc.argocd.baybay.dev
   run-e2e-tests:
     docker:
-      - image: 'cimg/openjdk:14.0'
+      - image: *jdk_image
     steps:
       - checkout
       - run:
@@ -173,7 +173,7 @@ workflows:
   check:
     when: << pipeline.parameters.check >>
     jobs:
-      - check-build-needed:
+      - check-build-needed: &master_only
           filters:
             branches:
               only:
@@ -182,36 +182,21 @@ workflows:
     when: << pipeline.parameters.build >>
     jobs:
       - build-app-executable-jar:
-          filters:
-            branches:
-              only:
-                - master
+          <<: *master_only
       - build-and-publish-docker-image:
-          filters:
-            branches:
-              only:
-                - master
+          <<: *master_only
           requires:
             - build-app-executable-jar
   e2e-test:
     when: << pipeline.parameters.run_e2e_tests >>
     jobs:
       - spin-up-test-env:
-          filters:
-            branches:
-              only:
-                - master
+          <<: *master_only
       - deploy-to-test-env:
-          filters:
-            branches:
-              only:
-                - master
+          <<: *master_only
           requires:
             - spin-up-test-env
       - run-e2e-tests:
-          filters:
-            branches:
-              only:
-                - master
+          <<: *master_only
           requires:
             - deploy-to-test-env
