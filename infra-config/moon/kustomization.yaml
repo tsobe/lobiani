@@ -8,3 +8,4 @@ resources:
 patchesStrategicMerge:
   - resource-usage-tweaks.yaml
   - service.yaml
+  - browsers.yaml
