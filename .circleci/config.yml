@@ -181,14 +181,14 @@ workflows:
   build:
     when: << pipeline.parameters.build >>
     jobs:
-      - build-app-executable-jar:
+      - build-app-executable-jar
       - build-and-publish-docker-image:
           requires:
             - build-app-executable-jar
   e2e-test:
     when: << pipeline.parameters.run_e2e_tests >>
     jobs:
-      - spin-up-test-env:
+      - spin-up-test-env
       - deploy-to-test-env:
           requires:
             - spin-up-test-env
