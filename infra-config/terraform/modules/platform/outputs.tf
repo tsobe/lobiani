@@ -13,3 +13,7 @@ output "cluster_ca_certificate" {
 output "lb_ip" {
   value = module.nginx-ingress-controller.lb_address
 }
+
+output "cluster_id" {
+  value = digitalocean_kubernetes_cluster.cluster.id
+}

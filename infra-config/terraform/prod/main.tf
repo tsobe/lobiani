@@ -46,3 +46,17 @@ resource "digitalocean_record" "moon-domain" {
   name = "moon"
   value = module.platform.lb_ip
 }
+
+resource "digitalocean_kubernetes_node_pool" "cicd-tools-pool" {
+  cluster_id = module.platform.cluster_id
+
+  name = "cicd-tools-pool"
+  size = "s-1vcpu-2gb"
+  auto_scale = true
+  min_nodes = 1
+  max_nodes = 2
+
+  labels = {
+    node-type = "cicd-tools-pool"
+  }
+}
