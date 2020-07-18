@@ -15,7 +15,7 @@ data:
             "resources": {
               "limits": {
                 "cpu": "550m",
-                "memory": "1.2Gi"
+                "memory": "1Gi"
               },
               "requests": {
                 "cpu": "200m",
