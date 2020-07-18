@@ -48,14 +48,20 @@ collect_modified_dirs
 
 code_dir="app"
 infra_config_dir="infra-config"
+
 if was_modified $code_dir
 then
 	echo "Triggering the build"
   	trigger_pipeline false true false
-elif was_modified $infra_config_dir
+fi
+
+if was_modified $infra_config_dir
 then
 	echo "Triggering e2e tests"
 	trigger_pipeline false false true
-else
+fi
+
+if ! was_modified $code_dir && ! was_modified $infra_config_dir
+then
   	echo "No changes made to $code_dir or $infra_config_dir, not triggering the build"
 fi
