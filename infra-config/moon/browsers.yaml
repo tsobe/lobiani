@@ -20,11 +20,12 @@ data:
               "requests": {
                 "cpu": "200m",
                 "memory": "1Gi"
-              },
-              "nodeSelector": {
-                "node-type": "cicd-tools-pool"
               }
+            },
+            "nodeSelector": {
+              "node-type": "cicd-tools-pool"
             }
           }
         }
       }
+    }
