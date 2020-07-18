@@ -5,15 +5,17 @@ metadata:
   namespace: moon
 data:
   browsers.json: |
-    "chrome": {
-           "default": "80.0",
-           "versions": {
-             "80.0": {
-               "image": "selenoid/vnc_chrome:80.0",
-               "port": "4444",
-               "nodeSelector": {
-                  "node-type": "cicd-tools-pool"
-               }
-             }
-           }
+    {
+      "chrome": {
+        "default": "80.0",
+        "versions": {
+          "80.0": {
+            "image": "selenoid/vnc_chrome:80.0",
+            "port": "4444",
+            "nodeSelector": {
+              "node-type": "cicd-tools-pool"
+            }
+          }
+        }
+      }
     }
