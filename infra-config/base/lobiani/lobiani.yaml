@@ -48,6 +48,8 @@ spec:
             httpGet:
               port: 8080
               path: /inventory-items
+      nodeSelector:
+        node-type: worker-pool
 ---
 apiVersion: v1
 kind: Service

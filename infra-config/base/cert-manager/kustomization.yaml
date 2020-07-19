@@ -4,3 +4,6 @@ kind: Kustomization
 resources:
   - cert-manager.yaml
   - cert-issuers.yaml
+
+patchesStrategicMerge:
+  - node-selectors.yaml

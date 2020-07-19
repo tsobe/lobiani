@@ -7,3 +7,4 @@ resources:
 
 patchesStrategicMerge:
   - service.yaml
+  - node-selector.yaml
