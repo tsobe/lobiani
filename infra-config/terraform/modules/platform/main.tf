@@ -32,8 +32,47 @@ provider "kubernetes" {
   load_config_file = false
 }
 
-module "nginx-ingress-controller" {
-  source = "byuoitav/nginx-ingress-controller/kubernetes"
-  version = "0.1.13"
+provider "helm" {
+  version = "~> 1.2"
+  kubernetes {
+    host = digitalocean_kubernetes_cluster.cluster.kube_config.0.host
+    token = digitalocean_kubernetes_cluster.cluster.kube_config.0.token
+    cluster_ca_certificate = base64decode(digitalocean_kubernetes_cluster.cluster.kube_config.0.cluster_ca_certificate)
+    load_config_file = false
+  }
+}
+
+resource "kubernetes_namespace" "ingress-nginx-ns" {
+  metadata {
+    name = "ingress-nginx"
+  }
+}
+
+resource "helm_release" "ingerss-nginx" {
+  name = "ingress-nginx"
+  repository = "https://helm.nginx.com/stable"
+  chart = "nginx-ingress"
+  version = "0.5.2"
+  namespace = "ingress-nginx"
+
+  set {
+    name = "controller.nodeSelector.node-type"
+    value = "worker-pool"
+  }
+
+  set {
+    name = "controller.admissionWebhooks.patch.nodeSelector.node-type"
+    value = "worker-pool"
+  }
+
+  set {
+    name = "defaultBackend.nodeSelector.node-type"
+    value = "worker-pool"
+  }
+
+  set {
+    name = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-name"
+    value = format("%s-lb", digitalocean_kubernetes_cluster.cluster.name)
+  }
 }
 

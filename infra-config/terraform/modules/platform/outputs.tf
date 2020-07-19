@@ -10,8 +10,13 @@ output "cluster_ca_certificate" {
   value = digitalocean_kubernetes_cluster.cluster.kube_config.0.cluster_ca_certificate
 }
 
+data digitalocean_loadbalancer "lb" {
+  name = format("%s-lb", digitalocean_kubernetes_cluster.cluster.name)
+  depends_on = [helm_release.ingerss-nginx]
+}
+
 output "lb_ip" {
-  value = module.nginx-ingress-controller.lb_address
+  value = data.digitalocean_loadbalancer.lb.ip
 }
 
 output "cluster_id" {
