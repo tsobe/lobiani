@@ -118,6 +118,6 @@ argocd app create production-apps --repo git@bitbucket.org:sevteen/lobiani \
     As a workaround, `acme.cert-manager.io/http01-edit-in-place: "true"` annotation must be added to each `Ingress`
     resource. Read more [here](https://github.com/jetstack/cert-manager/issues/2517)
     
-    Nginx ingress controller now is set up by [Terraform module](https://registry.terraform.io/modules/byuoitav/nginx-ingress-controller/kubernetes/0.1.5)
+    Note: Nginx ingress controller now is set up using [Terraform helm provider](https://www.terraform.io/docs/providers/helm/index.html)
 
 Dummy change
