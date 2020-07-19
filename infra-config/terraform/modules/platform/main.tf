@@ -49,6 +49,8 @@ resource "kubernetes_namespace" "ingress-nginx-ns" {
 }
 
 resource "helm_release" "ingerss-nginx" {
+  depends_on = [kubernetes_namespace.ingress-nginx-ns]
+
   name = "ingress-nginx"
   repository = "https://helm.nginx.com/stable"
   chart = "nginx-ingress"
