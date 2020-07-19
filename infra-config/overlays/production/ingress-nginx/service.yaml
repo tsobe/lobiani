@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: ingress-nginx-nginx-ingress
-  namespace: ingress-nginx
-  annotations:
-    service.beta.kubernetes.io/do-loadbalancer-name: lobiani-production-lb
-
