@@ -42,20 +42,20 @@ provider "helm" {
   }
 }
 
-resource "kubernetes_namespace" "ingress-nginx-ns-v2" {
+resource "kubernetes_namespace" "ingress-nginx-ns" {
   metadata {
-    name = "ingress-nginx-v2"
+    name = "ingress-nginx"
   }
 }
 
-resource "helm_release" "ingerss-nginx-v2" {
-  depends_on = [kubernetes_namespace.ingress-nginx-ns-v2]
+resource "helm_release" "ingerss-nginx" {
+  depends_on = [kubernetes_namespace.ingress-nginx-ns]
 
-  name = "ingress-nginx-v2"
+  name = "ingress-nginx"
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart = "ingress-nginx"
   version = "2.9.0"
-  namespace = "ingress-nginx-v2"
+  namespace = "ingress-nginx"
 
   set {
     name = "controller.nodeSelector.node-type"
@@ -74,6 +74,6 @@ resource "helm_release" "ingerss-nginx-v2" {
 
   set {
     name = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-name"
-    value = format("%s-lb-v2", digitalocean_kubernetes_cluster.cluster.name)
+    value = format("%s-lb", digitalocean_kubernetes_cluster.cluster.name)
   }
 }
