@@ -103,6 +103,23 @@ argocd app create production-apps --repo git@bitbucket.org:sevteen/lobiani \
     --values production-values.yaml
    ```
 
+# Destroy
+## Argo CD apps
+
+In order to gracefully destroy the environment, some of the Argo CD apps
+must be destroyed first
+
+```
+export ENV=<test|production>
+argocd app list -l environment=$ENV -o name | grep -Ev "(apps|cert-manager)" | xargs argocd app delete
+argocd app delete $ENV-apps
+```
+## Terraform
+
+After the Argo CD apps are destroyed, simply execute `terraform destroy` in `infra-config/terraform/test` 
+or `infra-config/terraform/prod`
+
+
 ## Known issues
  
 1. Nginx ingress controller from [Kubernetes community](https://kubernetes.github.io/ingress-nginx/deploy) 
