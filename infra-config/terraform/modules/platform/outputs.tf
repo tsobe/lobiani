@@ -11,8 +11,8 @@ output "cluster_ca_certificate" {
 }
 
 data digitalocean_loadbalancer "lb" {
-  name = format("%s-lb", digitalocean_kubernetes_cluster.cluster.name)
-  depends_on = [helm_release.ingerss-nginx]
+  name = format("%s-lb-v2", digitalocean_kubernetes_cluster.cluster.name)
+  depends_on = [helm_release.ingerss-nginx-v2]
 }
 
 output "lb_ip" {
