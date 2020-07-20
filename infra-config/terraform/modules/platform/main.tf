@@ -42,42 +42,6 @@ provider "helm" {
   }
 }
 
-resource "kubernetes_namespace" "ingress-nginx-ns" {
-  metadata {
-    name = "ingress-nginx"
-  }
-}
-
-resource "helm_release" "ingerss-nginx" {
-  depends_on = [kubernetes_namespace.ingress-nginx-ns]
-
-  name = "ingress-nginx"
-  repository = "https://helm.nginx.com/stable"
-  chart = "nginx-ingress"
-  version = "0.5.2"
-  namespace = "ingress-nginx"
-
-  set {
-    name = "controller.nodeSelector.node-type"
-    value = "worker-pool"
-  }
-
-  set {
-    name = "controller.admissionWebhooks.patch.nodeSelector.node-type"
-    value = "worker-pool"
-  }
-
-  set {
-    name = "defaultBackend.nodeSelector.node-type"
-    value = "worker-pool"
-  }
-
-  set {
-    name = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-name"
-    value = format("%s-lb", digitalocean_kubernetes_cluster.cluster.name)
-  }
-}
-
 resource "kubernetes_namespace" "ingress-nginx-ns-v2" {
   metadata {
     name = "ingress-nginx-v2"
