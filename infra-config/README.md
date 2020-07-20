@@ -105,17 +105,18 @@ argocd app create production-apps --repo git@bitbucket.org:sevteen/lobiani \
 
 ## Known issues
  
-1. Nginx ingress controller from [here](https://kubernetes.github.io/ingress-nginx/deploy) 
+1. Nginx ingress controller from [Kubernetes community](https://kubernetes.github.io/ingress-nginx/deploy) 
     doesn't play well with argo-cd, pre-sync hook fails with "namespace not found" error.
     If the namespace is created manually upfront, then `ingress-nginx-admission-create` job
     fails to complete
-2. Because of the above, [this](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/)
-    version of Nginx ingress controller is used instead.
+2. <strike>Because of the above, [Nginx community](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/)
+    version of is used instead.
 
     But this version comes with another issue which prevents `cert-manager` to solve `Challenges` and results in following
     error: `http-01 challenge propagation: wrong status code '404', expected '200'`
     
     As a workaround, `acme.cert-manager.io/http01-edit-in-place: "true"` annotation must be added to each `Ingress`
-    resource. Read more [here](https://github.com/jetstack/cert-manager/issues/2517)
+    resource. Read more [here](https://github.com/jetstack/cert-manager/issues/2517)</strike>
     
-    Note: Nginx ingress controller now is set up using [Terraform helm provider](https://www.terraform.io/docs/providers/helm/index.html)
+    UPDATE: Kubernetes community version is now set up using [Terraform helm provider](https://www.terraform.io/docs/providers/helm/index.html)
+    and works fine
