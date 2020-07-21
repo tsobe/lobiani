@@ -137,3 +137,5 @@ or `infra-config/terraform/prod`
     
     UPDATE: Kubernetes community version is now set up using [Terraform helm provider](https://www.terraform.io/docs/providers/helm/index.html)
     and works fine
+
+Dummy change
