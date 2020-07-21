@@ -138,7 +138,7 @@ jobs:
           name: Deploy app of apps to test environment
           command: |
             # Workaround for issue https://github.com/argoproj/argo-cd/issues/3896
-            argocd cluster list --grpc-web --server grpc.argocd.baybay.dev > /dev/null 2>&1 || true
+            argocd cluster list --server grpc.argocd.baybay.dev > /dev/null 2>&1 || true
 
             export TEST_CLUSTER_ENDPOINT=`cat infra-config/terraform/test/cluster_endpoint.txt | sed -E 's/(^\s+|\s+$)//g'`
             argocd app create test-apps --repo git@bitbucket.org:sevteen/lobiani \
@@ -148,13 +148,13 @@ jobs:
                 --revision $CIRCLE_BRANCH \
                 --helm-set spec.destination.server=$TEST_CLUSTER_ENDPOINT \
                 --values test-values.yaml \
-                --grpc-web --server grpc.argocd.baybay.dev \
+                --server grpc.argocd.baybay.dev \
                 --upsert
       - run:
           name: Sync and wait
           command: |
-            argocd app sync test-apps --grpc-web --server grpc.argocd.baybay.dev
-            argocd app wait -l app.kubernetes.io/instance=test-apps --grpc-web --server grpc.argocd.baybay.dev
+            argocd app sync test-apps --server grpc.argocd.baybay.dev
+            argocd app wait -l app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
   run-e2e-tests:
     docker:
       - image: *jdk_image
