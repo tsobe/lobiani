@@ -9,6 +9,8 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    # Below annotation is a workaround for this https://github.com/argoproj/argo-cd/issues/3896
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.0"
 spec:
   rules:
     - http:
