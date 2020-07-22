@@ -9,6 +9,7 @@ metadata:
     environment: {{ .Values.spec.env }}
 spec:
   destination:
+    namespace: cert-manager
     server: {{ .Values.spec.destination.server }}
   project: default
   source:
