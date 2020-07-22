@@ -1,5 +1,5 @@
 provider "digitalocean" {
-  version = "~> 1.20"
+  version = "= 1.22"
 }
 
 resource "digitalocean_vpc" "vcp" {
@@ -25,7 +25,7 @@ resource "digitalocean_kubernetes_cluster" "cluster" {
 }
 
 provider "kubernetes" {
-  version = "~> 1.11"
+  version = "= 1.11.4"
   host = digitalocean_kubernetes_cluster.cluster.kube_config.0.host
   token = digitalocean_kubernetes_cluster.cluster.kube_config.0.token
   cluster_ca_certificate = base64decode(digitalocean_kubernetes_cluster.cluster.kube_config.0.cluster_ca_certificate)
@@ -33,7 +33,7 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  version = "~> 1.2"
+  version = "= 1.2.3"
   kubernetes {
     host = digitalocean_kubernetes_cluster.cluster.kube_config.0.host
     token = digitalocean_kubernetes_cluster.cluster.kube_config.0.token
