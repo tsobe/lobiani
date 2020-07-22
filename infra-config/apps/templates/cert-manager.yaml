@@ -7,7 +7,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
   labels:
     ph: 0
-    environment: {{ .Values.spec.env }}
+#    environment: {{ .Values.spec.env }}
 spec:
   destination:
     namespace: cert-manager
