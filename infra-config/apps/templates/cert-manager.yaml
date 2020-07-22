@@ -6,7 +6,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    sync-phase: 0
+    ph: 0
     environment: {{ .Values.spec.env }}
 spec:
   destination:
