@@ -6,8 +6,8 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    ph: "0"
-#    environment: {{ .Values.spec.env }}
+    environment: {{ .Values.spec.env }}
+    sync-phase: "0"
 spec:
   destination:
     namespace: cert-manager
