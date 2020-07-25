@@ -160,7 +160,7 @@ jobs:
             # creating ClusterIssuers:
             #   Internal error occurred: failed calling webhook "webhook.cert-manager.io": Post https://cert-manager-webhook.cert-manager.svc:443/mutate?timeout=30s:
             #   dial tcp 10.245.148.127:443: connect: connection refused
-            sleep 2s
+            sleep 5s
             argocd app sync -l app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
             argocd app wait -l app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
   run-e2e-tests:
