@@ -156,6 +156,11 @@ jobs:
             argocd app wait test-apps --server grpc.argocd.baybay.dev
             argocd app sync -l sync-phase=0,app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
             argocd app wait -l sync-phase=0,app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
+            # Ugly hack to wait for cert-manager-webhook become "available" i.e. to workaround following issue when
+            # creating ClusterIssuers:
+            #   Internal error occurred: failed calling webhook "webhook.cert-manager.io": Post https://cert-manager-webhook.cert-manager.svc:443/mutate?timeout=30s:
+            #   dial tcp 10.245.148.127:443: connect: connection refused
+            sleep 2s
             argocd app sync -l app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
             argocd app wait -l app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
   run-e2e-tests:
