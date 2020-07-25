@@ -144,8 +144,7 @@ jobs:
             argocd app create test-apps --repo git@bitbucket.org:sevteen/lobiani \
                 --path infra-config/apps --dest-namespace argocd \
                 --dest-server https://kubernetes.default.svc \
-                --sync-policy automated --auto-prune -l environment=test \
-                --revision $CIRCLE_BRANCH \
+                --revision $CIRCLE_BRANCH -l environment=test \
                 --helm-set spec.destination.server=$TEST_CLUSTER_ENDPOINT \
                 --values test-values.yaml \
                 --server grpc.argocd.baybay.dev \
@@ -153,8 +152,8 @@ jobs:
       - run:
           name: Sync and wait
           command: |
-            argocd app sync -l environment=test -l sync-phase=0 --server grpc.argocd.baybay.dev
-            argocd app wait -l environment=test -l sync-phase=0 --server grpc.argocd.baybay.dev
+#            argocd app sync -l environment=test -l sync-phase=0 --server grpc.argocd.baybay.dev
+#            argocd app wait -l environment=test -l sync-phase=0 --server grpc.argocd.baybay.dev
             argocd app sync -l environment=test --server grpc.argocd.baybay.dev
             argocd app wait -l environment=test --server grpc.argocd.baybay.dev
   run-e2e-tests:
