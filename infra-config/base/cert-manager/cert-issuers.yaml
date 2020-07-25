@@ -4,7 +4,6 @@ metadata:
   name: letsencrypt-staging
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/hook: PostSync
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
@@ -22,7 +21,6 @@ metadata:
   name: letsencrypt-prod
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/hook: PostSync
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
