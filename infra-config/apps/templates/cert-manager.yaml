@@ -7,7 +7,6 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
   labels:
     environment: {{ .Values.spec.env }}
-    sync-phase: "0"
 spec:
   destination:
     namespace: cert-manager
@@ -17,3 +16,7 @@ spec:
     path: infra-config/base/cert-manager
     repoURL: {{ .Values.spec.source.repoURL }}
     targetRevision: {{ .Values.spec.source.targetRevision }}
+  syncPolicy:
+    automated:
+      prune: {{ eq .Values.spec.env "test" }}
+      selfHeal: true
