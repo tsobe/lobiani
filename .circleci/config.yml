@@ -154,8 +154,8 @@ jobs:
           command: |
             argocd app sync test-apps --server grpc.argocd.baybay.dev
             argocd app wait test-apps --server grpc.argocd.baybay.dev
-            argocd app sync -l sync-phase=0 -l app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
-            argocd app wait -l sync-phase=0 -l app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
+            argocd app sync -l sync-phase=0,app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
+            argocd app wait -l sync-phase=0,app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
             argocd app sync -l app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
             argocd app wait -l app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
   run-e2e-tests:
