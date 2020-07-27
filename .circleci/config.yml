@@ -114,7 +114,9 @@ jobs:
       - image: alpine/git:v2.26.2
     steps:
       - checkout
-      - add_ssh_keys
+      - add_ssh_keys:
+          fingerprints:
+            - "02:1a:92:da:ea:f7:b0:ac:b0:0d:8a:a9:f1:fc:c0:e4"
       - attach_workspace:
           at: /tmp
       - run:
