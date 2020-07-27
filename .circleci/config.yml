@@ -114,6 +114,7 @@ jobs:
       - image: alpine/git:v2.26.2
     steps:
       - checkout
+      - add_ssh_keys
       - attach_workspace:
           at: /tmp
       - run:
