@@ -128,6 +128,8 @@ jobs:
           name: Commit and push
           command: |
             export IMG_HASH=`cut -d@ -f 2 /tmp/digest.txt`
+            git config user.email "circleci@baybay.dev"
+            git config user.name "circleci"
             git commit -am "[CI] Updated image version to $IMG_HASH" && git push
 
   spin-up-test-env:
