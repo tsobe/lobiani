@@ -102,9 +102,34 @@ jobs:
       - docker/push:
           digest-path: /tmp/digest.txt
           image: sevteen/lobiani-app
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - digest.txt
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
+  update-image-version-in-manifest:
+    docker:
+      - image: alpine/git:v2.26.2
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Replace image hash
+          command: |
+            export IMG_HASH=`cut -d@ -f 2 /tmp/digest.txt`
+            sed -i "s#image: sevteen/lobiani-app@.*#image: sevteen/lobiani-app@${IMG_HASH}#g" infra-config/base/lobiani/lobiani.yaml
+      - run:
+          name: Git diff
+          command: git diff
+      - run:
+          name: Commit and push
+          command: |
+            export IMG_HASH=`cut -d@ -f 2 /tmp/digest.txt`
+            git commit -am "[CI] Updated image version to $IMG_HASH" && git push
+
   spin-up-test-env:
     docker:
       - image: hashicorp/terraform:0.12.28
@@ -193,6 +218,9 @@ workflows:
       - build-and-publish-docker-image:
           requires:
             - build-app-executable-jar
+      - update-image-version-in-manifest:
+          requires:
+            - build-and-publish-docker-image
   e2e-test:
     when: << pipeline.parameters.run_e2e_tests >>
     jobs:
