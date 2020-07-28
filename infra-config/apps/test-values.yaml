@@ -1,5 +1,5 @@
 spec:
   source:
-    repoURL: git@bitbucket.org:sevteen/lobiani
+    repoURL: git@github.org:sevteen/lobiani
     targetRevision: master
   env: test

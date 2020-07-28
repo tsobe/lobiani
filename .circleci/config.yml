@@ -170,7 +170,7 @@ jobs:
             argocd cluster list --server grpc.argocd.baybay.dev > /dev/null 2>&1 || true
 
             export TEST_CLUSTER_ENDPOINT=`cat infra-config/terraform/test/cluster_endpoint.txt | sed -E 's/(^\s+|\s+$)//g'`
-            argocd app create test-apps --repo git@bitbucket.org:sevteen/lobiani \
+            argocd app create test-apps --repo git@github.org:sevteen/lobiani \
                 --path infra-config/apps --dest-namespace argocd \
                 --dest-server https://kubernetes.default.svc \
                 --revision $CIRCLE_BRANCH -l environment=test \

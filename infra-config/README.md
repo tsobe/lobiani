@@ -34,7 +34,7 @@ configured and current context is set to production cluster
    `kubectl get pod -l app.kubernetes.io/name=argocd-server -n argocd`
 4. Add a private repository
     ```
-    argocd repo add git@bitbucket.org:sevteen/lobiani --ssh-private-key-path ~/.ssh/argocd_rsa
+    argocd repo add git@github.com:sevteen/lobiani --ssh-private-key-path ~/.ssh/argocd_rsa
     ``` 
 5. Configure API access
    
@@ -84,7 +84,7 @@ It should produce similar output
 
 2. Capture the `cluster_endpoint` in `TEST_CLUSTER_ENDPOINT` environment variable and run
     ```
-    argocd app create test-apps --repo git@bitbucket.org:sevteen/lobiani \
+    argocd app create test-apps --repo git@github.org:sevteen/lobiani \
         --path infra-config/apps --dest-namespace argocd \
         --dest-server https://kubernetes.default.svc \
         --sync-policy automated --auto-prune -l environment=test \
@@ -95,7 +95,7 @@ It should produce similar output
 
 ## Production env
 ```
-argocd app create production-apps --repo git@bitbucket.org:sevteen/lobiani \
+argocd app create production-apps --repo git@github.org:sevteen/lobiani \
     --path infra-config/apps --dest-namespace argocd \
     --dest-server https://kubernetes.default.svc \
     --sync-policy automated -l environment=production \
