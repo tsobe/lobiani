@@ -8,16 +8,16 @@ PROJECT_SLUG="github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
 
 function trigger_pipeline {
 	local check=$1
-	local build=$2
-	local run_e2e_tests=$3
+	local test=$2
+	local promote=$3
 
     curl -s -u ${CIRCLE_API_USER_TOKEN}: \
 	   -H "Content-Type: application/json" \
 	   -d "{
 			  \"parameters\": {
 				  \"check\": $check,
-				  \"build\": $build,
-				  \"run_e2e_tests\": $run_e2e_tests
+				  \"test\": $test,
+				  \"promote\": $promote
 			  }
 		   }" \
 	   https://circleci.com/api/v2/project/$PROJECT_SLUG/pipeline
@@ -53,17 +53,17 @@ infra_config_dir="infra-config"
 
 if was_modified $code_dir
 then
-	echo "Triggering the build"
+	echo "Triggering pipeline: \"test\""
   	trigger_pipeline false true false
 fi
 
 if was_modified $infra_config_dir
 then
-	echo "Triggering e2e tests"
+	echo "Triggering pipeline: \"promote\""
 	trigger_pipeline false false true
 fi
 
 if ! was_modified $code_dir && ! was_modified $infra_config_dir
 then
-  	echo "No changes made to $code_dir or $infra_config_dir, not triggering the build"
+  	echo "No changes made to $code_dir or $infra_config_dir, not triggering any pipeline"
 fi

@@ -8,10 +8,10 @@ parameters:
   check:
     type: boolean
     default: true
-  build:
+  test:
     type: boolean
     default: false
-  run_e2e_tests:
+  promote:
     type: boolean
     default: false
 
@@ -213,10 +213,9 @@ jobs:
       - add_ssh_keys:
           <<: *deploy_key
       - run:
-          name: Merge master to production
+          name: Push to production
           command: |
-            git fetch . master:production
-            git push origin production:production
+            git push origin $CIRCLE_SHA1:production
 
 workflows:
   check:
@@ -227,8 +226,8 @@ workflows:
             branches:
               only:
                 - master
-  build:
-    when: << pipeline.parameters.build >>
+  test:
+    when: << pipeline.parameters.test >>
     jobs:
       - build-app-executable-jar
       - build-and-publish-docker-image:
@@ -237,8 +236,8 @@ workflows:
       - update-image-version-in-manifest:
           requires:
             - build-and-publish-docker-image
-  e2e-test:
-    when: << pipeline.parameters.run_e2e_tests >>
+  promote:
+    when: << pipeline.parameters.promote >>
     jobs:
       - spin-up-test-env
       - deploy-to-test-env:
