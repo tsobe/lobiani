@@ -14,7 +14,7 @@ spec:
   project: default
   source:
     path: infra-config/moon
-    repoURL: git@github.org:sevteen/lobiani
+    repoURL: git@github.com:sevteen/lobiani
     targetRevision: master
   syncPolicy:
     automated:

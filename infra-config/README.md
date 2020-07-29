@@ -84,7 +84,7 @@ It should produce similar output
 
 2. Capture the `cluster_endpoint` in `TEST_CLUSTER_ENDPOINT` environment variable and run
     ```
-    argocd app create test-apps --repo git@github.org:sevteen/lobiani \
+    argocd app create test-apps --repo git@github.com:sevteen/lobiani \
         --path infra-config/apps --dest-namespace argocd \
         --dest-server https://kubernetes.default.svc \
         --sync-policy automated --auto-prune -l environment=test \
@@ -95,7 +95,7 @@ It should produce similar output
 
 ## Production env
 ```
-argocd app create production-apps --repo git@github.org:sevteen/lobiani \
+argocd app create production-apps --repo git@github.com:sevteen/lobiani \
     --path infra-config/apps --dest-namespace argocd \
     --dest-server https://kubernetes.default.svc \
     --sync-policy automated -l environment=production \
