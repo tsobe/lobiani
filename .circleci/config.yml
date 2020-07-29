@@ -237,7 +237,7 @@ workflows:
           requires:
             - build-and-publish-docker-image
   test:
-    when: << pipeline.parameters.promote >>
+    when: << pipeline.parameters.test >>
     jobs:
       - spin-up-test-env
       - deploy-to-test-env:
