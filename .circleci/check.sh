@@ -8,16 +8,16 @@ PROJECT_SLUG="github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
 
 function trigger_pipeline {
 	local check=$1
-	local test=$2
-	local promote=$3
+	local build=$2
+	local test=$3
 
     curl -s -u ${CIRCLE_API_USER_TOKEN}: \
 	   -H "Content-Type: application/json" \
 	   -d "{
 			  \"parameters\": {
 				  \"check\": $check,
-				  \"test\": $test,
-				  \"promote\": $promote
+				  \"build\": $build,
+				  \"test\": $test
 			  }
 		   }" \
 	   https://circleci.com/api/v2/project/$PROJECT_SLUG/pipeline
@@ -53,13 +53,13 @@ infra_config_dir="infra-config"
 
 if was_modified $code_dir
 then
-	echo "Triggering pipeline: \"test\""
+	echo "Triggering pipeline: \"build\""
   	trigger_pipeline false true false
 fi
 
 if was_modified $infra_config_dir
 then
-	echo "Triggering pipeline: \"promote\""
+	echo "Triggering pipeline: \"test\""
 	trigger_pipeline false false true
 fi
 

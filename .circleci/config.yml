@@ -8,10 +8,10 @@ parameters:
   check:
     type: boolean
     default: true
-  test:
+  build:
     type: boolean
     default: false
-  promote:
+  test:
     type: boolean
     default: false
 
@@ -109,7 +109,7 @@ jobs:
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
-  update-image-version-in-manifest:
+  trigger-test:
     docker:
       - image: &git alpine/git:v2.26.2
     steps:
@@ -205,7 +205,7 @@ jobs:
               -Dremote.webdriver.acceptInsecure=true \
       - save_test_results:
           dst_location: e2e-test-results
-  promote-to-production:
+  trigger-promotion:
     docker:
       - image: *git
     steps:
@@ -213,7 +213,7 @@ jobs:
       - add_ssh_keys:
           <<: *deploy_key
       - run:
-          name: Push to production
+          name: Push to production branch
           command: |
             git push origin $CIRCLE_SHA1:production
 
@@ -226,17 +226,17 @@ workflows:
             branches:
               only:
                 - master
-  test:
-    when: << pipeline.parameters.test >>
+  build:
+    when: << pipeline.parameters.build >>
     jobs:
       - build-app-executable-jar
       - build-and-publish-docker-image:
           requires:
             - build-app-executable-jar
-      - update-image-version-in-manifest:
+      - trigger-test:
           requires:
             - build-and-publish-docker-image
-  promote:
+  test:
     when: << pipeline.parameters.promote >>
     jobs:
       - spin-up-test-env
@@ -246,6 +246,6 @@ workflows:
       - run-e2e-tests:
           requires:
             - deploy-to-test-env
-      - promote-to-production:
+      - trigger-promotion:
           requires:
             - run-e2e-tests
