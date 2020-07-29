@@ -111,10 +111,10 @@ jobs:
             echo "Digest is: $(</tmp/digest.txt)"
   update-image-version-in-manifest:
     docker:
-      - image: alpine/git:v2.26.2
+      - image: &git alpine/git:v2.26.2
     steps:
       - checkout
-      - add_ssh_keys:
+      - add_ssh_keys: &deploy_key
           fingerprints:
             - "1f:5a:0e:e6:50:c6:2d:e4:b8:45:bd:5d:bb:51:89:ad"
       - attach_workspace:
@@ -205,6 +205,18 @@ jobs:
               -Dremote.webdriver.acceptInsecure=true \
       - save_test_results:
           dst_location: e2e-test-results
+  promote-to-production:
+    docker:
+      - image: *git
+    steps:
+      - checkout
+      - add_ssh_keys:
+          <<: *deploy_key
+      - run:
+          name: Merge master to production
+          command: |
+            git fetch . master:production
+            git push origin production:production
 
 workflows:
   check:
@@ -235,3 +247,6 @@ workflows:
       - run-e2e-tests:
           requires:
             - deploy-to-test-env
+      - promote-to-production:
+          requires:
+            - run-e2e-tests
