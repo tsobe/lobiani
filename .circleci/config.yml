@@ -55,7 +55,7 @@ commands:
         type: string
     steps:
       - run:
-          name: Save test results
+          name: Saving test results
           command: |
             mkdir -p ~/<< parameters.dst_location >>/junit/
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/<< parameters.dst_location >>/junit/ \;
@@ -70,7 +70,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Determine if changes made to VCS require build
+          name: Determining the workflow to execute next
           command: .circleci/check.sh
   build-app-executable-jar:
     docker:
@@ -120,17 +120,17 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run:
-          name: Replace image hash
+          name: Replacing image version
           command: |
-            export IMG_HASH=`cut -d@ -f 2 /tmp/digest.txt`
-            sed -i "s#image: sevteen/lobiani-app@.*#image: sevteen/lobiani-app@${IMG_HASH}#g" infra-config/base/lobiani/lobiani.yaml
+            export IMG_HASH=`cut -d @ -f 2 /tmp/digest.txt`
+            sed -i "s#image: sevteen/lobiani-app@.*#image: sevteen/lobiani-app@${IMG_HASH} \# Modified by CI at `date` #g" infra-config/base/lobiani/lobiani.yaml
       - run:
-          name: Git diff
+          name: Printing diff
           command: git diff
       - run:
-          name: Commit and push
+          name: Pushing changes
           command: |
-            export IMG_HASH=`cut -d@ -f 2 /tmp/digest.txt`
+            export IMG_HASH=`cut -d @ -f 2 /tmp/digest.txt`
             git config user.email "b.tsotsoria@gmail.com"
             git config user.name "circleci"
             git commit -am "[CI] Updated image version to $IMG_HASH" && git push
@@ -140,7 +140,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Spin up the test environment
+          name: Spinning up the test environment
           command: |
             cd infra-config/terraform/test
             terraform init -backend-config="token=${TF_API_TOKEN}"
@@ -158,13 +158,13 @@ jobs:
       - attach_workspace:
           at: infra-config
       - run:
-          name: Download Argo CD CLI
+          name: Downloading Argo CD CLI
           command: |
             # ARGOCD_AUTH_TOKEN env is expected by argocd
             sudo curl -sSL -o /usr/local/bin/argocd https://argocd.baybay.dev/download/argocd-linux-amd64
             sudo chmod +x /usr/local/bin/argocd
       - run:
-          name: Deploy app of apps to test environment
+          name: Deploying app of apps to test environment
           command: |
             # Workaround for issue https://github.com/argoproj/argo-cd/issues/3896
             argocd cluster list --server grpc.argocd.baybay.dev > /dev/null 2>&1 || true
@@ -179,7 +179,7 @@ jobs:
                 --server grpc.argocd.baybay.dev \
                 --upsert
       - run:
-          name: Sync and wait
+          name: Waiting for deployment to complete
           command: |
             argocd app sync test-apps --server grpc.argocd.baybay.dev
             argocd app wait test-apps --server grpc.argocd.baybay.dev
@@ -198,7 +198,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Run e2e tests
+          name: Running e2e tests
           command: |
             ./gradlew app:e2eTestRemote -Dgeb.build.baseUrl=https://test-lobiani.baybay.dev/ \
               -Dremote.webdriver.url=https://moon.baybay.dev/wd/hub \
@@ -213,7 +213,7 @@ jobs:
       - add_ssh_keys:
           <<: *deploy_key
       - run:
-          name: Push to production branch
+          name: Pushing to production branch
           command: |
             git push origin $CIRCLE_SHA1:production
 
