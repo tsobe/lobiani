@@ -219,7 +219,7 @@ jobs:
           name: Pushing to production branch
           command: |
             git push origin $CIRCLE_SHA1:production
-  promote:
+  setup-prod-infra:
     docker:
       - image: *terraform
     steps:
@@ -231,6 +231,10 @@ jobs:
             terraform init -backend-config="token=${TF_API_TOKEN}"
             terraform apply --auto-approve=true
             cd -
+  deploy-to-prod-env:
+    docker:
+      - image: *base_image
+    steps:
       - download_argocd_cli
       - run:
           name: Syncing apps
@@ -274,8 +278,11 @@ workflows:
             - run-e2e-tests
   promote:
     jobs:
-      - promote:
+      - setup-prod-infra
+      - deploy-to-prod-env:
           filters:
             branches:
               only:
                 - production
+          requires:
+            - setup-prod-infra
