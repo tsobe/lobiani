@@ -231,7 +231,7 @@ jobs:
             terraform init -backend-config="token=${TF_API_TOKEN}"
             terraform apply --auto-approve=true
             cd -
-      - download_argcd_cli      
+      - download_argocd_cli
       - run:
           name: Syncing apps
           command: |
