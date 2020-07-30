@@ -62,6 +62,14 @@ commands:
           when: always
       - store_test_results:
           path: ~/<< parameters.dst_location >>
+  download_argocd_cli:
+    steps:
+      - run:
+          name: Downloading Argo CD CLI
+          command: |
+            # ARGOCD_AUTH_TOKEN env is expected by argocd
+            sudo curl -sSL -o /usr/local/bin/argocd $ARGOCD_CLI_DOWNLOAD_URL
+            sudo chmod +x /usr/local/bin/argocd
 
 jobs:
   determine-workflow:
@@ -123,7 +131,8 @@ jobs:
           name: Replacing image version
           command: |
             export IMG_HASH=`cut -d @ -f 2 /tmp/digest.txt`
-            sed -i "s#image: sevteen/lobiani-app@.*#image: sevteen/lobiani-app@${IMG_HASH} \# Modified by CI at `date` #g" infra-config/base/lobiani/lobiani.yaml
+            sed -i "s#image: sevteen/lobiani-app@.*#image: sevteen/lobiani-app@${IMG_HASH} \# Modified by CI at `date` #g" \
+              infra-config/base/lobiani/lobiani.yaml
       - run:
           name: Printing diff
           command: git diff
@@ -134,13 +143,13 @@ jobs:
             git config user.email "b.tsotsoria@gmail.com"
             git config user.name "circleci"
             git commit -am "[CI] Updated image version to $IMG_HASH" && git push
-  spin-up-test-env:
+  setup-test-infra:
     docker:
-      - image: hashicorp/terraform:0.12.28
+      - image: &terraform hashicorp/terraform:0.12.28
     steps:
       - checkout
       - run:
-          name: Spinning up the test environment
+          name: Setting up the test infrastructure
           command: |
             cd infra-config/terraform/test
             terraform init -backend-config="token=${TF_API_TOKEN}"
@@ -157,12 +166,7 @@ jobs:
     steps:
       - attach_workspace:
           at: infra-config
-      - run:
-          name: Downloading Argo CD CLI
-          command: |
-            # ARGOCD_AUTH_TOKEN env is expected by argocd
-            sudo curl -sSL -o /usr/local/bin/argocd $ARGOCD_CLI_DOWNLOAD_URL
-            sudo chmod +x /usr/local/bin/argocd
+      - download_argocd_cli
       - run:
           name: Deploying app of apps to test environment
           command: |
@@ -178,7 +182,7 @@ jobs:
                 --values test-values.yaml \
                 --upsert
       - run:
-          name: Waiting for deployment to complete
+          name: Syncing apps
           command: |
             argocd app sync test-apps
             argocd app wait test-apps
@@ -215,6 +219,26 @@ jobs:
           name: Pushing to production branch
           command: |
             git push origin $CIRCLE_SHA1:production
+  promote:
+    docker:
+      - image: *terraform
+    steps:
+      - checkout
+      - run:
+          name: Setting up the production infrastructure
+          command: |
+            cd infra-config/terraform/prod
+            terraform init -backend-config="token=${TF_API_TOKEN}"
+            terraform apply --auto-approve=true
+            cd -
+      - download_argcd_cli      
+      - run:
+          name: Syncing apps
+          command: |
+            argocd app sync production-apps
+            argocd app wait production-apps
+            argocd app sync -l app.kubernetes.io/instance=production-apps
+            argocd app wait -l app.kubernetes.io/instance=production-apps
 
 workflows:
   check:
@@ -238,13 +262,20 @@ workflows:
   test:
     when: << pipeline.parameters.test >>
     jobs:
-      - spin-up-test-env
+      - setup-test-infra
       - deploy-to-test-env:
           requires:
-            - spin-up-test-env
+            - setup-test-infra
       - run-e2e-tests:
           requires:
             - deploy-to-test-env
       - trigger-promotion:
           requires:
             - run-e2e-tests
+  promote:
+    jobs:
+      - promote:
+          filters:
+            branches:
+              only:
+                - production
