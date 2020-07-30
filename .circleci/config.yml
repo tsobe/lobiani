@@ -278,11 +278,13 @@ workflows:
             - run-e2e-tests
   promote:
     jobs:
-      - setup-prod-infra
-      - deploy-to-prod-env:
-          filters:
+      - setup-prod-infra:
+          filters: &production_filter
             branches:
               only:
                 - production
+      - deploy-to-prod-env:
+          filters:
+            <<: *production_filter
           requires:
             - setup-prod-infra
