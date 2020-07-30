@@ -64,7 +64,7 @@ commands:
           path: ~/<< parameters.dst_location >>
 
 jobs:
-  check-build-needed:
+  determine-workflow:
     docker:
       - image: &base_image cimg/base:stable
     steps:
@@ -161,37 +161,36 @@ jobs:
           name: Downloading Argo CD CLI
           command: |
             # ARGOCD_AUTH_TOKEN env is expected by argocd
-            sudo curl -sSL -o /usr/local/bin/argocd https://argocd.baybay.dev/download/argocd-linux-amd64
+            sudo curl -sSL -o /usr/local/bin/argocd $ARGOCD_CLI_DOWNLOAD_URL
             sudo chmod +x /usr/local/bin/argocd
       - run:
           name: Deploying app of apps to test environment
           command: |
             # Workaround for issue https://github.com/argoproj/argo-cd/issues/3896
-            argocd cluster list --server grpc.argocd.baybay.dev > /dev/null 2>&1 || true
+            argocd cluster list > /dev/null 2>&1 || true
 
             export TEST_CLUSTER_ENDPOINT=`cat infra-config/terraform/test/cluster_endpoint.txt | sed -E 's/(^\s+|\s+$)//g'`
-            argocd app create test-apps --repo git@github.com:sevteen/lobiani \
+            argocd app create test-apps --repo $CIRCLE_REPOSITORY_URL \
                 --path infra-config/apps --dest-namespace argocd \
                 --dest-server https://kubernetes.default.svc \
                 --revision $CIRCLE_BRANCH -l environment=test \
                 --helm-set spec.destination.server=$TEST_CLUSTER_ENDPOINT \
                 --values test-values.yaml \
-                --server grpc.argocd.baybay.dev \
                 --upsert
       - run:
           name: Waiting for deployment to complete
           command: |
-            argocd app sync test-apps --server grpc.argocd.baybay.dev
-            argocd app wait test-apps --server grpc.argocd.baybay.dev
-            argocd app sync -l sync-phase=0,app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
-            argocd app wait -l sync-phase=0,app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
+            argocd app sync test-apps
+            argocd app wait test-apps
+            argocd app sync -l sync-phase=0,app.kubernetes.io/instance=test-apps
+            argocd app wait -l sync-phase=0,app.kubernetes.io/instance=test-apps
             # Ugly hack to wait for cert-manager-webhook become "available" i.e. to workaround following issue when
             # creating ClusterIssuers:
             #   Internal error occurred: failed calling webhook "webhook.cert-manager.io": Post https://cert-manager-webhook.cert-manager.svc:443/mutate?timeout=30s:
             #   dial tcp 10.245.148.127:443: connect: connection refused
             sleep 20s
-            argocd app sync -l app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
-            argocd app wait -l app.kubernetes.io/instance=test-apps --server grpc.argocd.baybay.dev
+            argocd app sync -l app.kubernetes.io/instance=test-apps
+            argocd app wait -l app.kubernetes.io/instance=test-apps
   run-e2e-tests:
     docker:
       - image: *jdk_image
@@ -200,8 +199,8 @@ jobs:
       - run:
           name: Running e2e tests
           command: |
-            ./gradlew app:e2eTestRemote -Dgeb.build.baseUrl=https://test-lobiani.baybay.dev/ \
-              -Dremote.webdriver.url=https://moon.baybay.dev/wd/hub \
+            ./gradlew app:e2eTestRemote -Dgeb.build.baseUrl=${TEST_APP_BASE_URL}/ \
+              -Dremote.webdriver.url=$REMOTE_WEBDRIVER_URL \
               -Dremote.webdriver.acceptInsecure=true \
       - save_test_results:
           dst_location: e2e-test-results
@@ -221,7 +220,7 @@ workflows:
   check:
     when: << pipeline.parameters.check >>
     jobs:
-      - check-build-needed:
+      - determine-workflow:
           filters:
             branches:
               only:
