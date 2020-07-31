@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.spec.env }}-linkerd
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    environment: {{ .Values.spec.env }}
+spec:
+  destination:
+    namespace: linkerd
+    server: {{ .Values.spec.destination.server }}
+  project: default
+  source:
+    path: infra-config/base/linkerd
+    repoURL: {{ .Values.spec.source.repoURL }}
+    targetRevision: {{ .Values.spec.source.targetRevision }}
