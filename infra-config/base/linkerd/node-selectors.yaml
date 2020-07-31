@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkerd-identity
+  namespace: linkerd
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node-type: worker-pool
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkerd-controller
+  namespace: linkerd
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node-type: worker-pool
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkerd-destination
+  namespace: linkerd
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node-type: worker-pool
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkerd-web
+  namespace: linkerd
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node-type: worker-pool
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkerd-prometheus
+  namespace: linkerd
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node-type: worker-pool
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkerd-grafana
+  namespace: linkerd
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node-type: worker-pool
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkerd-proxy-injector
+  namespace: linkerd
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node-type: worker-pool
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkerd-sp-validator
+  namespace: linkerd
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node-type: worker-pool
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkerd-tap
+  namespace: linkerd
+spec:
+  template:
+    spec:
+      nodeSelector:
+        node-type: worker-pool

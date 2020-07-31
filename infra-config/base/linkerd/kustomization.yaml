@@ -4,3 +4,7 @@ kind: Kustomization
 resources:
   - install.yaml
   - ingress.yaml
+
+patchesStrategicMerge:
+  - node-selectors.yaml
+
