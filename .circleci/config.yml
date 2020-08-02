@@ -185,7 +185,6 @@ jobs:
           name: Syncing apps
           command: |
             argocd app sync test-apps
-            argocd app wait test-apps
             argocd app sync -l sync-phase=0,app.kubernetes.io/instance=test-apps
             argocd app wait -l sync-phase=0,app.kubernetes.io/instance=test-apps
             # Ugly hack to wait for cert-manager-webhook become "available" i.e. to workaround following issue when
@@ -240,7 +239,6 @@ jobs:
           name: Syncing apps
           command: |
             argocd app sync production-apps
-            argocd app wait production-apps
             argocd app sync -l app.kubernetes.io/instance=production-apps
             argocd app wait -l app.kubernetes.io/instance=production-apps
 
