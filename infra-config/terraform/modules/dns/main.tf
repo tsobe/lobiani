@@ -15,3 +15,10 @@ resource "digitalocean_record" "axonserver-gui-domain" {
   name = format("%s%s", var.subdomain-prefix, "axonserver-gui.lobiani")
   value = var.address
 }
+
+resource "digitalocean_record" "dashboard-domain" {
+  domain = data.digitalocean_domain.default.name
+  type = "A"
+  name = format("%s%s", var.subdomain-prefix, "dashboard.lobiani")
+  value = var.address
+}
