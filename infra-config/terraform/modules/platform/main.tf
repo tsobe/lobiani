@@ -45,6 +45,7 @@ provider "helm" {
 }
 
 resource "kubernetes_namespace" "ingress-nginx-ns" {
+  depends_on = [digitalocean_kubernetes_cluster.cluster]
   metadata {
     name = "ingress-nginx"
   }
