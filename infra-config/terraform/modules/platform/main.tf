@@ -15,24 +15,14 @@ resource "digitalocean_kubernetes_cluster" "cluster" {
 
   node_pool {
     name = "worker-pool"
-    size = "s-2vcpu-2gb"
-    node_count = 1
+    size = "s-1vcpu-2gb"
+    auto_scale = true
+    min_nodes = 1
+    max_nodes = 2
 
     labels = {
       node-type = "worker-pool"
     }
-  }
-}
-
-resource "digitalocean_kubernetes_node_pool" "worker-pool-mem" {
-  cluster_id = digitalocean_kubernetes_cluster.cluster.id
-
-  name = "worker-pool-mem"
-  size = "s-1vcpu-3gb"
-  node_count = 1
-
-  labels = {
-    node-type = "worker-pool"
   }
 }
 
