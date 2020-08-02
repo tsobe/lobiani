@@ -13,7 +13,7 @@ metadata:
 spec:
   strategy:
     type: RollingUpdate
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: lobiani-app
@@ -36,7 +36,7 @@ spec:
               protocol: TCP
           resources:
             limits:
-              cpu: 500m
+              cpu: 200m
               memory: 324Mi
             requests:
               cpu: 100m
