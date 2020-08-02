@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: lobiani-app
-          image: sevteen/lobiani-app@sha256:048fda2c43810eb01dc27e76fdc84dddbca80dccba618a6416223dc791a94195 # Modified by CI at Thu Jul 30 20:06:27 UTC 2020 
+          image: sevteen/lobiani-app@sha256:0ab9d19089cce5a2c87dedfabecef7de59e883c4f83e818b8b3a2e062c656495 # Modified by CI at Sun Aug  2 08:05:47 UTC 2020 
           imagePullPolicy: Always
           env:
             - name: AXON_AXONSERVER_SERVERS
