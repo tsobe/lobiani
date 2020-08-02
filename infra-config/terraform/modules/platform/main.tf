@@ -24,6 +24,19 @@ resource "digitalocean_kubernetes_cluster" "cluster" {
   }
 }
 
+resource "digitalocean_kubernetes_node_pool" "worker-pool-mem" {
+  cluster_id = digitalocean_kubernetes_cluster.cluster.id
+
+  name = "worker-pool-mem"
+  size = "s-1vcpu-3gb"
+  auto_scale = true
+  node_count = 1
+
+  labels = {
+    node-type = "worker-pool"
+  }
+}
+
 provider "kubernetes" {
   version = "= 1.11.4"
   host = digitalocean_kubernetes_cluster.cluster.kube_config.0.host
