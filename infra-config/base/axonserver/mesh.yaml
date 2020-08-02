@@ -1,0 +1,9 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: axonserver
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
