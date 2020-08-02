@@ -29,7 +29,6 @@ resource "digitalocean_kubernetes_node_pool" "worker-pool-mem" {
 
   name = "worker-pool-mem"
   size = "s-1vcpu-3gb"
-  auto_scale = true
   node_count = 1
 
   labels = {
