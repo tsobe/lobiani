@@ -7,6 +7,10 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-staging"
     acme.cert-manager.io/http01-edit-in-place: "true"
 spec:
+  tls:
+    - hosts:
+        - test-dashboard.lobiani.baybay.dev
+      secretName: dashboard-tls
   rules:
     - host: test-dashboard.lobiani.baybay.dev
       http:

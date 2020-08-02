@@ -6,3 +6,15 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     acme.cert-manager.io/http01-edit-in-place: "true"
+spec:
+  tls:
+    - hosts:
+        - dashboard.lobiani.baybay.dev
+      secretName: dashboard-tls
+  rules:
+    - host: dashboard.lobiani.baybay.dev
+      http:
+        paths:
+          - backend:
+              serviceName: linkerd-web
+              servicePort: 8084
