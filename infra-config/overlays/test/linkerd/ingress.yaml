@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: web-ingress
+  namespace: linkerd
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    acme.cert-manager.io/http01-edit-in-place: "true"
+spec:
+  rules:
+    - host: test-dashboard.lobiani.baybay.dev
+      http:
+        paths:
+          - backend:
+              serviceName: linkerd-web
+              servicePort: 8084
