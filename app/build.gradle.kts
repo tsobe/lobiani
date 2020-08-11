@@ -30,6 +30,7 @@ dependencies {
     }
     testImplementation("org.axonframework:axon-test:$axonVersion")
     testImplementation("org.spockframework:spock-core:$spockVersion")
+    testImplementation("org.spockframework:spock-spring:$spockVersion")
 
     e2eTestImplementation("org.spockframework:spock-core:$spockVersion")
     e2eTestImplementation("org.gebish:geb-spock:$gebVersion") {
