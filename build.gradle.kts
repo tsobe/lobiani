@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "1.3.71"
 }
 
-group = "com.lobiani"
+group = "dev.baybay.lobiani"
 
 allprojects {
     repositories {
