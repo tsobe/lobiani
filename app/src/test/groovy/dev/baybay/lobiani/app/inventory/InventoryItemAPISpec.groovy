@@ -152,6 +152,7 @@ class InventoryItemAPISpec extends Specification {
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
+        response.body.message == "Count must be a positive number"
 
         where:
         count << [0, -10]

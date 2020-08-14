@@ -48,29 +48,34 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
 
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNoResult(): ResponseEntity<Void> {
-        return ResponseEntity.notFound().build<Void>()
+        return notFound()
     }
 
     @ExceptionHandler(JSR303ViolationException::class)
-    fun handleValidationFailure(): ResponseEntity<Void> {
-        return ResponseEntity.badRequest().build<Void>()
+    fun handleValidationFailure(e: JSR303ViolationException): ResponseEntity<APIError> {
+        return badRequest(e.violations.first().message)
     }
 
     @ExceptionHandler(CommandExecutionException::class)
     fun handleCommandExecution(e: CommandExecutionException): ResponseEntity<Void> {
-        return ResponseEntity.notFound().build<Void>()
+        return notFound()
     }
 
     @ExceptionHandler(ItemAlreadyDefinedException::class)
     fun handleDuplicateItem(e: ItemAlreadyDefinedException): ResponseEntity<APIError> {
-        return ResponseEntity.badRequest()
-                .body(APIError("Item with slug ${e.slug} is already defined"))
+        return badRequest("Item with slug ${e.slug} is already defined")
     }
 
     private fun ensureItemIsNotDefined(slug: String) {
         if (getAllItems().any { i -> i.slug == slug }) {
             throw ItemAlreadyDefinedException(slug)
         }
+    }
+
+    private fun notFound() = ResponseEntity.notFound().build<Void>()
+
+    private fun badRequest(message: String): ResponseEntity<APIError> {
+        return ResponseEntity.badRequest().body(APIError(message))
     }
 
     data class Stock(val count: Int)
