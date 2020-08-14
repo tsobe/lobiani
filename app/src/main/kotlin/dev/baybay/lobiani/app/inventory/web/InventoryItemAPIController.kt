@@ -30,6 +30,7 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
 
     @PostMapping
     fun defineNewItem(@RequestBody defineInventoryItem: DefineInventoryItem): InventoryItem {
+        ensureItemIsNotDefined(defineInventoryItem.slug)
         commandGateway.sendAndWait<String>(defineInventoryItem)
         return InventoryItem(defineInventoryItem.id, defineInventoryItem.slug)
     }
@@ -60,5 +61,21 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
         return ResponseEntity.notFound().build<Void>()
     }
 
+    @ExceptionHandler(ItemAlreadyDefinedException::class)
+    fun handleDuplicateItem(e: ItemAlreadyDefinedException): ResponseEntity<APIError> {
+        return ResponseEntity.badRequest()
+                .body(APIError("Item with slug ${e.slug} is already defined"))
+    }
+
+    private fun ensureItemIsNotDefined(slug: String) {
+        if (getAllItems().any { i -> i.slug == slug }) {
+            throw ItemAlreadyDefinedException(slug)
+        }
+    }
+
     data class Stock(val count: Int)
+
+    data class APIError(val message: String)
+
+    class ItemAlreadyDefinedException(val slug: String) : RuntimeException()
 }

@@ -29,7 +29,7 @@ class InventoryItemAPISpec extends Specification {
     GenericContainer container = new GenericContainer("axoniq/axonserver")
             .withExposedPorts(8024, 8124)
             .waitingFor(Wait.forHttp("/actuator/info").forPort(8024))
-            .withStartupTimeout(Duration.ofSeconds(30))
+            .withStartupTimeout(Duration.ofSeconds(60))
 
     def id
 
@@ -91,7 +91,7 @@ class InventoryItemAPISpec extends Specification {
         assertItem(items[0])
     }
 
-    def "empty result is returned when item isn't defined"() {
+    def "empty result is returned when no items are defined"() {
         when:
         def response = getItemsEntity()
         def items = response.body
@@ -155,6 +155,18 @@ class InventoryItemAPISpec extends Specification {
 
         where:
         count << [0, -10]
+    }
+
+    def "BadRequest is returned when item with same slug is already defined"() {
+        given:
+        itemDefined()
+
+        when:
+        def response = defineItem()
+
+        then:
+        response.statusCode == HttpStatus.BAD_REQUEST
+        response.body.message == "Item with slug $SLUG is already defined"
     }
 
     ResponseEntity<Object> defineItem() {
