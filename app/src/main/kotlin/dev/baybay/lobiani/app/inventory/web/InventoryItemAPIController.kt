@@ -25,7 +25,8 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
 
     @GetMapping("/{id}")
     fun getItem(@PathVariable id: UUID): InventoryItem {
-        return getAllItems().first { it.id == id }
+        return queryGateway.query(QueryInventoryItemByID(id), InventoryItem::class.java).get()
+                ?: throw NoSuchElementException()
     }
 
     @PostMapping
@@ -67,10 +68,13 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     }
 
     private fun ensureItemIsNotDefined(slug: String) {
-        if (getAllItems().any { i -> i.slug == slug }) {
+        if (isItemDefined(slug)) {
             throw ItemAlreadyDefinedException(slug)
         }
     }
+
+    private fun isItemDefined(slug: String) =
+            queryGateway.query(QueryInventoryItemBySlug(slug), InventoryItem::class.java).get() != null
 
     private fun notFound() = ResponseEntity.notFound().build<Void>()
 

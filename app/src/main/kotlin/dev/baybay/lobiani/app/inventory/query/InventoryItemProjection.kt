@@ -1,9 +1,6 @@
 package dev.baybay.lobiani.app.inventory.query
 
-import dev.baybay.lobiani.app.inventory.api.InventoryItemAddedToStock
-import dev.baybay.lobiani.app.inventory.api.InventoryItemDefined
-import dev.baybay.lobiani.app.inventory.api.InventoryItemDeleted
-import dev.baybay.lobiani.app.inventory.api.QueryAllInventoryItems
+import dev.baybay.lobiani.app.inventory.api.*
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.queryhandling.QueryHandler
 import org.springframework.stereotype.Component
@@ -31,6 +28,16 @@ class InventoryItemProjection {
     @QueryHandler
     fun allItems(q: QueryAllInventoryItems): MutableList<InventoryItem> {
         return items
+    }
+
+    @QueryHandler
+    fun byID(q: QueryInventoryItemByID): InventoryItem? {
+        return items.firstOrNull { i -> i.id == q.id }
+    }
+
+    @QueryHandler
+    fun bySlug(q: QueryInventoryItemBySlug): InventoryItem? {
+        return items.firstOrNull { i -> i.slug == q.slug }
     }
 
 }
