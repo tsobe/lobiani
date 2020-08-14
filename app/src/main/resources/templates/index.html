@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lobiani</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+<!--    <router-link id="new-item" to="/new">New item</router-link>-->
+<!--    <router-view></router-view>-->
+
+    <input type="text" class="slug" v-model="newItem.slug"/>
+    <button class="add" v-on:click="addItem">Add</button>
+    <div v-for="(item, idx) in items" v-bind:key="item.id">
+        <span class="slug">{{ item.slug }}</span>
+        <span class="stock-level">{{ item.stockLevel }}</span>
+        <input name="count" type="number" v-model.number="item.toAdd"/>
+        <button class="add-to-stock" v-on:click="addToStock(item)">Add to stock</button>
+        <button class="delete" v-on:click="deleteItem(item, idx)">Delete</button>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    const Items = {
+        template: '<div v-for="(item, idx) in items" v-bind:key="item.id">' +
+            '        <span class="slug">{{ item.slug }}</span>' +
+            '        <span class="stock-level">{{ item.stockLevel }}</span>' +
+            '        <input name="count" type="number" v-model.number="item.toAdd"/>' +
+            '        <button class="add-to-stock" v-on:click="addToStock(item)">Add to stock</button>' +
+            '        <button class="delete" v-on:click="deleteItem(item, idx)">Delete</button>' +
+            '    </div>'
+    };
+
+    const routes = [
+        {path: '/new'},
+        {path: '/items', component: Items}
+    ];
+    const router = new VueRouter({
+        routes
+    });
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            newItem: {
+                slug: null
+            },
+            items: []
+        },
+        mounted() {
+            axios.get('/api/inventory-items')
+                .then(r => {
+                    this.items = r.data;
+                })
+        },
+        methods: {
+            addItem() {
+                axios.post('/api/inventory-items', {slug: this.newItem.slug})
+                    .then(r => {
+                        console.log(r);
+                        const createdItem = r.data;
+                        this.items.push(createdItem);
+                    });
+                this.newItem.slug = null
+            },
+            addToStock(item) {
+                item.stockLevel += item.toAdd;
+                axios.post(`/api/inventory-items/${item.id}/stock`, {count: item.toAdd});
+            },
+            deleteItem(item, idx) {
+                axios.delete(`/api/inventory-items/${item.id}`)
+                    .then(r => {
+                        console.log(r);
+                        this.items.splice(idx, 1);
+                    });
+            }
+        }
+    });
+</script>
+</html>
