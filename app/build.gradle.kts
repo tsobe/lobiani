@@ -32,6 +32,8 @@ dependencies {
     testImplementation("org.axonframework:axon-test:$axonVersion")
     testImplementation("org.spockframework:spock-core:$spockVersion")
     testImplementation("org.spockframework:spock-spring:$spockVersion")
+    testImplementation("org.testcontainers:testcontainers:1.14.3")
+    testImplementation("org.testcontainers:spock:1.14.3")
 
     e2eTestImplementation("org.spockframework:spock-core:$spockVersion")
     e2eTestImplementation("org.gebish:geb-spock:$gebVersion") {

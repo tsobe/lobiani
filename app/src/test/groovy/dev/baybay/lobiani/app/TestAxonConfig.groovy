@@ -14,7 +14,9 @@ import org.axonframework.queryhandling.SimpleQueryBus
 import org.axonframework.spring.config.AxonConfiguration
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 
+@Profile("localAxon")
 @TestConfiguration
 class TestAxonConfig {
 

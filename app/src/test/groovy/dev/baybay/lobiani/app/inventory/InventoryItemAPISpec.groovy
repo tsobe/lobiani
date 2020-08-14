@@ -1,18 +1,22 @@
 package dev.baybay.lobiani.app.inventory
 
-
-import dev.baybay.lobiani.app.TestAxonConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import spock.lang.Ignore
+import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.wait.strategy.Wait
+import org.testcontainers.spock.Testcontainers
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = TestAxonConfig)
+import java.time.Duration
+
+@Testcontainers
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class InventoryItemAPISpec extends Specification {
 
     private static final URI = "/api/inventory-items"
@@ -21,7 +25,18 @@ class InventoryItemAPISpec extends Specification {
     @Autowired
     TestRestTemplate restTemplate
 
+    @Shared
+    GenericContainer container = new GenericContainer("axoniq/axonserver")
+            .withExposedPorts(8024, 8124)
+            .waitingFor(Wait.forHttp("/actuator/info").forPort(8024))
+            .withStartupTimeout(Duration.ofSeconds(30))
+
     def id
+
+    void setupSpec() {
+        def port = container.getMappedPort(8124)
+        System.setProperty("axon.axonserver.servers", "${container.getHost()}:$port")
+    }
 
     void cleanup() {
         id && deleteItem(id)
@@ -97,7 +112,6 @@ class InventoryItemAPISpec extends Specification {
         getItemEntity(id).statusCode == HttpStatus.NOT_FOUND
     }
 
-    @Ignore
     def "NotFound is returned when deleting undefined item"() {
         given:
         def undefinedItemId = UUID.randomUUID()
