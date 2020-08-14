@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import spock.lang.Ignore
 import spock.lang.Specification
+import spock.lang.Unroll
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = TestAxonConfig)
 class InventoryItemAPISpec extends Specification {
@@ -125,6 +126,21 @@ class InventoryItemAPISpec extends Specification {
         then:
         response.statusCode.is2xxSuccessful()
         item.stockLevel == 10
+    }
+
+    @Unroll
+    def "BadRequest is returned when #count items are added to stock"() {
+        given:
+        itemDefined()
+
+        when:
+        def response = addItemToStock(id, count)
+
+        then:
+        response.statusCode == HttpStatus.BAD_REQUEST
+
+        where:
+        count << [0, -10]
     }
 
     ResponseEntity<Object> defineItem() {

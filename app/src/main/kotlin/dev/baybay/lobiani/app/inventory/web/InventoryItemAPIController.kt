@@ -3,6 +3,7 @@ package dev.baybay.lobiani.app.inventory.web
 import dev.baybay.lobiani.app.inventory.api.*
 import dev.baybay.lobiani.app.inventory.query.InventoryItem
 import org.axonframework.commandhandling.gateway.CommandGateway
+import org.axonframework.messaging.interceptors.JSR303ViolationException
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.http.ResponseEntity
@@ -44,8 +45,13 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     }
 
     @ExceptionHandler(NoSuchElementException::class)
-    fun handle(): ResponseEntity<Void> {
+    fun handleNoResult(): ResponseEntity<Void> {
         return ResponseEntity.notFound().build<Void>()
+    }
+
+    @ExceptionHandler(JSR303ViolationException::class)
+    fun handleValidationFailure(): ResponseEntity<Void> {
+        return ResponseEntity.badRequest().build<Void>()
     }
 
     data class Stock(val count: Int)
