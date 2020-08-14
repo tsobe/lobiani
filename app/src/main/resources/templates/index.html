@@ -67,13 +67,14 @@
                     .then(r => {
                         console.log(r);
                         this.slug = null;
-                        router.push('items');
+                        router.push('/items');
                     });
             },
         }
     };
 
     const routes = [
+        {path: '/', redirect: '/items'},
         {path: '/new', component: NewItem},
         {path: '/items', component: Items}
     ];
