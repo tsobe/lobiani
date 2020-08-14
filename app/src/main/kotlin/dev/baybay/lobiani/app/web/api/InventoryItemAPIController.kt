@@ -27,15 +27,15 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     }
 
     @PostMapping
-    fun defineNewItem(@RequestBody slug: String): InventoryItem {
-        val id = UUID.randomUUID()
-        commandGateway.sendAndWait<String>(DefineInventoryItem(id, slug))
-        return InventoryItem(id, slug)
+    fun defineNewItem(@RequestBody defineInventoryItem: DefineInventoryItem): InventoryItem {
+        commandGateway.sendAndWait<String>(defineInventoryItem)
+        return InventoryItem(defineInventoryItem.id, defineInventoryItem.slug)
     }
 
     @PostMapping("/{id}/stock")
-    fun addToStock(@PathVariable id: UUID, @RequestBody count: Int) {
-        commandGateway.sendAndWait<AddInventoryItemToStock>(AddInventoryItemToStock(id, Quantity.count(count)))
+    fun addToStock(@PathVariable id: UUID, @RequestBody stock: Stock) {
+        commandGateway.sendAndWait<AddInventoryItemToStock>(
+                AddInventoryItemToStock(id, Quantity.count(stock.count)))
     }
 
     @DeleteMapping("/{id}")
@@ -48,4 +48,5 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
         return ResponseEntity.notFound().build<Void>()
     }
 
+    data class Stock(val count: Int)
 }

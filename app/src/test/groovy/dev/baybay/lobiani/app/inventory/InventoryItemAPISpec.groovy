@@ -128,11 +128,11 @@ class InventoryItemAPISpec extends Specification {
     }
 
     ResponseEntity<Object> defineItem() {
-        restTemplate.postForEntity(URI, SLUG, Object)
+        restTemplate.postForEntity(URI, [slug: SLUG], Object)
     }
 
     def itemDefined() {
-        id = restTemplate.postForObject(URI, SLUG, Object).id
+        id = restTemplate.postForObject(URI, [slug: SLUG], Object).id
     }
 
     ResponseEntity<Object> getItemEntity(id) {
@@ -148,7 +148,7 @@ class InventoryItemAPISpec extends Specification {
     }
 
     ResponseEntity<Object> addItemToStock(id, count) {
-        restTemplate.postForEntity("$URI/$id/stock", count, Object)
+        restTemplate.postForEntity("$URI/$id/stock", [count: count], Object)
     }
 
     static void assertItem(item) {
