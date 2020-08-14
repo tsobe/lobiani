@@ -6,7 +6,7 @@ class InventoryItemsPage extends Page {
 
     static url = "#/items"
 
-    static at = { !$(".items").empty }
+    static at = { waitFor { !$(".items").empty } }
 
     static content = {
         newItem { $("#new-item") }
