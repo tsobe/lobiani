@@ -1,4 +1,4 @@
-package dev.baybay.lobiani.app.web.api
+package dev.baybay.lobiani.app.inventory.web
 
 import dev.baybay.lobiani.app.inventory.api.*
 import dev.baybay.lobiani.app.inventory.query.InventoryItem
