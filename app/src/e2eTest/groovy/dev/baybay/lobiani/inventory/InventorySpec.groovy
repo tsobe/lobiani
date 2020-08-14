@@ -25,7 +25,7 @@ class InventorySpec extends GebSpec {
 
         then:
         at itemsPage
-        refreshWaitFor { itemsPage.hasItem slug }
+        waitFor { itemsPage.hasItem slug }
 
 
         when:
@@ -33,7 +33,7 @@ class InventorySpec extends GebSpec {
 
         then:
         at itemsPage
-        refreshWaitFor { itemsPage.getItemStockLevel(slug) == 100 }
+        waitFor { itemsPage.getItemStockLevel(slug) == 100 }
 
 
         when:
@@ -41,7 +41,7 @@ class InventorySpec extends GebSpec {
 
         then:
         at itemsPage
-        refreshWaitFor { itemsPage.getItemStockLevel(slug) == 110 }
+        waitFor { itemsPage.getItemStockLevel(slug) == 110 }
 
 
         when:
@@ -49,7 +49,7 @@ class InventorySpec extends GebSpec {
 
         then:
         at itemsPage
-        refreshWaitFor { !itemsPage.hasItem(slug) }
+        waitFor { !itemsPage.hasItem(slug) }
 
 
         cleanup:

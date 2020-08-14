@@ -4,9 +4,9 @@ import geb.Page
 
 class InventoryItemsPage extends Page {
 
-    static url = "inventory-items"
+    static url = "#/items"
 
-    static at = { title == "Inventory items" }
+    static at = { !$(".items").empty }
 
     static content = {
         newItem { $("#new-item") }

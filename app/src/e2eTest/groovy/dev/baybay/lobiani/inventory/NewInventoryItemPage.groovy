@@ -4,10 +4,9 @@ import geb.Page
 
 class NewInventoryItemPage extends Page {
 
-    static at = { !form.empty }
+    static at = { !saveBtn.empty }
 
     static content = {
-        form { $(".new-item-form") }
         slugInput { $(".slug") }
         saveBtn { $(".add") }
     }

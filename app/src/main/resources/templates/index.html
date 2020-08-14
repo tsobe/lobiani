@@ -9,46 +9,24 @@
 </head>
 <body>
 <div id="app">
-<!--    <router-link id="new-item" to="/new">New item</router-link>-->
-<!--    <router-view></router-view>-->
-
-    <input type="text" class="slug" v-model="newItem.slug"/>
-    <button class="add" v-on:click="addItem">Add</button>
-    <div v-for="(item, idx) in items" v-bind:key="item.id">
-        <span class="slug">{{ item.slug }}</span>
-        <span class="stock-level">{{ item.stockLevel }}</span>
-        <input name="count" type="number" v-model.number="item.toAdd"/>
-        <button class="add-to-stock" v-on:click="addToStock(item)">Add to stock</button>
-        <button class="delete" v-on:click="deleteItem(item, idx)">Delete</button>
-    </div>
+    <router-link to="/items">Items</router-link>
+    <router-link id="new-item" to="/new">New item</router-link>
+    <router-view></router-view>
 </div>
 </body>
 <script type="text/javascript">
     const Items = {
-        template: '<div v-for="(item, idx) in items" v-bind:key="item.id">' +
+        template: '<div class="items"><div v-for="(item, idx) in items" v-bind:key="item.id" class="item">' +
             '        <span class="slug">{{ item.slug }}</span>' +
             '        <span class="stock-level">{{ item.stockLevel }}</span>' +
-            '        <input name="count" type="number" v-model.number="item.toAdd"/>' +
+            '        <input name="count" type="number" v-model.number="item.increaseBy"/>' +
             '        <button class="add-to-stock" v-on:click="addToStock(item)">Add to stock</button>' +
             '        <button class="delete" v-on:click="deleteItem(item, idx)">Delete</button>' +
-            '    </div>'
-    };
-
-    const routes = [
-        {path: '/new'},
-        {path: '/items', component: Items}
-    ];
-    const router = new VueRouter({
-        routes
-    });
-
-    const app = new Vue({
-        el: '#app',
-        data: {
-            newItem: {
-                slug: null
-            },
-            items: []
+            '    </div></div>',
+        data() {
+            return {
+                items: []
+            }
         },
         mounted() {
             axios.get('/api/inventory-items')
@@ -57,18 +35,13 @@
                 })
         },
         methods: {
-            addItem() {
-                axios.post('/api/inventory-items', {slug: this.newItem.slug})
+            addToStock(item) {
+                axios.post(`/api/inventory-items/${item.id}/stock`, {count: item.increaseBy})
                     .then(r => {
                         console.log(r);
-                        const createdItem = r.data;
-                        this.items.push(createdItem);
-                    });
-                this.newItem.slug = null
-            },
-            addToStock(item) {
-                item.stockLevel += item.toAdd;
-                axios.post(`/api/inventory-items/${item.id}/stock`, {count: item.toAdd});
+                        item.stockLevel += item.increaseBy;
+                        item.increaseBy = null;
+                    })
             },
             deleteItem(item, idx) {
                 axios.delete(`/api/inventory-items/${item.id}`)
@@ -78,6 +51,39 @@
                     });
             }
         }
+    };
+
+    const NewItem = {
+        template: '<div><input type="text" class="slug" v-model="slug"/>' +
+            '<button class="add" v-on:click="addItem">Add</button></div>',
+        data() {
+            return {
+                slug: null
+            }
+        },
+        methods: {
+            addItem() {
+                axios.post('/api/inventory-items', {slug: this.slug})
+                    .then(r => {
+                        console.log(r);
+                        this.slug = null;
+                        router.push('items');
+                    });
+            },
+        }
+    };
+
+    const routes = [
+        {path: '/new', component: NewItem},
+        {path: '/items', component: Items}
+    ];
+
+    const router = new VueRouter({
+        routes
     });
+
+    const app = new Vue({
+        router
+    }).$mount('#app');
 </script>
 </html>
