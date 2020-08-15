@@ -6,6 +6,7 @@ import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.interceptors.JSR303ViolationException
 import org.axonframework.messaging.responsetypes.ResponseTypes
+import org.axonframework.modelling.command.AggregateNotFoundException
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -59,6 +60,7 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
 
     @ExceptionHandler(CommandExecutionException::class)
     fun handleCommandExecution(e: CommandExecutionException): ResponseEntity<Void> {
+        e.getDetails<AggregateNotFoundException>().get()
         return notFound()
     }
 
