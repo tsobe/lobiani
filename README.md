@@ -105,9 +105,9 @@ However for the sake of this exercise, I believe it should be fine.
 - As a courier I want to update delivery status so that customers see the progress
 
 # Development process roadmap
-Monolith-first approach will be used where initially entire application will be delivered as
+Monolith-first approach will be used where initially entire backend system is delivered as
 a single deployment unit, however it will be still modular internally, to allow easier transition
-to microservices
+to microservices. There's gonna be a separate deployment unit for frontend (SPA).
 
 ## Milestones
 ### Milestone 1 objectives
