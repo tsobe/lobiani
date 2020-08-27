@@ -3,7 +3,7 @@
     <div id="nav">
       <router-link to="/items">Inventory Items</router-link>
       |
-      <router-link to="/new">Define New Item</router-link>
+      <router-link id="new-item" to="/new">Define New Item</router-link>
     </div>
     <router-view v-on:itemDefined="navigateToItems"/>
   </div>
