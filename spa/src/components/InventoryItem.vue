@@ -27,12 +27,12 @@
     },
     methods: {
       async addToStock() {
-        await axios.post(`/api/inventory-items/${this.item.id}/stock`, {count: this.increaseBy})
+        await axios.post(`/inventory-items/${this.item.id}/stock`, {count: this.increaseBy})
         this.item.stockLevel += this.increaseBy
         this.increaseBy = null
       },
       async deleteItem() {
-        await axios.delete(`/api/inventory-items/${this.item.id}`)
+        await axios.delete(`/inventory-items/${this.item.id}`)
         this.$emit('itemDeleted', this.item)
       }
     }

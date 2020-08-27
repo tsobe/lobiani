@@ -93,7 +93,7 @@ describe('DefineInventoryItem', () => {
   }
 
   function expectAPIToHaveBeenCalled() {
-    expect(axios.post).toHaveBeenCalledWith('/api/inventory-items', {slug: slug})
+    expect(axios.post).toHaveBeenCalledWith('/inventory-items', {slug: slug})
   }
 })
 
@@ -187,7 +187,7 @@ describe('InventoryItem', () => {
   }
 
   function expectAPIToHaveBeenCalled() {
-    expect(axios.post).toHaveBeenCalledWith(`/api/inventory-items/${itemId}/stock`, {count: count})
+    expect(axios.post).toHaveBeenCalledWith(`/inventory-items/${itemId}/stock`, {count: count})
   }
 })
 
@@ -200,7 +200,7 @@ describe('Inventory', () => {
     })
 
     it('should call the API', () => {
-      expect(axios.get).toHaveBeenCalledWith('/api/inventory-items')
+      expect(axios.get).toHaveBeenCalledWith('/inventory-items')
     })
 
     it('should display all items', async () => {
@@ -219,7 +219,7 @@ describe('Inventory', () => {
       })
 
       it('should call tha API', () => {
-        expect(axios.delete).toHaveBeenCalledWith('/api/inventory-items/bar')
+        expect(axios.delete).toHaveBeenCalledWith('/inventory-items/bar')
       })
 
       it('should remove the item from the list', () => {
@@ -242,7 +242,7 @@ describe('Inventory', () => {
       })
 
       it('should call tha API', () => {
-        expect(axios.delete).toHaveBeenCalledWith('/api/inventory-items/bar')
+        expect(axios.delete).toHaveBeenCalledWith('/inventory-items/bar')
       })
 
       it('should not remove the item from the list', () => {

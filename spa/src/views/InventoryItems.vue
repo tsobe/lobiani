@@ -20,7 +20,7 @@
       }
     },
     async mounted() {
-      const response = await axios.get('/api/inventory-items')
+      const response = await axios.get('/inventory-items')
       this.items = response.data
     },
     methods: {

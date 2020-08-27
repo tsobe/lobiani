@@ -17,7 +17,7 @@
     },
     methods: {
       async defineItem() {
-        const response = await axios.post('/api/inventory-items', {slug: this.slug})
+        const response = await axios.post('/inventory-items', {slug: this.slug})
         this.$emit('itemDefined', {
           id: response.data.id,
           slug: this.slug
