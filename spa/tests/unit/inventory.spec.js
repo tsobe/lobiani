@@ -1,9 +1,11 @@
-import {mount} from '@vue/test-utils'
+import {createLocalVue, mount} from '@vue/test-utils'
 import axios from 'axios'
 import flushPromises from 'flush-promises'
-import DefineInventoryItem from '@/components/DefineInventoryItem'
+import DefineInventoryItem from '@/views/DefineInventoryItem'
 import InventoryItem from '@/components/InventoryItem'
-import InventoryItems from '@/components/InventoryItems'
+import InventoryItems from '@/views/InventoryItems'
+import VueRouter from 'vue-router'
+import App from '@/App'
 
 jest.mock('axios')
 
@@ -258,6 +260,47 @@ describe('Inventory', () => {
     function findItemWrapper(slug) {
       return wrapper.find('[data-slug="' + slug + '"]')
     }
+  })
+
+  it('should navigate to list of items after new item is defined', async () => {
+    setupSuccessfulGETCall()
+    const localVue = createLocalVue()
+    localVue.use(VueRouter)
+
+    const routes = [
+      {
+        path: '/',
+        name: 'InventoryItems',
+        component: InventoryItems
+      },
+      {
+        path: '/new',
+        name: 'DefineInventoryItem',
+        component: DefineInventoryItem
+      }
+    ]
+
+    const router = new VueRouter({
+      routes
+    })
+
+    const wrapper = mount(App, {
+      localVue,
+      router
+    })
+
+    await wrapper.vm.$router.push('/new')
+
+    const defineItemWrapper = wrapper.findComponent(DefineInventoryItem)
+    defineItemWrapper.vm.$emit('itemDefined', {
+      id: 'baz',
+      slug: 'the-simpsons',
+      stockLevel: 0
+    })
+
+    await flushPromises()
+
+    expect(wrapper.vm.$route.path).toBe('/items')
   })
 
   let wrapper
