@@ -7,7 +7,6 @@ import InventoryItems from '@/components/InventoryItems'
 
 jest.mock('axios')
 
-
 function setupFailingPOSTCall() {
   axios.post.mockRejectedValue({
     response: {
@@ -21,16 +20,13 @@ function setupSuccessfulPOSTCall(data = {}) {
   axios.post.mockResolvedValue({data})
 }
 
-
 describe('DefineInventoryItem', () => {
-
   describe('item can be defined when API call succeeds', () => {
-
     beforeAll(async () => {
       setupSuccessfulPOSTCall({
-          id: itemId,
-          slug: slug
-        }
+        id: itemId,
+        slug: slug
+      }
       )
 
       mountComponent()
@@ -45,17 +41,18 @@ describe('DefineInventoryItem', () => {
     it('should emit the "itemDefined" event', () => {
       expect(wrapper.emitted().itemDefined).toBeTruthy()
       expect(wrapper.emitted().itemDefined).toHaveLength(1)
-      expect(wrapper.emitted().itemDefined[0]).toEqual([{id: itemId, slug: slug}])
+      expect(wrapper.emitted().itemDefined[0]).toEqual([{
+        id: itemId,
+        slug: slug
+      }])
     })
 
     it('should reset the slug input', () => {
       expect(slugWrapper.element.value).toBeFalsy()
     })
-
   })
 
   describe('item can not be defined when API call fails', () => {
-
     beforeAll(async () => {
       setupFailingPOSTCall()
 
@@ -77,7 +74,10 @@ describe('DefineInventoryItem', () => {
     })
   })
 
-  let wrapper, slugWrapper, itemId = 'foo', slug = 'the-matrix-trilogy'
+  let wrapper
+  let slugWrapper
+  const itemId = 'foo'
+  const slug = 'the-matrix-trilogy'
 
   function mountComponent() {
     wrapper = mount(DefineInventoryItem)
@@ -95,11 +95,8 @@ describe('DefineInventoryItem', () => {
   }
 })
 
-
 describe('InventoryItem', () => {
-
   describe('mount', () => {
-
     beforeAll(mountComponent)
 
     it('should display slug', () => {
@@ -112,7 +109,6 @@ describe('InventoryItem', () => {
   })
 
   describe('items can be added to stock when API call succeeds', () => {
-
     beforeAll(async () => {
       mountComponent()
 
@@ -135,7 +131,6 @@ describe('InventoryItem', () => {
   })
 
   describe('items can not be added to stock when API call fails', () => {
-
     beforeAll(async () => {
       mountComponent()
 
@@ -157,11 +152,13 @@ describe('InventoryItem', () => {
     })
   })
 
-  let wrapper, countWrapper, stockLevelWrapper,
-    itemId = 'foo',
-    slug = 'the-matrix-trilogy',
-    initialStockLevel = 0,
-    count = 10
+  let wrapper
+  let countWrapper
+  let stockLevelWrapper
+  const itemId = 'foo'
+  const slug = 'the-matrix-trilogy'
+  const initialStockLevel = 0
+  const count = 10
 
   function mountComponent() {
     wrapper = mount(InventoryItem, {
@@ -192,11 +189,8 @@ describe('InventoryItem', () => {
   }
 })
 
-
 describe('Inventory', () => {
-
   describe('mount', () => {
-
     beforeAll(async () => {
       setupSuccessfulGETCall()
 
@@ -213,9 +207,7 @@ describe('Inventory', () => {
   })
 
   describe('delete', () => {
-
     describe('item can be deleted when API call succeeds', () => {
-
       beforeAll(async () => {
         setupSuccessfulGETCall()
 
@@ -224,18 +216,16 @@ describe('Inventory', () => {
         await deleteItem('memento')
       })
 
-      it('should call tha API',() => {
+      it('should call tha API', () => {
         expect(axios.delete).toHaveBeenCalledWith('/api/inventory-items/bar')
       })
 
       it('should remove the item from the list', () => {
         expect(findItemWrapper(slugToDelete).exists()).toBe(false)
       })
-
     })
 
     describe('item can not be deleted when API call fails', () => {
-
       beforeAll(async () => {
         setupSuccessfulGETCall()
         axios.delete.mockRejectedValue({
@@ -249,7 +239,7 @@ describe('Inventory', () => {
         await deleteItem('memento')
       })
 
-      it('should call tha API',() => {
+      it('should call tha API', () => {
         expect(axios.delete).toHaveBeenCalledWith('/api/inventory-items/bar')
       })
 
@@ -270,18 +260,19 @@ describe('Inventory', () => {
     }
   })
 
-  let wrapper, items = [
-      {
-        id: 'foo',
-        slug: 'the-matrix-trilogy',
-        stockLevel: 10
-      },
-      {
-        id: 'bar',
-        slug: 'memento',
-        stockLevel: 17
-      }
-    ]
+  let wrapper
+  const items = [
+    {
+      id: 'foo',
+      slug: 'the-matrix-trilogy',
+      stockLevel: 10
+    },
+    {
+      id: 'bar',
+      slug: 'memento',
+      stockLevel: 17
+    }
+  ]
 
   async function mountComponent() {
     wrapper = mount(InventoryItems)

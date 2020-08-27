@@ -44,7 +44,15 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {},
+    "rules": {
+      "vue/script-indent": ["error", 2, {
+        "baseIndent": 1,
+        "switchCase": 0,
+        "ignores": []
+      }],
+      "space-before-function-paren": ["error", {"anonymous": "never", "named": "never", "asyncArrow": "always"}],
+      "object-curly-spacing": ["error", "never"]
+    },
     "overrides": [
       {
         "files": [
@@ -53,6 +61,12 @@
         ],
         "env": {
           "jest": true
+        }
+      },
+      {
+        "files": ["*.vue"],
+        "rules": {
+          "indent": "off"
         }
       }
     ]
