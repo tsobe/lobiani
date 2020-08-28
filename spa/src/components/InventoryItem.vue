@@ -2,7 +2,7 @@
   <div class="item" v-bind:data-slug="item.slug">
     <span class="slug">{{ item.slug }}</span>
     <span class="stock-level">{{ item.stockLevel }}</span>
-    <input name="count" v-model.number="increaseBy"/>
+    <input name="count" type="number" v-model.number="increaseBy"/>
     <button class="add-to-stock" v-on:click="addToStock">Add to stock</button>
     <button class="delete" v-on:click="deleteItem">Delete</button>
   </div>

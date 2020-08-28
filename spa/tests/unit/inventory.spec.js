@@ -154,6 +154,14 @@ describe('InventoryItem', () => {
     })
   })
 
+  it('should not accept NaN as count', () => {
+    mountComponent()
+
+    countWrapper.setValue('foo')
+
+    expect(countWrapper.element.value).toBeFalsy()
+  })
+
   let wrapper
   let countWrapper
   let stockLevelWrapper
