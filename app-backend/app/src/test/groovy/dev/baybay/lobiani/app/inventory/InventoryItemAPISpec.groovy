@@ -143,19 +143,19 @@ class InventoryItemAPISpec extends Specification {
     }
 
     @Unroll
-    def "BadRequest is returned when #count items are added to stock"() {
+    def "BadRequest is returned when #amount items are added to stock"() {
         given:
         itemDefined()
 
         when:
-        def response = addItemToStock(id, count)
+        def response = addItemToStock(id, amount)
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
-        response.body.message == "Count must be a positive number"
+        response.body.message == "Amount must be a positive number"
 
         where:
-        count << [0, -10]
+        amount << [0, -10]
     }
 
     def "BadRequest is returned when item with same slug is already defined"() {
@@ -190,8 +190,8 @@ class InventoryItemAPISpec extends Specification {
         restTemplate.exchange("$URI/$id", HttpMethod.DELETE, null, Object)
     }
 
-    ResponseEntity<Object> addItemToStock(id, count) {
-        restTemplate.postForEntity("$URI/$id/stock", [count: count], Object)
+    ResponseEntity<Object> addItemToStock(id, amount) {
+        restTemplate.postForEntity("$URI/$id/stock", [amount: amount], Object)
     }
 
     static void assertItem(item) {

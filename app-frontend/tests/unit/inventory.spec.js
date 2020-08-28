@@ -116,7 +116,7 @@ describe('InventoryItem', () => {
 
       setupSuccessfulPOSTCall()
 
-      await addToStock(count)
+      await addToStock(amount)
     })
 
     it('should call the API', () => {
@@ -124,11 +124,11 @@ describe('InventoryItem', () => {
     })
 
     it('should increase the item stock level', () => {
-      expect(stockLevelWrapper.text()).toBe(count.toString())
+      expect(stockLevelWrapper.text()).toBe(amount.toString())
     })
 
-    it('should reset the count', () => {
-      expect(countWrapper.element.value).toBeFalsy()
+    it('should reset the amount', () => {
+      expect(amountWrapper.element.value).toBeFalsy()
     })
   })
 
@@ -138,7 +138,7 @@ describe('InventoryItem', () => {
 
       setupFailingPOSTCall()
 
-      await addToStock(count)
+      await addToStock(amount)
     })
 
     it('should call the API', () => {
@@ -149,26 +149,26 @@ describe('InventoryItem', () => {
       expect(stockLevelWrapper.text()).toBe(initialStockLevel.toString())
     })
 
-    it('should not reset the count', () => {
-      expect(countWrapper.element.value).toBe(count.toString())
+    it('should not reset the amount', () => {
+      expect(amountWrapper.element.value).toBe(amount.toString())
     })
   })
 
-  it('should not accept NaN as count', () => {
+  it('should not accept NaN as amount', () => {
     mountComponent()
 
-    countWrapper.setValue('foo')
+    amountWrapper.setValue('foo')
 
-    expect(countWrapper.element.value).toBeFalsy()
+    expect(amountWrapper.element.value).toBeFalsy()
   })
 
   let wrapper
-  let countWrapper
+  let amountWrapper
   let stockLevelWrapper
   const itemId = 'foo'
   const slug = 'the-matrix-trilogy'
   const initialStockLevel = 0
-  const count = 10
+  const amount = 10
 
   function mountComponent() {
     wrapper = mount(InventoryItem, {
@@ -176,7 +176,7 @@ describe('InventoryItem', () => {
         item: createItem()
       }
     })
-    countWrapper = wrapper.find('input[name="count"]')
+    amountWrapper = wrapper.find('input[name="amount"]')
     stockLevelWrapper = wrapper.find('.stock-level')
   }
 
@@ -188,14 +188,14 @@ describe('InventoryItem', () => {
     }
   }
 
-  async function addToStock(count) {
-    countWrapper.setValue(count)
+  async function addToStock(amount) {
+    amountWrapper.setValue(amount)
     await wrapper.find('.add-to-stock').trigger('click')
     await flushPromises()
   }
 
   function expectAPIToHaveBeenCalled() {
-    expect(axios.post).toHaveBeenCalledWith(`/inventory-items/${itemId}/stock`, {count: count})
+    expect(axios.post).toHaveBeenCalledWith(`/inventory-items/${itemId}/stock`, {amount: amount})
   }
 })
 

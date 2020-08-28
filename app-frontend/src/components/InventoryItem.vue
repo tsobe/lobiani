@@ -2,7 +2,7 @@
   <div class="item" v-bind:data-slug="item.slug">
     <span class="slug">{{ item.slug }}</span>
     <span class="stock-level">{{ item.stockLevel }}</span>
-    <input name="count" type="number" v-model.number="increaseBy"/>
+    <input name="amount" type="number" v-model.number="amount"/>
     <button class="add-to-stock" v-on:click="addToStock">Add to stock</button>
     <button class="delete" v-on:click="deleteItem">Delete</button>
   </div>
@@ -21,14 +21,14 @@
     },
     data() {
       return {
-        increaseBy: null
+        amount: null
       }
     },
     methods: {
       async addToStock() {
-        await axios.post(`/inventory-items/${this.item.id}/stock`, {count: this.increaseBy})
-        this.item.stockLevel += this.increaseBy
-        this.increaseBy = null
+        await axios.post(`/inventory-items/${this.item.id}/stock`, {amount: this.amount})
+        this.item.stockLevel += this.amount
+        this.amount = null
       },
       async deleteItem() {
         await axios.delete(`/inventory-items/${this.item.id}`)

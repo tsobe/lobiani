@@ -25,8 +25,8 @@ class InventoryItemsPage extends Page {
         items.find { it.slug == slug }.delete()
     }
 
-    def addItemToStock(slug, count) {
-        items.find { it.slug == slug }.addToStock(count)
+    def addItemToStock(slug, amount) {
+        items.find { it.slug == slug }.addToStock(amount)
     }
 
     def getItemStockLevel(slug) {

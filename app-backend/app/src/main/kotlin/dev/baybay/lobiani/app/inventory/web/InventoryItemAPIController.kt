@@ -40,7 +40,7 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     @PostMapping("/{id}/stock")
     fun addToStock(@PathVariable id: UUID, @RequestBody stock: Stock) {
         commandGateway.sendAndWait<AddInventoryItemToStock>(
-                AddInventoryItemToStock(id, Quantity.count(stock.count)))
+                AddInventoryItemToStock(id, Quantity.count(stock.amount)))
     }
 
     @DeleteMapping("/{id}")
@@ -84,7 +84,7 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
         return ResponseEntity.badRequest().body(APIError(message))
     }
 
-    data class Stock(val count: Int)
+    data class Stock(val amount: Int)
 
     data class APIError(val message: String)
 
