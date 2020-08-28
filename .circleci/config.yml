@@ -106,10 +106,10 @@ jobs:
           at: app
       - docker/build:
           path: app
-          image: sevteen/lobiani-app
+          image: sevteen/lobiani-app-backend
       - docker/push:
           digest-path: /tmp/digest.txt
-          image: sevteen/lobiani-app
+          image: sevteen/lobiani-app-backend
       - persist_to_workspace:
           root: /tmp
           paths:
@@ -131,7 +131,7 @@ jobs:
           name: Replacing image version
           command: |
             export IMG_HASH=`cut -d @ -f 2 /tmp/digest.txt`
-            sed -i "s#image: sevteen/lobiani-app@.*#image: sevteen/lobiani-app@${IMG_HASH} \# Modified by CI at `date` #g" \
+            sed -i "s#image: sevteen/lobiani-app-backend@.*#image: sevteen/lobiani-app-backend@${IMG_HASH} \# Modified by CI at `date` #g" \
               infra-config/base/lobiani/lobiani.yaml
       - run:
           name: Printing diff

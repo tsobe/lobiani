@@ -16,5 +16,5 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: lobiani-app
+              serviceName: lobiani-app-backend
               servicePort: 8080

@@ -7,26 +7,26 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: lobiani
-  name: lobiani-app
+  name: lobiani-app-backend
   labels:
-    app: lobiani-app
+    app: lobiani-app-backend
 spec:
   strategy:
     type: RollingUpdate
   replicas: 1
   selector:
     matchLabels:
-      app: lobiani-app
+      app: lobiani-app-backend
   template:
     metadata:
       annotations:
         linkerd.io/inject: enabled
       labels:
-        app: lobiani-app
+        app: lobiani-app-backend
     spec:
       containers:
-        - name: lobiani-app
-          image: sevteen/lobiani-app@sha256:0ab9d19089cce5a2c87dedfabecef7de59e883c4f83e818b8b3a2e062c656495 # Modified by CI at Sun Aug  2 08:05:47 UTC 2020 
+        - name: lobiani-app-backend
+          image: sevteen/lobiani-app-backend@sha256:0ab9d19089cce5a2c87dedfabecef7de59e883c4f83e818b8b3a2e062c656495 # Modified by CI at Sun Aug  2 08:05:47 UTC 2020
           imagePullPolicy: Always
           env:
             - name: AXON_AXONSERVER_SERVERS
@@ -52,12 +52,12 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: lobiani
-  name: lobiani-app
+  name: lobiani-app-backend
   labels:
-    app: lobiani-app
+    app: lobiani-app-backend
 spec:
   selector:
-    app: lobiani-app
+    app: lobiani-app-backend
   ports:
     - port: 8080
       protocol: TCP
