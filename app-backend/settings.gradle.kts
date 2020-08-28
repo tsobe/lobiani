@@ -1,3 +1,3 @@
-rootProject.name = "lobiani"
+rootProject.name = "app-backend"
 
 include("app")
