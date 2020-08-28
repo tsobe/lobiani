@@ -21,8 +21,7 @@
     },
     data() {
       return {
-        increaseBy: null,
-        errorMsg: null
+        increaseBy: null
       }
     },
     methods: {
