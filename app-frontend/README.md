@@ -1,4 +1,4 @@
-# spa
+# app-frontend
 
 ## Project setup
 ```
