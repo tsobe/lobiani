@@ -89,6 +89,7 @@ jobs:
           build_file: build.gradle.kts
           steps:
             - run:
+                name: Building and testing
                 command: cd app-backend && ./gradlew build
       - persist_to_workspace:
           root: app-backend/app
