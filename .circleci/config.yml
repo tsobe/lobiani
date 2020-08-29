@@ -311,7 +311,7 @@ workflows:
     when: << pipeline.parameters.build_frontend >>
     jobs:
       - build-app-frontend
-      - build-and-publish-app-frontend-image
+      - build-and-publish-app-frontend-image:
           requires:
             - build-app-frontend
   test:
