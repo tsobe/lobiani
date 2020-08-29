@@ -8,7 +8,10 @@ parameters:
   check:
     type: boolean
     default: true
-  build:
+  build_backend:
+    type: boolean
+    default: false
+  build_frontend:
     type: boolean
     default: false
   test:
@@ -80,7 +83,7 @@ jobs:
       - run:
           name: Determining the workflow to execute next
           command: .circleci/check.sh
-  build-app-executable-jar:
+  build-app-backend-jar:
     machine:
       image: circleci/classic:201808-01
     steps:
@@ -97,7 +100,7 @@ jobs:
             - build/libs/app-*.jar
       - save_test_results:
           dst_location: unit-test-results
-  build-and-publish-docker-image:
+  build-and-publish-app-backend-image:
     executor: docker/docker
     steps:
       - setup_remote_docker
@@ -111,6 +114,48 @@ jobs:
       - docker/push:
           digest-path: /tmp/digest.txt
           image: sevteen/lobiani-app-backend
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - digest.txt
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
+  build-app-frontend:
+    docker:
+      - image: circleci/node:14.8.0
+    steps:
+      - checkout
+      - run:
+          name: Installing npm dependencies
+          command: cd app-frontend && npm install
+      - run:
+          name: Running lint
+          command: cd app-frontend && npm run lint --no-fix
+      - run:
+          name: Running unit tests
+          command: cd app-frontend && npm run test:unit
+      - run:
+          name: Bundling the app
+          command: cd app-frontend && npm run build
+      - persist_to_workspace:
+          root: app-frontend
+          paths:
+            - dist
+  build-and-publish-app-frontend-image:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - attach_workspace:
+          at: app-frontend
+      - docker/build:
+          path: app-frontend
+          image: sevteen/lobiani-app-frontend
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: sevteen/lobiani-app-frontend
       - persist_to_workspace:
           root: /tmp
           paths:
@@ -252,16 +297,23 @@ workflows:
             branches:
               only:
                 - master
-  build:
-    when: << pipeline.parameters.build >>
+  build-backend:
+    when: << pipeline.parameters.build_backend >>
     jobs:
-      - build-app-executable-jar
-      - build-and-publish-docker-image:
+      - build-app-backend-jar
+      - build-and-publish-app-backend-image:
           requires:
-            - build-app-executable-jar
+            - build-app-backend-jar
       - trigger-test:
           requires:
-            - build-and-publish-docker-image
+            - build-and-publish-app-backend-image
+  build-frontend:
+    when: << pipeline.parameters.build_frontend >>
+    jobs:
+      - build-app-frontend
+      - build-and-publish-app-frontend-image
+          requires:
+            - build-app-frontend
   test:
     when: << pipeline.parameters.test >>
     jobs:
