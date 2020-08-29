@@ -83,31 +83,29 @@ jobs:
   build-app-executable-jar:
     docker:
       - image: &jdk_image cimg/openjdk:14.0
-    working_directory: &backend_dir ~/project/lobiani/app-backend
     steps:
       - checkout
       - with_gradle_cache:
-          build_file: build.gradle.kts
+          build_file: app-backend/build.gradle.kts
           steps:
             - run:
-                command: pwd && ./gradlew build
+                command: app-backend/gradlew build
       - persist_to_workspace:
-          root: app
+          root: app-backend/app
           paths:
             - build/libs/app-*.jar
       - save_test_results:
           dst_location: unit-test-results
   build-and-publish-docker-image:
     executor: docker/docker
-    working_directory: *backend_dir
     steps:
       - setup_remote_docker
       - checkout
       - docker/check
       - attach_workspace:
-          at: app
+          at: app-backend/app
       - docker/build:
-          path: app
+          path: app-backend/app
           image: sevteen/lobiani-app-backend
       - docker/push:
           digest-path: /tmp/digest.txt
@@ -199,13 +197,12 @@ jobs:
   run-e2e-tests:
     docker:
       - image: *jdk_image
-    working_directory: *backend_dir
     steps:
       - checkout
       - run:
           name: Running e2e tests
           command: |
-            ./gradlew app:e2eTestRemote -Dgeb.build.baseUrl=${TEST_APP_BASE_URL}/ \
+            app-backend/gradlew app:e2eTestRemote -Dgeb.build.baseUrl=${TEST_APP_BASE_URL}/ \
               -Dremote.webdriver.url=$REMOTE_WEBDRIVER_URL \
               -Dremote.webdriver.acceptInsecure=true \
       - save_test_results:
