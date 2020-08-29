@@ -90,7 +90,7 @@ jobs:
           build_file: build.gradle.kts
           steps:
             - run:
-                command: ./gradlew build
+                command: pwd && ./gradlew build
       - persist_to_workspace:
           root: app
           paths:
