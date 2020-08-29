@@ -81,8 +81,8 @@ jobs:
           name: Determining the workflow to execute next
           command: .circleci/check.sh
   build-app-executable-jar:
-    docker:
-      - image: &jdk_image cimg/openjdk:14.0
+    machine:
+      image: ubuntu-1604:201903-01
     steps:
       - checkout
       - with_gradle_cache:
@@ -196,7 +196,7 @@ jobs:
             argocd app wait -l app.kubernetes.io/instance=test-apps
   run-e2e-tests:
     docker:
-      - image: *jdk_image
+      - image: cimg/openjdk:14.0
     steps:
       - checkout
       - run:
