@@ -86,10 +86,10 @@ jobs:
     steps:
       - checkout
       - with_gradle_cache:
-          build_file: app-backend/build.gradle.kts
+          build_file: build.gradle.kts
           steps:
             - run:
-                command: app-backend/gradlew build
+                command: cd app-backend && ./gradlew build
       - persist_to_workspace:
           root: app-backend/app
           paths:
