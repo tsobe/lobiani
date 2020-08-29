@@ -71,7 +71,9 @@ kubectl apply -f moon/argocd-app.yaml
 here.
 
 ## Test env
-   
+
+Test environment now is booted up automatically as a part of the CI
+
 1. Run `terraform apply` in `infra-config/terraform/test` directory.
 It should produce similar output
     ```
@@ -122,10 +124,10 @@ or `infra-config/terraform/prod`
 
 ## Known issues
  
-1. Nginx ingress controller from [Kubernetes community](https://kubernetes.github.io/ingress-nginx/deploy) 
+1. <strike>Nginx ingress controller from [Kubernetes community](https://kubernetes.github.io/ingress-nginx/deploy) 
     doesn't play well with argo-cd, pre-sync hook fails with "namespace not found" error.
     If the namespace is created manually upfront, then `ingress-nginx-admission-create` job
-    fails to complete
+    fails to complete</strike>
 2. <strike>Because of the above, [Nginx community](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/)
     version of is used instead.
 
