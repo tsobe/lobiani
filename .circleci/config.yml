@@ -83,7 +83,7 @@ jobs:
   build-app-executable-jar:
     docker:
       - image: &jdk_image cimg/openjdk:14.0
-    working_directory: &backend_dir ~/project/app-backend
+    working_directory: &backend_dir ~/project/lobiani/app-backend
     steps:
       - checkout
       - with_gradle_cache:
