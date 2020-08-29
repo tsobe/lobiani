@@ -44,7 +44,7 @@ spec:
           readinessProbe:
             httpGet:
               port: 8080
-              path: /inventory-items
+              path: /api/inventory-items
       nodeSelector:
         node-type: worker-pool
 ---
