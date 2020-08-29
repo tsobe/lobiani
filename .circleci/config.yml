@@ -83,6 +83,7 @@ jobs:
   build-app-executable-jar:
     docker:
       - image: &jdk_image cimg/openjdk:14.0
+    working_directory: &backend_dir ~/project/app-backend
     steps:
       - checkout
       - with_gradle_cache:
@@ -98,6 +99,7 @@ jobs:
           dst_location: unit-test-results
   build-and-publish-docker-image:
     executor: docker/docker
+    working_directory: *backend_dir
     steps:
       - setup_remote_docker
       - checkout
@@ -197,6 +199,7 @@ jobs:
   run-e2e-tests:
     docker:
       - image: *jdk_image
+    working_directory: *backend_dir
     steps:
       - checkout
       - run:

@@ -48,10 +48,10 @@ function was_modified {
 
 collect_modified_dirs
 
-code_dir="app"
+backend_dir="app-backend"
 infra_config_dir="infra-config"
 
-if was_modified $code_dir
+if was_modified $backend_dir
 then
 	echo "Triggering pipeline: \"build\""
   	trigger_pipeline false true false
@@ -63,7 +63,7 @@ then
 	trigger_pipeline false false true
 fi
 
-if ! was_modified $code_dir && ! was_modified $infra_config_dir
+if ! was_modified $backend_dir && ! was_modified $infra_config_dir
 then
-  	echo "No changes made to $code_dir or $infra_config_dir, not triggering any pipeline"
+  	echo "No changes made to $backend_dir or $infra_config_dir, not triggering any pipeline"
 fi
