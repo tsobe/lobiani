@@ -112,15 +112,15 @@ jobs:
           path: app-backend/app
           image: sevteen/lobiani-app-backend
       - docker/push:
-          digest-path: /tmp/digest.txt
+          digest-path: /tmp/backend_img_digest.txt
           image: sevteen/lobiani-app-backend
       - persist_to_workspace:
           root: /tmp
           paths:
-            - digest.txt
+            - backend_img_digest.txt
       - run:
           command: |
-            echo "Digest is: $(</tmp/digest.txt)"
+            echo "Digest is: $(</tmp/backend_img_digest.txt)"
   build-app-frontend:
     docker:
       - image: circleci/node:14.8.0
@@ -154,15 +154,15 @@ jobs:
           path: app-frontend
           image: sevteen/lobiani-app-frontend
       - docker/push:
-          digest-path: /tmp/digest.txt
+          digest-path: /tmp/frontend_img_digest.txt
           image: sevteen/lobiani-app-frontend
       - persist_to_workspace:
           root: /tmp
           paths:
-            - digest.txt
+            - frontend_img_digest.txt
       - run:
           command: |
-            echo "Digest is: $(</tmp/digest.txt)"
+            echo "Digest is: $(</tmp/frontend_img_digest.txt)"
   trigger-test:
     docker:
       - image: &git alpine/git:v2.26.2
@@ -176,8 +176,13 @@ jobs:
       - run:
           name: Replacing image version
           command: |
+            export DIGEST_PATH=`ls /tmp/*_img_digest.txt`
+            export APP_TIER=`basename $DIGEST_PATH | sed 's/_img_digest.txt//g'`
             export IMG_HASH=`cut -d @ -f 2 /tmp/digest.txt`
-            sed -i "s#image: sevteen/lobiani-app-backend@.*#image: sevteen/lobiani-app-backend@${IMG_HASH} \# Modified by CI at `date` #g" \
+
+            echo "Replacing image version for $APP_TIER tier"
+
+            sed -i "s#image: sevteen/lobiani-app-${APP_TIER}@.*#image: sevteen/lobiani-app-${APP_TIER}@${IMG_HASH} \# Modified by CI at `date` #g" \
               infra-config/base/lobiani/lobiani.yaml
       - run:
           name: Printing diff
@@ -185,10 +190,12 @@ jobs:
       - run:
           name: Pushing changes
           command: |
-            export IMG_HASH=`cut -d @ -f 2 /tmp/digest.txt`
+            export DIGEST_PATH=`ls /tmp/*_img_digest.txt`
+            export APP_TIER=`basename $DIGEST_PATH | sed 's/_img_digest.txt//g'`
+            export IMG_HASH=`cut -d @ -f 2 /tmp/*_img_digest.txt`
             git config user.email "b.tsotsoria@gmail.com"
             git config user.name "circleci"
-            git commit -am "[CI] Updated image version to $IMG_HASH" && git push
+            git commit -am "[CI] Updated image version for $APP_TIER tier to $IMG_HASH" && git push
   setup-test-infra:
     docker:
       - image: &terraform hashicorp/terraform:0.12.28
@@ -314,6 +321,9 @@ workflows:
       - build-and-publish-app-frontend-image:
           requires:
             - build-app-frontend
+      - trigger-test:
+          requires:
+            - build-and-publish-app-frontend-image
   test:
     when: << pipeline.parameters.test >>
     jobs:
