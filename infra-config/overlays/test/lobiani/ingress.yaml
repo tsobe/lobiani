@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   namespace: lobiani
-  name: lobiani-app-backend
+  name: lobiani-app
   annotations:
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-staging"
@@ -15,6 +15,13 @@ spec:
     - host: test-lobiani.baybay.dev
       http:
         paths:
-          - backend:
+          - pathType: prefix
+            path: /api
+            backend:
               serviceName: lobiani-app-backend
               servicePort: 8080
+          - pathType: prefix
+            path: /
+            backend:
+              serviceName: lobiani-app-frontend
+              servicePort: 80
