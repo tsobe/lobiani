@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: lobiani-app-backend
-          image: sevteen/lobiani-app-backend@sha256:b5fdd1eedac76b409153b7f228127e78d7e1782ae2c1c32c3a9cdf272424dcec # Modified by CI at Sat Aug 29 16:13:13 UTC 2020 
+          image: sevteen/lobiani-app-backend@sha256:b5fdd1eedac76b409153b7f228127e78d7e1782ae2c1c32c3a9cdf272424dcec # Modified by CI at Sat Aug 29 16:13:13 UTC 2020
           imagePullPolicy: Always
           env:
             - name: AXON_AXONSERVER_SERVERS
@@ -48,6 +48,48 @@ spec:
       nodeSelector:
         node-type: worker-pool
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: lobiani
+  name: lobiani-app-frontend
+  labels:
+    app: lobiani-app-frontend
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lobiani-app-frontend
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: lobiani-app-frontend
+    spec:
+      containers:
+        - name: lobiani-app-frontend
+          image: sevteen/lobiani-app-frontend@sha256:cdbdbffdc23777c4eba332c4818a8d5e49ddb9dc921b9a6bf858a8e00ce51490
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 30m
+              memory: 100Mi
+            requests:
+              cpu: 20m
+              memory: 50Mi
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /
+      nodeSelector:
+        node-type: worker-pool
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -62,3 +104,18 @@ spec:
     - port: 8080
       protocol: TCP
       targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: lobiani
+  name: lobiani-app-frontend
+  labels:
+    app: lobiani-app-frontend
+spec:
+  selector:
+    app: lobiani-app-frontend
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
