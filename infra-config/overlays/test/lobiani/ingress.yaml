@@ -15,12 +15,12 @@ spec:
     - host: test-lobiani.baybay.dev
       http:
         paths:
-          - pathType: prefix
+          - pathType: Prefix
             path: /api
             backend:
               serviceName: lobiani-app-backend
               servicePort: 8080
-          - pathType: prefix
+          - pathType: Prefix
             path: /
             backend:
               serviceName: lobiani-app-frontend
