@@ -178,7 +178,7 @@ jobs:
           command: |
             export DIGEST_PATH=`ls /tmp/*_img_digest.txt`
             export APP_TIER=`basename $DIGEST_PATH | sed 's/_img_digest.txt//g'`
-            export IMG_HASH=`cut -d @ -f 2 /tmp/digest.txt`
+            export IMG_HASH=`cut -d @ -f 2 $DIGEST_PATH`
 
             echo "Replacing image version for $APP_TIER tier"
 
