@@ -9,7 +9,7 @@
   import axios from 'axios'
 
   export default {
-    name: 'DefineInventoryItem',
+    name: 'NewInventoryItem',
     data() {
       return {
         slug: null

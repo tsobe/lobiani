@@ -1,7 +1,7 @@
 import {createLocalVue, mount} from '@vue/test-utils'
 import axios from 'axios'
 import flushPromises from 'flush-promises'
-import DefineInventoryItem from '@/views/DefineInventoryItem'
+import NewInventoryItem from '@/views/NewInventoryItem'
 import InventoryItem from '@/components/InventoryItem'
 import InventoryItems from '@/views/InventoryItems'
 import VueRouter from 'vue-router'
@@ -22,7 +22,7 @@ function setupSuccessfulPOSTCall(data = {}) {
   axios.post.mockResolvedValue({data})
 }
 
-describe('DefineInventoryItem', () => {
+describe('NewInventoryItem', () => {
   describe('item can be defined when API call succeeds', () => {
     beforeAll(async () => {
       setupSuccessfulPOSTCall({
@@ -82,7 +82,7 @@ describe('DefineInventoryItem', () => {
   const slug = 'the-matrix-trilogy'
 
   function mountComponent() {
-    wrapper = mount(DefineInventoryItem)
+    wrapper = mount(NewInventoryItem)
     slugWrapper = wrapper.find('.slug')
   }
 
@@ -283,8 +283,8 @@ describe('Inventory', () => {
       },
       {
         path: '/new',
-        name: 'DefineInventoryItem',
-        component: DefineInventoryItem
+        name: 'NewInventoryItem',
+        component: NewInventoryItem
       }
     ]
 
@@ -299,7 +299,7 @@ describe('Inventory', () => {
 
     await wrapper.vm.$router.push('/new')
 
-    const defineItemWrapper = wrapper.findComponent(DefineInventoryItem)
+    const defineItemWrapper = wrapper.findComponent(NewInventoryItem)
     defineItemWrapper.vm.$emit('itemDefined', {
       id: 'baz',
       slug: 'the-simpsons',

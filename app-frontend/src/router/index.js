@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import InventoryItems from '@/views/InventoryItems'
-import DefineInventoryItem from '@/views/DefineInventoryItem'
+import NewInventoryItem from '@/views/NewInventoryItem'
 
 Vue.use(VueRouter)
 
@@ -17,8 +17,8 @@ const routes = [
   },
   {
     path: '/new',
-    name: 'DefineInventoryItem',
-    component: DefineInventoryItem
+    name: 'NewInventoryItem',
+    component: NewInventoryItem
   },
   {
     path: '*',
