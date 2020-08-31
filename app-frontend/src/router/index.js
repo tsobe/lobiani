@@ -7,6 +7,10 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/',
+    redirect: '/items'
+  },
+  {
     path: '/items',
     name: 'InventoryItems',
     component: InventoryItems
@@ -15,6 +19,10 @@ const routes = [
     path: '/new',
     name: 'DefineInventoryItem',
     component: DefineInventoryItem
+  },
+  {
+    path: '*',
+    redirect: '/'
   }
 ]
 
