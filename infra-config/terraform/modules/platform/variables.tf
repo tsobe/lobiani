@@ -6,5 +6,5 @@ variable "region" {
   default = "fra1"
 }
 variable "k8s_version" {
-  default = "1.18.6-do.0"
+  default = "1.18.8-do.0"
 }
