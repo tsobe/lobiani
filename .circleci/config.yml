@@ -182,7 +182,7 @@ jobs:
 
             echo "Replacing image version for $APP_TIER tier"
 
-            sed -i "s#image: sevteen/lobiani-app-${APP_TIER}@.*#image: sevteen/lobiani-app-${APP_TIER}@${IMG_HASH} \# Modified by CI at `date` #g" \
+            sed -i "s#image: sevteen/lobiani-app-${APP_TIER}@.*#image: sevteen/lobiani-app-${APP_TIER}@${IMG_HASH} \# Modified by CI at `date`#g" \
               infra-config/base/lobiani/lobiani.yaml
       - run:
           name: Printing diff
