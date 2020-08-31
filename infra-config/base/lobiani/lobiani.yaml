@@ -37,10 +37,10 @@ spec:
           resources:
             limits:
               cpu: 200m
-              memory: 324Mi
+              memory: 480Mi
             requests:
               cpu: 100m
-              memory: 200Mi
+              memory: 350Mi
           readinessProbe:
             httpGet:
               port: 8080
@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
         - name: lobiani-app-frontend
-          image: sevteen/lobiani-app-frontend@sha256:06e5ef8ad82a02fc0443886ae9c46134e48964d3c70bcf6688c38f97696acf82 # Modified by CI at Sun Aug 30 12:03:55 UTC 2020 
+          image: sevteen/lobiani-app-frontend@sha256:06e5ef8ad82a02fc0443886ae9c46134e48964d3c70bcf6688c38f97696acf82 # Modified by CI at Sun Aug 30 12:03:55 UTC 2020
           imagePullPolicy: Always
           ports:
             - containerPort: 80
