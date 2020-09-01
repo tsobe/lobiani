@@ -33,11 +33,20 @@ spec:
               mountPath: /data
           readinessProbe:
             httpGet:
-              port: 8024
               path: /actuator/info
+              port: 8024
             initialDelaySeconds: 5
             periodSeconds: 5
             timeoutSeconds: 1
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /actuator/info
+              port: 8024
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
   volumeClaimTemplates:
     - metadata:
         name: eventstore
@@ -59,7 +68,7 @@ kind: Service
 metadata:
   name: axonserver-gui
   labels:
-    app: axonserver-gui
+    app: axonserver
 spec:
   ports:
     - name: gui

@@ -9,3 +9,4 @@ patchesStrategicMerge:
   - service.yaml
   - node-selector.yaml
   - mesh.yaml
+  - resource-usage-tweaks.yaml
