@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
         - name: lobiani-app-frontend
-          image: sevteen/lobiani-app-frontend@sha256:bc47a94e4fd306e2535edd7f5d52870c8ac2805981077b21892a80845af213ca # Modified by CI at Mon Aug 31 20:35:58 UTC 2020
+          image: sevteen/lobiani-app-frontend@sha256:198038f945f37f8da3d94c77ce6404413a680d262c5ff91a3f52654025c92258 # Modified by CI at Tue Sep  1 19:07:07 UTC 2020
           imagePullPolicy: Always
           ports:
             - containerPort: 80
