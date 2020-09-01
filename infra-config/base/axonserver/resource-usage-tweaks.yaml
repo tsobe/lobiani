@@ -10,8 +10,8 @@ spec:
           image: axoniq/axonserver:4.4
           resources:
             requests:
-              cpu: 100
+              cpu: 100m
               memory: 350Mi
             limits:
-              cpu: 200
+              cpu: 200m
               memory: 480Mi
