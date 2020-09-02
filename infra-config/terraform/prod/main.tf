@@ -56,7 +56,7 @@ resource "digitalocean_kubernetes_node_pool" "cicd-tools-pool" {
   min_nodes = 1
   max_nodes = 2
 
-  labels = {
-    node-type = "cicd-tools-pool"
-  }
+//  labels = {
+//    node-type = "cicd-tools-pool"
+//  }
 }

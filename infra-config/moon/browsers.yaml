@@ -19,11 +19,8 @@ data:
               },
               "requests": {
                 "cpu": "200m",
-                "memory": "800Mi"
+                "memory": "500Mi"
               }
-            },
-            "nodeSelector": {
-              "node-type": "cicd-tools-pool"
             }
           }
         }
