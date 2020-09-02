@@ -208,7 +208,7 @@ jobs:
             terraform init -backend-config="token=${TF_API_TOKEN}"
             terraform apply --auto-approve=true
             terraform output | cut -d = -f 2 > cluster_endpoint.txt
-            cd -
+            cd - > /dev/null
       - persist_to_workspace:
           root: infra-config
           paths:
@@ -282,7 +282,7 @@ jobs:
             cd infra-config/terraform/prod
             terraform init -backend-config="token=${TF_API_TOKEN}"
             terraform apply --auto-approve=true
-            cd -
+            cd - > /dev/null
   deploy-to-prod-env:
     docker:
       - image: *base_image
