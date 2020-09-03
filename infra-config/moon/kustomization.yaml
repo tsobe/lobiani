@@ -9,4 +9,4 @@ patchesStrategicMerge:
   - resource-usage-tweaks.yaml
   - service.yaml
   - browsers.yaml
-#  - node-selector.yaml
+  - node-selector.yaml
