@@ -228,7 +228,7 @@ jobs:
 
             export TEST_CLUSTER_ENDPOINT=`cat infra-config/terraform/test/cluster_endpoint.txt | sed -E 's/(^\s+|\s+$)//g'`
             argocd app create test-apps --repo $CIRCLE_REPOSITORY_URL \
-                --path infra-config/apps --dest-namespace argocd \
+                --path infra-config/argocd/aoa --dest-namespace argocd \
                 --dest-server https://kubernetes.default.svc \
                 --revision $CIRCLE_BRANCH -l environment=test \
                 --helm-set spec.destination.server=$TEST_CLUSTER_ENDPOINT \
