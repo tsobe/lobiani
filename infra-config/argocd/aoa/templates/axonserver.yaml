@@ -13,6 +13,6 @@ spec:
     server: {{ .Values.spec.destination.server }}
   project: default
   source:
-    path: infra-config/overlays/{{ .Values.spec.env }}/axonserver
+    path: infra-config/apps/overlays/{{ .Values.spec.env }}/axonserver
     repoURL: {{ .Values.spec.source.repoURL }}
     targetRevision: {{ .Values.spec.source.targetRevision }}

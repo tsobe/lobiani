@@ -13,6 +13,6 @@ spec:
     server: {{ .Values.spec.destination.server }}
   project: default
   source:
-    path: infra-config/overlays/{{ .Values.spec.env }}/lobiani
+    path: infra-config/apps/overlays/{{ .Values.spec.env }}/lobiani
     repoURL: {{ .Values.spec.source.repoURL }}
     targetRevision: {{ .Values.spec.source.targetRevision }}
