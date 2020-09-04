@@ -53,26 +53,32 @@ collect_modified_dirs
 backend_dir="app-backend"
 frontend_dir="app-frontend"
 infra_config_dir="infra-config"
+tests_dir="e2e-tests"
+
+pipeline_triggered=false
 
 if was_modified $backend_dir
 then
 	echo "Triggering pipeline: \"build_backend\""
   	trigger_pipeline false true false false
+  	pipeline_triggered=true
 fi
 
 if was_modified $frontend_dir
 then
 	echo "Triggering pipeline: \"build_frontend\""
   	trigger_pipeline false false true false
+  	pipeline_triggered=true
 fi
 
-if was_modified $infra_config_dir
+if was_modified $infra_config_dir || was_modified $tests_dir
 then
 	echo "Triggering pipeline: \"test\""
 	trigger_pipeline false false false true
+	pipeline_triggered=true
 fi
 
-if ! was_modified $backend_dir && ! was_modified $frontend_dir && ! was_modified $infra_config_dir
+if ! $pipeline_triggered
 then
-  	echo "No changes made to $backend_dir, $frontend_dir or $infra_config_dir, not triggering any pipeline"
+  	echo "No changes made to $backend_dir, $frontend_dir, $infra_config_dir or $tests_dir, not triggering any pipeline"
 fi
