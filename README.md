@@ -113,10 +113,12 @@ to microservices. There's gonna be a separate deployment unit for frontend (SPA)
 ### Milestone 1 objectives
 - System allows to define and add inventory items to stock
 - System allows to see the products available for sale
-- Basic metrics such as HTTP success rate, latency and etc. are available 
+- User interface is not ugly
+- System is accessible to authenticated users only
+- Basic metrics such as HTTP success rate, latency and etc. are available
 - Basic CI/CD pipeline exists 
     - Build and deployment is automated, preferably via GitOps approach
-    - Deployments are made after end-to-end tests pass in test env
+    - Deployments to production are made after end-to-end tests pass in test env
     - No blue/green and canary deployments
     - No automatic rollback in case of production failures
 
