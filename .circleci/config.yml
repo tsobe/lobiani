@@ -249,7 +249,7 @@ jobs:
             argocd app wait -l app.kubernetes.io/instance=test-apps
   run-e2e-tests:
     docker:
-      - image: cimg/openjdk:14.0
+      - image: cimg/openjdk:8.0
     steps:
       - checkout
       - run:
