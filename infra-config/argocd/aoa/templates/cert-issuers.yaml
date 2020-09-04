@@ -13,6 +13,6 @@ spec:
     server: {{ .Values.spec.destination.server }}
   project: default
   source:
-    path: infra-config/apps/base/cert-issuers
+    path: infra-config/apps/cert-issuers
     repoURL: {{ .Values.spec.source.repoURL }}
     targetRevision: {{ .Values.spec.source.targetRevision }}

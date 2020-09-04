@@ -14,6 +14,6 @@ spec:
     server: {{ .Values.spec.destination.server }}
   project: default
   source:
-    path: infra-config/apps/overlays/{{ .Values.spec.env }}/linkerd
+    path: infra-config/apps/linkerd/{{ .Values.spec.env }}
     repoURL: {{ .Values.spec.source.repoURL }}
     targetRevision: {{ .Values.spec.source.targetRevision }}
