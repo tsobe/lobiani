@@ -21,20 +21,22 @@ class InventoryItemAPISpec extends Specification {
 
     private static final URI = "/api/inventory-items"
     private static final SLUG = "the-matrix-trilogy"
+    public static final int AXON_SERVER_HTTP_PORT = 8024
+    public static final int AXON_SERVER_GRPC_PORT = 8124
 
     @Autowired
     TestRestTemplate restTemplate
 
     @Shared
     GenericContainer container = new GenericContainer("axoniq/axonserver")
-            .withExposedPorts(8024, 8124)
-            .waitingFor(Wait.forHttp("/actuator/info").forPort(8024))
+            .withExposedPorts(AXON_SERVER_HTTP_PORT, AXON_SERVER_GRPC_PORT)
+            .waitingFor(Wait.forHttp("/actuator/info").forPort(AXON_SERVER_HTTP_PORT))
             .withStartupTimeout(Duration.ofSeconds(60))
 
     def id
 
     void setupSpec() {
-        def port = container.getMappedPort(8124)
+        def port = container.getMappedPort(AXON_SERVER_GRPC_PORT)
         System.setProperty("axon.axonserver.servers", "${container.getHost()}:$port")
     }
 
