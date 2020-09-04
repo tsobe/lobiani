@@ -130,7 +130,7 @@ to microservices. There's gonna be a separate deployment unit for frontend (SPA)
     ```
 2. Start [Axon server](https://axoniq.io/)
     ```
-    docker run -d --restart unless-stopped --name axonserver -p 8024:8024 -p 8124:8124 axoniq/axonserver
+    docker run -d --restart unless-stopped --name axonserver -p 8024:8024 -p 8124:8124 axoniq/axonserver:4.4
     ```
 3. After running the command below, you can access the page on `http://localhost:8080/inventory-items`
     ```

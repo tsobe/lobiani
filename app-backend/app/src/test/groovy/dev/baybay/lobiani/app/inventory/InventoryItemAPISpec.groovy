@@ -28,7 +28,7 @@ class InventoryItemAPISpec extends Specification {
     TestRestTemplate restTemplate
 
     @Shared
-    GenericContainer container = new GenericContainer("axoniq/axonserver")
+    GenericContainer container = new GenericContainer("axoniq/axonserver:4.4")
             .withExposedPorts(AXON_SERVER_HTTP_PORT, AXON_SERVER_GRPC_PORT)
             .waitingFor(Wait.forHttp("/actuator/info").forPort(AXON_SERVER_HTTP_PORT))
             .withStartupTimeout(Duration.ofSeconds(60))
