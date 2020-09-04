@@ -255,7 +255,7 @@ jobs:
       - run:
           name: Running e2e tests
           command: |
-            cd app-backend && ./gradlew app:e2eTestRemote -Dgeb.build.baseUrl=${TEST_APP_BASE_URL}/ \
+            cd e2e-tests && ./gradlew test -Dgeb.build.baseUrl=${TEST_APP_BASE_URL}/ \
               -Dremote.webdriver.url=$REMOTE_WEBDRIVER_URL \
               -Dremote.webdriver.acceptInsecure=true \
       - save_test_results:

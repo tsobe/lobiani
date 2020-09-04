@@ -1,0 +1,31 @@
+plugins {
+    id 'groovy'
+}
+
+group 'dev.baybay.lobiani'
+version '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.5.2'
+    testImplementation 'org.spockframework:spock-core:2.0-M2-groovy-2.5'
+    testImplementation 'org.seleniumhq.selenium:selenium-remote-driver:3.141.59'
+    testImplementation('org.gebish:geb-spock:3.4') {
+        exclude group: 'org.codehaus.groovy'
+    }
+}
+
+def defaultBaseUrl = 'http://host.docker.internal:8080/'
+def defaultWebDriverUrl = 'http://localhost:4444/wd/hub'
+
+test {
+    useJUnitPlatform()
+    systemProperty('geb.env', 'remote')
+    systemProperty('geb.build.baseUrl', System.getProperty('geb.build.baseUrl', defaultBaseUrl))
+    systemProperty('remote.webdriver.url', System.getProperty('remote.webdriver.url', defaultWebDriverUrl))
+    systemProperty('remote.webdriver.acceptInsecure', System.getProperty('remote.webdriver.acceptInsecure'))
+    systemProperty('remote.webdriver.enableVideo', System.getProperty('remote.webdriver.enableVideo', 'false'))
+}
