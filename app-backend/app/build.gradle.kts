@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.spring") version "1.3.71"
 }
 
-val axonVersion = "4.2.1"
+val axonVersion = "4.4.2"
 val spockVersion = "2.0-M2-groovy-2.5"
 
 dependencies {
@@ -15,7 +15,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.axonframework:axon-spring-boot-starter:$axonVersion")
-// Unfortunately Axon Server doesn't work with DevTools
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
