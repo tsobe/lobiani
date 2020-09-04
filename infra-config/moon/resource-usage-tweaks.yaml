@@ -10,16 +10,25 @@ spec:
       containers:
         - name: moon
           resources:
+            requests:
+              cpu: 20m
+              memory: 80Mi
             limits:
-              cpu: "0.1"
-              memory: "200Mi"
+              cpu: 100m
+              memory: 200Mi
         - name: moon-api
           resources:
+            requests:
+              cpu: 20m
+              memory: 80Mi
             limits:
-              cpu: "0.1"
-              memory: "200Mi"
+              cpu: 100m
+              memory: 200Mi
         - name: selenoid-ui
           resources:
+            requests:
+              cpu: 10m
+                memory: 50Mi
             limits:
-              cpu: "0.1"
-              memory: "150Mi"
+              cpu: 50m
+              memory: 100Mi
