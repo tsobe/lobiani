@@ -16,9 +16,9 @@ import org.axonframework.modelling.command.AggregateNotFoundException
  */
 class AggregateNotFoundHandler : MessageHandlerInterceptor<CommandMessage<*>> {
 
-    override fun handle(unitOfWork: UnitOfWork<out CommandMessage<*>>?, interceptorChain: InterceptorChain?) {
+    override fun handle(unitOfWork: UnitOfWork<out CommandMessage<*>>?, interceptorChain: InterceptorChain?): Any? {
         try {
-            interceptorChain?.proceed()
+            return interceptorChain?.proceed()
         } catch (e: AggregateNotFoundException) {
             throw CommandExecutionException("Aggregate not found", e, e)
         }

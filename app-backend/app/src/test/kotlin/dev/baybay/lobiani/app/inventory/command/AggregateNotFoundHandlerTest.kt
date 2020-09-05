@@ -14,11 +14,14 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.Serializable
 
-internal class AggregateNotFoundInterceptorTest {
+internal class AggregateNotFoundHandlerTest {
 
     private val id = "unique-id"
     private lateinit var fixture: FixtureConfiguration<TestAggregate>
 
+    companion object {
+        const val DELETE_RETURN_VALUE = 10
+    }
 
     @BeforeEach
     internal fun setUp() {
@@ -51,6 +54,13 @@ internal class AggregateNotFoundInterceptorTest {
                 .expectException(CommandExecutionException::class.java)
     }
 
+    @Test
+    internal fun `result message payload should match value returned from command handler`() {
+        fixture.given(TestAggregateCreated(id))
+                .`when`(DeleteTestAggregate(id))
+                .expectResultMessagePayload(DELETE_RETURN_VALUE)
+    }
+
     @AggregateRoot
     class TestAggregate {
 
@@ -65,8 +75,9 @@ internal class AggregateNotFoundInterceptorTest {
         }
 
         @CommandHandler
-        fun handleDelete(delete: DeleteTestAggregate) {
+        fun handleDelete(delete: DeleteTestAggregate): Int {
             apply(TestAggregateDeleted(delete.id))
+            return DELETE_RETURN_VALUE
         }
 
         @EventSourcingHandler
