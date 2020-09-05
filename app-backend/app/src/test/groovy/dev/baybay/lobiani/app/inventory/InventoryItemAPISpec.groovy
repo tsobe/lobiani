@@ -130,7 +130,7 @@ class InventoryItemAPISpec extends Specification {
         itemDefined()
 
         when:
-        def response = addItemToStock(id, 10)
+        def response = addItemToStock(10)
 
         then:
         response.statusCode.is2xxSuccessful()
@@ -150,7 +150,7 @@ class InventoryItemAPISpec extends Specification {
         itemDefined()
 
         when:
-        def response = addItemToStock(id, amount)
+        def response = addItemToStock(amount)
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
@@ -192,7 +192,7 @@ class InventoryItemAPISpec extends Specification {
         restTemplate.exchange("$URI/$id", HttpMethod.DELETE, null, Object)
     }
 
-    ResponseEntity<Object> addItemToStock(id, amount) {
+    ResponseEntity<Object> addItemToStock(amount) {
         restTemplate.postForEntity("$URI/$id/stock", [amount: amount], Object)
     }
 
