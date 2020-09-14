@@ -31,8 +31,7 @@ internal class AggregateNotFoundHandlerTest {
 
     @Test
     internal fun `should create new aggregate`() {
-        fixture
-                .givenNoPriorActivity()
+        fixture.givenNoPriorActivity()
                 .`when`(CreateTestAggregate(id))
                 .expectSuccessfulHandlerExecution()
                 .expectEvents(TestAggregateCreated(id))
