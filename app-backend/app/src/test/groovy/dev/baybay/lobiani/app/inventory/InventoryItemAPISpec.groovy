@@ -58,11 +58,10 @@ class InventoryItemAPISpec extends Specification {
     def "item is defined"() {
         when:
         def response = defineItem()
-        def item = response.body
 
         then:
         response.statusCode.is2xxSuccessful()
-        assertItem(item)
+        assertItem(response.body)
     }
 
     def "defined item is retrieved"() {
@@ -71,11 +70,10 @@ class InventoryItemAPISpec extends Specification {
 
         when:
         def response = getItemEntity(id)
-        def item = response.body
 
         then:
         response.statusCode.is2xxSuccessful()
-        assertItem(item)
+        assertItem(response.body)
     }
 
     def "NotFound is returned when item isn't defined"() {
@@ -106,11 +104,10 @@ class InventoryItemAPISpec extends Specification {
     def "empty result is returned when no items are defined"() {
         when:
         def response = getItemsEntity()
-        def items = response.body
 
         then:
         response.statusCode.is2xxSuccessful()
-        items.empty
+        response.body.empty
     }
 
     def "defined item is deleted"() {
@@ -147,11 +144,10 @@ class InventoryItemAPISpec extends Specification {
 
         when:
         response = getItemEntity(id)
-        def item = response.body
 
         then:
         response.statusCode.is2xxSuccessful()
-        item.stockLevel == 10
+        response.body.stockLevel == 10
     }
 
     @Unroll
