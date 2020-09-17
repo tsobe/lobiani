@@ -21,8 +21,8 @@ class InventoryItemAPISpec extends Specification {
 
     private static final URI = "/api/inventory-items"
     private static final SLUG = "the-matrix-trilogy"
-    public static final int AXON_SERVER_HTTP_PORT = 8024
-    public static final int AXON_SERVER_GRPC_PORT = 8124
+    private static final int AXON_SERVER_HTTP_PORT = 8024
+    private static final int AXON_SERVER_GRPC_PORT = 8124
 
     @Autowired
     TestRestTemplate restTemplate
@@ -168,11 +168,15 @@ class InventoryItemAPISpec extends Specification {
     }
 
     ResponseEntity<Object> defineItem() {
-        restTemplate.postForEntity(URI, [slug: SLUG], Object)
+        def response = restTemplate.postForEntity(URI, [slug: SLUG], Object)
+        if (response.body.id) {
+            id = response.body.id
+        }
+        return response
     }
 
     def itemDefined() {
-        id = restTemplate.postForObject(URI, [slug: SLUG], Object).id
+        defineItem()
     }
 
     ResponseEntity<Object> getItemEntity(id) {
