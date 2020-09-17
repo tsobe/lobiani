@@ -1,20 +1,14 @@
 package dev.baybay.lobiani.app.inventory
 
-
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.test.web.reactive.server.WebTestClient
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.spock.Testcontainers
-import reactor.core.publisher.Flux
-import reactor.test.StepVerifier
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -27,15 +21,11 @@ class InventoryItemAPISpec extends Specification {
 
     private static final URI = "/api/inventory-items"
     private static final SLUG = "the-matrix-trilogy"
-    private static final int AXON_SERVER_HTTP_PORT = 8024
-    private static final int AXON_SERVER_GRPC_PORT = 8124
-    private static final List<Object> EMPTY_LIST = []
+    public static final int AXON_SERVER_HTTP_PORT = 8024
+    public static final int AXON_SERVER_GRPC_PORT = 8124
 
     @Autowired
     TestRestTemplate restTemplate
-
-    @Autowired
-    WebTestClient webClient
 
     @Shared
     GenericContainer container = new GenericContainer("axoniq/axonserver:4.4")
@@ -46,7 +36,6 @@ class InventoryItemAPISpec extends Specification {
     def id
 
     void setupSpec() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(3))
         def port = container.getMappedPort(AXON_SERVER_GRPC_PORT)
         System.setProperty("axon.axonserver.servers", "${container.getHost()}:$port")
     }
@@ -178,66 +167,12 @@ class InventoryItemAPISpec extends Specification {
         response.body.message == "Item with slug $SLUG is already defined"
     }
 
-    def "watched items should contain existing item initially"() {
-        given:
-        itemDefined()
-
-        when:
-        def items = watchItems()
-
-        then:
-        expectSingleItem(items)
-    }
-
-    def "watched items should get updated when new item is defined"() {
-        given:
-        def items = watchItems()
-
-        when:
-        defineItem()
-
-        then:
-        expectNewItem(items)
-    }
-
-    def "watched items should get updated when item is deleted"() {
-        given:
-        itemDefined()
-
-        and:
-        def items = watchItems()
-
-        when:
-        deleteItem(id)
-
-        then:
-        expectItemDeleted(items)
-    }
-
-    def "watched items should get updated when item is added to stock"() {
-        given:
-        itemDefined()
-
-        and:
-        def items = watchItems()
-
-        when:
-        addItemToStock(10)
-
-        then:
-        expectNewStockLevel(items, 10)
-    }
-
     ResponseEntity<Object> defineItem() {
-        def response = restTemplate.postForEntity(URI, [slug: SLUG], Object)
-        if (response.body.id) {
-            id = response.body.id
-        }
-        return response
+        restTemplate.postForEntity(URI, [slug: SLUG], Object)
     }
 
     def itemDefined() {
-        defineItem()
+        id = restTemplate.postForObject(URI, [slug: SLUG], Object).id
     }
 
     ResponseEntity<Object> getItemEntity(id) {
@@ -256,48 +191,9 @@ class InventoryItemAPISpec extends Specification {
         restTemplate.postForEntity("$URI/$id/stock", [amount: amount], Object)
     }
 
-    private Flux<List<Object>> watchItems() {
-        webClient.get().uri("$URI/watch")
-                .accept(MediaType.TEXT_EVENT_STREAM)
-                .exchange()
-                .returnResult(new ParameterizedTypeReference<List<Object>>() {})
-                .responseBody
-    }
-
-    private static void assertItem(item) {
+    static void assertItem(item) {
         assert item.id != null
         assert item.slug == SLUG
         assert item.stockLevel == 0
-    }
-
-    private void expectSingleItem(Flux<List<Object>> items) {
-        StepVerifier.create(items)
-                .expectNext([[id: id, slug: SLUG, stockLevel: 0]])
-                .thenCancel()
-                .verify()
-    }
-
-    private void expectNewItem(Flux<List<Object>> items) {
-        StepVerifier.create(items)
-                .expectNext(EMPTY_LIST)
-                .expectNext([[id: id, slug: SLUG, stockLevel: 0]])
-                .thenCancel()
-                .verify()
-    }
-
-    private void expectItemDeleted(Flux<List<Object>> items) {
-        StepVerifier.create(items)
-                .expectNext([[id: id, slug: SLUG, stockLevel: 0]])
-                .expectNext(EMPTY_LIST)
-                .thenCancel()
-                .verify()
-    }
-
-    private void expectNewStockLevel(Flux<List<Object>> items, int stockLevel) {
-        StepVerifier.create(items)
-                .expectNext([[id: id, slug: SLUG, stockLevel: 0]])
-                .expectNext([[id: id, slug: SLUG, stockLevel: stockLevel]])
-                .thenCancel()
-                .verify()
     }
 }

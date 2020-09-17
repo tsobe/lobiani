@@ -11,7 +11,7 @@ val axonVersion = "4.4.2"
 val spockVersion = "2.0-M2-groovy-2.5"
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.axonframework:axon-spring-boot-starter:$axonVersion")
@@ -26,5 +26,4 @@ dependencies {
     testImplementation("org.spockframework:spock-spring:$spockVersion")
     testImplementation("org.testcontainers:testcontainers:1.14.3")
     testImplementation("org.testcontainers:spock:1.14.3")
-    testImplementation("io.projectreactor:reactor-test:3.1.0.RELEASE")
 }

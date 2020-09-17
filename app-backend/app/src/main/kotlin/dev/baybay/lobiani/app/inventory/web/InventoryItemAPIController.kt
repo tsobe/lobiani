@@ -5,14 +5,11 @@ import dev.baybay.lobiani.app.inventory.query.InventoryItem
 import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.interceptors.JSR303ViolationException
-import org.axonframework.messaging.responsetypes.ResponseType
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.modelling.command.AggregateNotFoundException
 import org.axonframework.queryhandling.QueryGateway
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import reactor.core.publisher.Flux
 import java.util.*
 import kotlin.NoSuchElementException
 
@@ -21,22 +18,10 @@ import kotlin.NoSuchElementException
 class InventoryItemAPIController(private val commandGateway: CommandGateway,
                                  private val queryGateway: QueryGateway) {
 
-    companion object {
-        val INVENTORY_ITEMS_RESPONSE_TYPE: ResponseType<List<InventoryItem>>
-                = ResponseTypes.multipleInstancesOf(InventoryItem::class.java)
-    }
-
     @GetMapping
     fun getAllItems(): List<InventoryItem> {
-        return queryGateway.query(QueryAllInventoryItems(), INVENTORY_ITEMS_RESPONSE_TYPE).get()
-    }
-
-    @GetMapping("/watch", produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    fun watchAllItems(): Flux<List<InventoryItem>> {
-        val query = queryGateway.subscriptionQuery(QueryAllInventoryItems(),
-                INVENTORY_ITEMS_RESPONSE_TYPE,
-                INVENTORY_ITEMS_RESPONSE_TYPE)
-        return query.initialResult().concatWith(query.updates())
+        return queryGateway.query(QueryAllInventoryItems(),
+                ResponseTypes.multipleInstancesOf(InventoryItem::class.java)).get()
     }
 
     @GetMapping("/{id}")
@@ -48,19 +33,19 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     @PostMapping
     fun defineNewItem(@RequestBody defineInventoryItem: DefineInventoryItem): InventoryItem {
         ensureItemIsNotDefined(defineInventoryItem.slug)
-        commandGateway.sendAndWait<Void>(defineInventoryItem)
+        commandGateway.sendAndWait<String>(defineInventoryItem)
         return InventoryItem(defineInventoryItem.id, defineInventoryItem.slug)
     }
 
     @PostMapping("/{id}/stock")
     fun addToStock(@PathVariable id: UUID, @RequestBody stock: Stock) {
-        commandGateway.sendAndWait<Void>(
+        commandGateway.sendAndWait<AddInventoryItemToStock>(
                 AddInventoryItemToStock(id, Quantity.count(stock.amount)))
     }
 
     @DeleteMapping("/{id}")
     fun deleteItem(@PathVariable id: UUID) {
-        commandGateway.sendAndWait<Void>(DeleteInventoryItem(id))
+        commandGateway.sendAndWait<DeleteInventoryItem>(DeleteInventoryItem(id))
     }
 
     @ExceptionHandler(NoSuchElementException::class)
