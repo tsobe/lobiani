@@ -299,8 +299,8 @@ describe('Inventory', () => {
 
     await wrapper.vm.$router.push('/new')
 
-    const defineItemWrapper = wrapper.findComponent(NewInventoryItem)
-    defineItemWrapper.vm.$emit('itemDefined', {
+    const newItemWrapper = wrapper.findComponent(NewInventoryItem)
+    newItemWrapper.vm.$emit('itemDefined', {
       id: 'baz',
       slug: 'the-simpsons',
       stockLevel: 0
