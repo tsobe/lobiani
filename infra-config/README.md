@@ -49,7 +49,7 @@ configured and current context is set to production cluster
      p, lobiani, applications, *, */*, allow
    ```
    
-   And then generate a token that will be used by CLI access from CI 
+   And then generate a token that will be used by CLI access from CI (as `ARGOCD_AUTH_TOKEN` env variable)
    ```
    argocd account generate-token --account lobiani
    ```
@@ -70,9 +70,34 @@ kubectl apply -f moon/argocd-app.yaml
 [App Of Apps pattern](https://argoproj.github.io/argo-cd/operator-manual/cluster-bootstrapping/) is followed
 here.
 
+## Production env
+```
+argocd app create production-apps --repo git@github.com:sevteen/lobiani \
+    --path infra-config/argocd/aoa --dest-namespace argocd \
+    --dest-server https://kubernetes.default.svc \
+    --sync-policy automated -l environment=production \
+    --revision production \
+    --values production-values.yaml
+   ```
+
+## Configure CI
+
+Following environment variables must be configured in Circle CI before triggering any pipeline
+
+- `ARGOCD_AUTH_TOKEN` - obtained as described above
+- `ARGOCD_CLI_DOWNLOAD_URL`  - e.g. `https://argocd.baybay.dev/download/argocd-linux-amd64`
+- `CIRCLE_API_USER_TOKEN`
+- `DIGITALOCEAN_TOKEN`
+- `DOCKER_LOGIN`
+- `DOCKER_PASSWORD`
+- `REMOTE_WEBDRIVER_URL` - e.g. `http://moon.baybay.dev:4444/wd/hub`
+- `TEST_APP_BASE_URL` - e.g. `https://test-lobiani.baybay.dev`
+- `TF_API_TOKEN`
+
 ## Test env
 
-Test environment now is booted up automatically as a part of the CI
+Test environment now is booted up automatically as a part of the CI, so performing steps described in this section
+manually, is not required
 
 1. Run `terraform apply` in `infra-config/terraform/test` directory.
 It should produce similar output
@@ -94,16 +119,6 @@ It should produce similar output
         --helm-set spec.destination.server=$TEST_CLUSTER_ENDPOINT \
         --values test-values.yaml
     ```
-
-## Production env
-```
-argocd app create production-apps --repo git@github.com:sevteen/lobiani \
-    --path infra-config/argocd/aoa --dest-namespace argocd \
-    --dest-server https://kubernetes.default.svc \
-    --sync-policy automated -l environment=production \
-    --revision production \
-    --values production-values.yaml
-   ```
 
 # Destroy
 ## Argo CD apps
