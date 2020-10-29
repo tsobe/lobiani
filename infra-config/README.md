@@ -1,7 +1,7 @@
 # Infrastructure setup
 ## Bring up the production cluster
 
-Run `terraform apply` in `infra-config/terraform/prod`. This will bring 
+Run `terraform apply` in `infra-config/terraform/prod` directory. This will bring 
 up the cluster dedicated for production environment and other utility tools
 (Argo CD and Moon)
 
@@ -30,7 +30,7 @@ configured and current context is set to production cluster
     ```
     argocd login localhost:8480
     ```
-   Initial password is the the name of argocd pod. It can be obtained as
+   Initial password is the name of argocd pod. It can be obtained as
    `kubectl get pod -l app.kubernetes.io/name=argocd-server -n argocd`
 4. Add a private repository
     ```
