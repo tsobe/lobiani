@@ -9,8 +9,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
-
   export default {
     name: 'InventoryItem',
     props: {
@@ -26,13 +24,11 @@
     },
     methods: {
       async addToStock() {
-        await axios.post(`/inventory-items/${this.item.id}/stock`, {amount: this.amount})
-        this.item.stockLevel += this.amount
+        await this.$store.dispatch('addToStock', {item: this.item, amount: this.amount})
         this.amount = null
       },
       async deleteItem() {
-        await axios.delete(`/inventory-items/${this.item.id}`)
-        this.$emit('itemDeleted', this.item)
+        await this.$store.dispatch('deleteItem', this.item)
       }
     }
   }

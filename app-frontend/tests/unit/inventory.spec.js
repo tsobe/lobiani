@@ -193,10 +193,19 @@ describe('InventoryItem', () => {
   const amount = 10
 
   function mountComponent() {
+    const localVue = createLocalVue()
+    localVue.use(Vuex)
+
+    const item = createItem()
+    const store = new Vuex.Store(inventoryItems.createStore())
+    store.commit('setItems', [item])
+
     wrapper = mount(InventoryItem, {
       propsData: {
-        item: createItem()
-      }
+        item: item
+      },
+      localVue,
+      store
     })
     amountWrapper = wrapper.find('input[name="amount"]')
     stockLevelWrapper = wrapper.find('.stock-level')
@@ -296,6 +305,7 @@ describe('Inventory', () => {
     setupSuccessfulGETCall()
     const localVue = createLocalVue()
     localVue.use(VueRouter)
+    localVue.use(Vuex)
 
     const router = new VueRouter({
       routes
@@ -303,7 +313,8 @@ describe('Inventory', () => {
 
     const wrapper = mount(App, {
       localVue,
-      router
+      router,
+      store: new Vuex.Store(inventoryItems.createStore())
     })
 
     await wrapper.vm.$router.push('/new')
@@ -335,7 +346,13 @@ describe('Inventory', () => {
   ]
 
   async function mountComponent() {
-    wrapper = mount(InventoryItems)
+    const localVue = createLocalVue()
+    localVue.use(Vuex)
+
+    wrapper = mount(InventoryItems, {
+      localVue,
+      store: new Vuex.Store(inventoryItems.createStore())
+    })
     await flushPromises()
   }
 
