@@ -10,6 +10,9 @@ import Vuex from 'vuex'
 import inventoryItems from '@/store/inventoryItems'
 import routes from '@/router/routes'
 
+const vueWithVuex = createLocalVue()
+vueWithVuex.use(Vuex)
+
 jest.mock('axios')
 
 function setupFailingPOSTCall() {
@@ -23,6 +26,15 @@ function setupFailingPOSTCall() {
 
 function setupSuccessfulPOSTCall(data = {}) {
   axios.post.mockResolvedValue({data})
+}
+
+function mountWithStore(component) {
+  const store = inventoryItems.createStore()
+  const wrapper = mount(component, {
+    localVue: vueWithVuex,
+    store: new Vuex.Store(store)
+  })
+  return {wrapper, store}
 }
 
 describe('NewInventoryItem', () => {
@@ -97,14 +109,9 @@ describe('NewInventoryItem', () => {
   const slug = 'the-matrix-trilogy'
 
   function mountComponent() {
-    const localVue = createLocalVue()
-    localVue.use(Vuex)
-    store = inventoryItems.createStore()
-
-    wrapper = mount(NewInventoryItem, {
-      localVue,
-      store: new Vuex.Store(store)
-    })
+    const mounted = mountWithStore(NewInventoryItem)
+    wrapper = mounted.wrapper
+    store = mounted.store
     slugWrapper = wrapper.find('.slug')
   }
 
@@ -193,9 +200,6 @@ describe('InventoryItem', () => {
   const amount = 10
 
   function mountComponent() {
-    const localVue = createLocalVue()
-    localVue.use(Vuex)
-
     const item = createItem()
     const store = new Vuex.Store(inventoryItems.createStore())
     store.commit('setItems', [item])
@@ -204,7 +208,7 @@ describe('InventoryItem', () => {
       propsData: {
         item: item
       },
-      localVue,
+      localVue: vueWithVuex,
       store
     })
     amountWrapper = wrapper.find('input[name="amount"]')
@@ -303,17 +307,11 @@ describe('Inventory', () => {
 
   it('should navigate to list of items after new item is defined', async () => {
     setupSuccessfulGETCall()
-    const localVue = createLocalVue()
-    localVue.use(VueRouter)
-    localVue.use(Vuex)
-
-    const router = new VueRouter({
-      routes
-    })
+    vueWithVuex.use(VueRouter)
 
     const wrapper = mount(App, {
-      localVue,
-      router,
+      localVue: vueWithVuex,
+      router: new VueRouter({routes}),
       store: new Vuex.Store(inventoryItems.createStore())
     })
 
@@ -346,13 +344,7 @@ describe('Inventory', () => {
   ]
 
   async function mountComponent() {
-    const localVue = createLocalVue()
-    localVue.use(Vuex)
-
-    wrapper = mount(InventoryItems, {
-      localVue,
-      store: new Vuex.Store(inventoryItems.createStore())
-    })
+    wrapper = mountWithStore(InventoryItems).wrapper
     await flushPromises()
   }
 
