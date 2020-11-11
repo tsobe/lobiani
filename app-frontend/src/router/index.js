@@ -1,30 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import InventoryItems from '@/views/InventoryItems'
-import NewInventoryItem from '@/views/NewInventoryItem'
+import routes from './routes'
 
 Vue.use(VueRouter)
-
-const routes = [
-  {
-    path: '/',
-    redirect: '/items'
-  },
-  {
-    path: '/items',
-    name: 'InventoryItems',
-    component: InventoryItems
-  },
-  {
-    path: '/new',
-    name: 'NewInventoryItem',
-    component: NewInventoryItem
-  },
-  {
-    path: '*',
-    redirect: '/'
-  }
-]
 
 const router = new VueRouter({
   mode: 'history',

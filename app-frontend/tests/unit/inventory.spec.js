@@ -8,6 +8,7 @@ import VueRouter from 'vue-router'
 import App from '@/App'
 import Vuex from 'vuex'
 import inventoryItems from '@/store/inventoryItems'
+import routes from '@/router/routes'
 
 jest.mock('axios')
 
@@ -295,19 +296,6 @@ describe('Inventory', () => {
     setupSuccessfulGETCall()
     const localVue = createLocalVue()
     localVue.use(VueRouter)
-
-    const routes = [
-      {
-        path: '/',
-        name: 'InventoryItems',
-        component: InventoryItems
-      },
-      {
-        path: '/new',
-        name: 'NewInventoryItem',
-        component: NewInventoryItem
-      }
-    ]
 
     const router = new VueRouter({
       routes
