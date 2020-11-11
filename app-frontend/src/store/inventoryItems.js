@@ -28,10 +28,7 @@ export default {
         },
         async defineItem(context, slug) {
           const response = await axios.post('/inventory-items', {slug})
-          const item = {
-            id: response.data.id,
-            slug
-          }
+          const item = response.data
           context.commit('addItem', item)
           return item
         },

@@ -42,7 +42,8 @@ describe('NewInventoryItem', () => {
     beforeAll(async () => {
       setupSuccessfulPOSTCall({
         id: itemId,
-        slug: slug
+        slug: slug,
+        stockLevel: 0
       })
 
       mountComponent()
@@ -59,7 +60,8 @@ describe('NewInventoryItem', () => {
       expect(wrapper.emitted().itemDefined).toHaveLength(1)
       expect(wrapper.emitted().itemDefined[0]).toEqual([{
         id: itemId,
-        slug: slug
+        slug: slug,
+        stockLevel: 0
       }])
     })
 
@@ -67,7 +69,8 @@ describe('NewInventoryItem', () => {
       expect(store.state.items).toHaveLength(1)
       expect(store.state.items[0]).toEqual({
         id: itemId,
-        slug: slug
+        slug: slug,
+        stockLevel: 0
       })
     })
 
