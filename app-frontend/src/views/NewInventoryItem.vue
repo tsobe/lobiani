@@ -6,7 +6,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
 
   export default {
     name: 'NewInventoryItem',
@@ -17,12 +16,9 @@
     },
     methods: {
       async defineItem() {
-        const response = await axios.post('/inventory-items', {slug: this.slug})
-        this.$emit('itemDefined', {
-          id: response.data.id,
-          slug: this.slug
-        })
+        const item = await this.$store.dispatch('defineItem', this.slug)
         this.slug = null
+        this.$emit('itemDefined', item)
       }
     }
   }

@@ -6,6 +6,8 @@ import InventoryItem from '@/components/InventoryItem'
 import InventoryItems from '@/views/InventoryItems'
 import VueRouter from 'vue-router'
 import App from '@/App'
+import Vuex from 'vuex'
+import {createStore} from '@/store/inventoryItems'
 
 jest.mock('axios')
 
@@ -28,8 +30,7 @@ describe('NewInventoryItem', () => {
       setupSuccessfulPOSTCall({
         id: itemId,
         slug: slug
-      }
-      )
+      })
 
       mountComponent()
 
@@ -47,6 +48,14 @@ describe('NewInventoryItem', () => {
         id: itemId,
         slug: slug
       }])
+    })
+
+    it('should add item to store', () => {
+      expect(store.state.items).toHaveLength(1)
+      expect(store.state.items[0]).toEqual({
+        id: itemId,
+        slug: slug
+      })
     })
 
     it('should reset the slug input', () => {
@@ -71,6 +80,10 @@ describe('NewInventoryItem', () => {
       expect(wrapper.emitted().itemDefined).toBeFalsy()
     })
 
+    it('should not add item to store', () => {
+      expect(store.state.items).toHaveLength(0)
+    })
+
     it('should not reset the slug input', () => {
       expect(slugWrapper.element.value).toBe(slug)
     })
@@ -78,11 +91,19 @@ describe('NewInventoryItem', () => {
 
   let wrapper
   let slugWrapper
+  let store
   const itemId = 'foo'
   const slug = 'the-matrix-trilogy'
 
   function mountComponent() {
-    wrapper = mount(NewInventoryItem)
+    const localVue = createLocalVue()
+    localVue.use(Vuex)
+    store = createStore()
+
+    wrapper = mount(NewInventoryItem, {
+      localVue,
+      store: new Vuex.Store(store)
+    })
     slugWrapper = wrapper.find('.slug')
   }
 
