@@ -7,7 +7,7 @@ import InventoryItems from '@/views/InventoryItems'
 import VueRouter from 'vue-router'
 import App from '@/App'
 import Vuex from 'vuex'
-import {createStore} from '@/store/inventoryItems'
+import inventoryItems from '@/store/inventoryItems'
 
 jest.mock('axios')
 
@@ -98,7 +98,7 @@ describe('NewInventoryItem', () => {
   function mountComponent() {
     const localVue = createLocalVue()
     localVue.use(Vuex)
-    store = createStore()
+    store = inventoryItems.createStore()
 
     wrapper = mount(NewInventoryItem, {
       localVue,
