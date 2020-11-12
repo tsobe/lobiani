@@ -96,7 +96,7 @@ jobs:
                 command: cd app-backend && ./gradlew build
             - run:
                 name: Running Sonar Analysis
-                command: cd app-backend && ./bradlew sonarqube
+                command: cd app-backend && ./gradlew sonarqube
       - persist_to_workspace:
           root: app-backend/app
           paths:
