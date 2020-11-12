@@ -93,6 +93,7 @@ Following environment variables must be configured in Circle CI before triggerin
 - `REMOTE_WEBDRIVER_URL` - e.g. `http://moon.baybay.dev:4444/wd/hub`
 - `TEST_APP_BASE_URL` - e.g. `https://test-lobiani.baybay.dev`
 - `TF_API_TOKEN`
+- `SONAR_TOKEN` - visit [SonarCloud](https://sonarcloud.io/) for more
 
 ## Test env
 

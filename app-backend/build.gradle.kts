@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.3.71"
+    id("org.sonarqube") version "3.0"
 }
 
 group = "dev.baybay.lobiani"
@@ -9,6 +10,13 @@ group = "dev.baybay.lobiani"
 allprojects {
     repositories {
         mavenCentral()
+    }
+    sonarqube {
+        properties {
+            property("sonar.projectKey", "tsobe_lobiani")
+            property("sonar.organization", "tsobe")
+            property("sonar.host.url", "https://sonarcloud.io")
+        }
     }
 }
 
