@@ -24,23 +24,23 @@ class InventoryItem {
     }
 
     @CommandHandler
-    private fun delete(c: DeleteInventoryItem) {
+    fun delete(c: DeleteInventoryItem) {
         apply(InventoryItemDeleted(id, slug))
     }
 
     @CommandHandler
-    private fun add(c: AddInventoryItemToStock) {
+    fun add(c: AddInventoryItemToStock) {
         apply(InventoryItemAddedToStock(c.inventoryItemId, c.quantity))
     }
 
     @EventSourcingHandler
-    private fun on(e: InventoryItemDefined) {
+    fun on(e: InventoryItemDefined) {
         id = e.id
         slug = e.slug
     }
 
     @EventSourcingHandler
-    private fun on(e: InventoryItemDeleted) {
+    fun on(e: InventoryItemDeleted) {
         markDeleted()
     }
 }
