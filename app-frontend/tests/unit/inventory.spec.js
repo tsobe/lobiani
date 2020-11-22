@@ -4,10 +4,10 @@ import flushPromises from 'flush-promises'
 import NewInventoryItem from '@/views/NewInventoryItem'
 import InventoryItem from '@/components/InventoryItem'
 import InventoryItems from '@/views/InventoryItems'
-import VueRouter from 'vue-router'
-import App from '@/App'
 import Vuex from 'vuex'
 import inventoryItems from '@/store/inventoryItems'
+import VueRouter from 'vue-router'
+import App from '@/App'
 import routes from '@/router/routes'
 
 const vueWithVuex = createLocalVue()
@@ -26,6 +26,22 @@ function setupFailingPOSTCall() {
 
 function setupSuccessfulPOSTCall(data = {}) {
   axios.post.mockResolvedValue({data})
+}
+
+function setupSuccessfulGETCallWithItems() {
+  const items = [
+    {
+      id: 'foo',
+      slug: 'the-matrix-trilogy',
+      stockLevel: 10
+    },
+    {
+      id: 'bar',
+      slug: 'memento',
+      stockLevel: 17
+    }
+  ]
+  axios.get.mockResolvedValue({data: [...items]})
 }
 
 function mountWithStore(component) {
@@ -237,10 +253,10 @@ describe('InventoryItem', () => {
   }
 })
 
-describe('Inventory', () => {
+describe('InventoryItems', () => {
   describe('mount', () => {
     beforeAll(async () => {
-      setupSuccessfulGETCall()
+      setupSuccessfulGETCallWithItems()
 
       await mountComponent()
     })
@@ -257,7 +273,7 @@ describe('Inventory', () => {
   describe('delete', () => {
     describe('item can be deleted when API call succeeds', () => {
       beforeAll(async () => {
-        setupSuccessfulGETCall()
+        setupSuccessfulGETCallWithItems()
 
         await mountComponent()
 
@@ -275,7 +291,7 @@ describe('Inventory', () => {
 
     describe('item can not be deleted when API call fails', () => {
       beforeAll(async () => {
-        setupSuccessfulGETCall()
+        setupSuccessfulGETCallWithItems()
         axios.delete.mockRejectedValue({
           response: {
             status: 500
@@ -308,50 +324,46 @@ describe('Inventory', () => {
     }
   })
 
+  let wrapper
+
+  async function mountComponent() {
+    wrapper = mountWithStore(InventoryItems).wrapper
+    await flushPromises()
+  }
+})
+
+describe('App navigation', () => {
   it('should navigate to list of items after new item is defined', async () => {
-    setupSuccessfulGETCall()
+    setupSuccessfulGETCallWithItems()
     vueWithVuex.use(VueRouter)
 
-    const wrapper = mount(App, {
+    await mountComponent()
+
+    await wrapper.vm.$router.push('/new')
+
+    defineItem()
+
+    expect(wrapper.vm.$route.path).toBe('/items')
+  })
+
+  let wrapper
+
+  async function mountComponent() {
+    wrapper = mount(App, {
       localVue: vueWithVuex,
       router: new VueRouter({routes}),
       store: new Vuex.Store(inventoryItems.createStore())
     })
+    await flushPromises()
+  }
 
-    await wrapper.vm.$router.push('/new')
-
+  async function defineItem() {
     const newItemWrapper = wrapper.findComponent(NewInventoryItem)
     newItemWrapper.vm.$emit('itemDefined', {
       id: 'baz',
       slug: 'the-simpsons',
       stockLevel: 0
     })
-
     await flushPromises()
-
-    expect(wrapper.vm.$route.path).toBe('/items')
-  })
-
-  let wrapper
-  const items = [
-    {
-      id: 'foo',
-      slug: 'the-matrix-trilogy',
-      stockLevel: 10
-    },
-    {
-      id: 'bar',
-      slug: 'memento',
-      stockLevel: 17
-    }
-  ]
-
-  async function mountComponent() {
-    wrapper = mountWithStore(InventoryItems).wrapper
-    await flushPromises()
-  }
-
-  function setupSuccessfulGETCall() {
-    axios.get.mockResolvedValue({data: [...items]})
   }
 })
