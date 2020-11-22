@@ -123,7 +123,10 @@ to microservices. There's gonna be a separate deployment unit for frontend (SPA)
     - ✓ No automatic rollback in case of production failures
 
 # Building and running
-## See in action 
+## The backend
+
+from `app-backend` directory
+
 1. Build and test
     ```
     ./gradlew build
@@ -132,10 +135,17 @@ to microservices. There's gonna be a separate deployment unit for frontend (SPA)
     ```
     docker run -d --restart unless-stopped --name axonserver -p 8024:8024 -p 8124:8124 axoniq/axonserver:4.4
     ```
-3. After running the command below, you can access the page on `http://localhost:8080/inventory-items`
+3. Start the backend
     ```
-    ./gradlew bootRun
+    export SERVER_PORT=9090 && ./gradlew bootRun
     ```
+## The frontend
+
+To build test and run execute following commands from `app-frontend` directory 
+
+    npm install
+    npm run test:unit
+    npm run serve
 
 ## Run e2e tests
 1. Download and start [selenoid](https://github.com/aerokube/selenoid) and optionally [selenoid-ui](https://github.com/aerokube/selenoid-ui)
@@ -144,11 +154,14 @@ to microservices. There's gonna be a separate deployment unit for frontend (SPA)
         && ./cm selenoid start --vnc --tmpfs 128 \
         && ./cm selenoid-ui start
     ```
-2. First ensure the app is running, then execute the tests 
+2. First ensure backend and frontend are both running, then execute the tests from `e2e-tests` directory 
+(use Java 8, hint [jenv](https://www.jenv.be/))
     ```
-    ./gradlew e2eTestRemote
+    ./gradlew test
     ```
- 
+
+# Known issues
+- Gradle doesn't work with JDK 14, more info [here](https://github.com/gradle/gradle/issues/10248)
 
 # Resources
 - [Microservices, bounded context, cohesion. What do they have in common?](https://hackernoon.com/microservices-bounded-context-cohesion-what-do-they-have-in-common-1107b70342b3)
