@@ -33,19 +33,19 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     @PostMapping
     fun defineNewItem(@RequestBody defineInventoryItem: DefineInventoryItem): InventoryItem {
         ensureItemIsNotDefined(defineInventoryItem.slug)
-        commandGateway.sendAndWait<Void>(defineInventoryItem)
+        commandGateway.send<Void>(defineInventoryItem)
         return InventoryItem(defineInventoryItem.id, defineInventoryItem.slug)
     }
 
     @PostMapping("/{id}/stock")
     fun addToStock(@PathVariable id: UUID, @RequestBody stock: Stock) {
-        commandGateway.sendAndWait<Void>(
+        commandGateway.send<Void>(
                 AddInventoryItemToStock(id, Quantity.count(stock.amount)))
     }
 
     @DeleteMapping("/{id}")
     fun deleteItem(@PathVariable id: UUID) {
-        commandGateway.sendAndWait<Void>(DeleteInventoryItem(id))
+        commandGateway.send<Void>(DeleteInventoryItem(id))
     }
 
     @ExceptionHandler(NoSuchElementException::class)
