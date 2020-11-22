@@ -13,7 +13,9 @@
     name: 'InventoryItems',
     components: {InventoryItem},
     async mounted() {
-      await this.$store.dispatch('fetchItems')
+      if (!this.$store.getters.hasItems) {
+        await this.$store.dispatch('fetchItems')
+      }
     },
     computed: {
       items() {

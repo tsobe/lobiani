@@ -6,6 +6,11 @@ export default {
       state: {
         items: []
       },
+      getters: {
+        hasItems: state => {
+          return state.items.length > 0
+        }
+      },
       mutations: {
         setItems(state, items) {
           state.items = items

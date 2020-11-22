@@ -28,19 +28,20 @@ function setupSuccessfulPOSTCall(data = {}) {
   axios.post.mockResolvedValue({data})
 }
 
+const items = [
+  {
+    id: 'foo',
+    slug: 'the-matrix-trilogy',
+    stockLevel: 10
+  },
+  {
+    id: 'bar',
+    slug: 'memento',
+    stockLevel: 17
+  }
+]
+
 function setupSuccessfulGETCallWithItems() {
-  const items = [
-    {
-      id: 'foo',
-      slug: 'the-matrix-trilogy',
-      stockLevel: 10
-    },
-    {
-      id: 'bar',
-      slug: 'memento',
-      stockLevel: 17
-    }
-  ]
   axios.get.mockResolvedValue({data: [...items]})
 }
 
@@ -54,6 +55,8 @@ function mountWithStore(component) {
 }
 
 describe('NewInventoryItem', () => {
+  afterEach(jest.resetAllMocks)
+
   describe('item can be defined when API call succeeds', () => {
     beforeAll(async () => {
       setupSuccessfulPOSTCall({
@@ -146,6 +149,8 @@ describe('NewInventoryItem', () => {
 })
 
 describe('InventoryItem', () => {
+  afterEach(jest.resetAllMocks)
+
   describe('mount', () => {
     beforeAll(mountComponent)
 
@@ -254,6 +259,8 @@ describe('InventoryItem', () => {
 })
 
 describe('InventoryItems', () => {
+  afterEach(jest.resetAllMocks)
+
   describe('mount', () => {
     beforeAll(async () => {
       setupSuccessfulGETCallWithItems()
@@ -324,15 +331,35 @@ describe('InventoryItems', () => {
     }
   })
 
+  it('should not fetch items from the API when mounted and store already has data', async () => {
+    const store = createStoreWithItems()
+
+    mount(InventoryItems, {
+      localVue: vueWithVuex,
+      store
+    })
+    await flushPromises()
+
+    expect(axios.get).not.toHaveBeenCalledWith('/inventory-items')
+  })
+
   let wrapper
 
   async function mountComponent() {
     wrapper = mountWithStore(InventoryItems).wrapper
     await flushPromises()
   }
+
+  function createStoreWithItems() {
+    const store = new Vuex.Store(inventoryItems.createStore())
+    store.commit('setItems', items)
+    return store
+  }
 })
 
 describe('App navigation', () => {
+  afterEach(jest.resetAllMocks)
+
   it('should navigate to list of items after new item is defined', async () => {
     setupSuccessfulGETCallWithItems()
     vueWithVuex.use(VueRouter)
