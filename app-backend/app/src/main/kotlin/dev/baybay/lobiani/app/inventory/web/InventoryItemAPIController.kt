@@ -2,11 +2,9 @@ package dev.baybay.lobiani.app.inventory.web
 
 import dev.baybay.lobiani.app.inventory.api.*
 import dev.baybay.lobiani.app.inventory.query.InventoryItem
-import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.interceptors.JSR303ViolationException
 import org.axonframework.messaging.responsetypes.ResponseTypes
-import org.axonframework.modelling.command.AggregateNotFoundException
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -60,12 +58,6 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     @ExceptionHandler(JSR303ViolationException::class)
     fun handleValidationFailure(e: JSR303ViolationException): ResponseEntity<APIError> {
         return badRequest(e.violations.first().message)
-    }
-
-    @ExceptionHandler(CommandExecutionException::class)
-    fun handleCommandExecution(e: CommandExecutionException): ResponseEntity<Void> {
-        e.getDetails<AggregateNotFoundException>().get()
-        return notFound()
     }
 
     @ExceptionHandler(ItemAlreadyDefinedException::class)
