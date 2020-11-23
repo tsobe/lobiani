@@ -47,30 +47,27 @@ class InventoryItemAPISpec extends Specification {
     void cleanup() {
         if (id) {
             deleteItem(id)
-            conditions.eventually {
+            conditions.call {
                 getItemEntity(id).statusCode == HttpStatus.NOT_FOUND
             }
         }
     }
 
-    def "item is defined"() {
+    def "defined item should be retrieved eventually"() {
         when:
         def response = defineItem()
 
         then:
         response.statusCode == HttpStatus.ACCEPTED
+
+        and:
         assertItem(response.body)
-    }
 
-    def "defined item is retrieved"() {
-        given:
-        itemDefined()
-
-        expect:
+        and:
         conditions.eventually {
-            def response = getItemEntity(id)
-            response.statusCode == HttpStatus.OK
-            assertItem(response.body)
+            def r = getItemEntity(id)
+            r.statusCode == HttpStatus.OK
+            assertItem(r.body)
         }
     }
 
@@ -85,7 +82,7 @@ class InventoryItemAPISpec extends Specification {
         response.statusCode == HttpStatus.NOT_FOUND
     }
 
-    def "defined items are retrieved"() {
+    def "defined items are retrieved eventually"() {
         given:
         itemDefined()
 
@@ -105,6 +102,8 @@ class InventoryItemAPISpec extends Specification {
 
         then:
         response.statusCode == HttpStatus.OK
+
+        and:
         response.body.empty
     }
 
@@ -142,7 +141,7 @@ class InventoryItemAPISpec extends Specification {
         then:
         response.statusCode == HttpStatus.ACCEPTED
 
-        expect:
+        and:
         conditions.eventually {
             getItemEntity(id).body.stockLevel == 10
         }
@@ -158,6 +157,8 @@ class InventoryItemAPISpec extends Specification {
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
+
+        and:
         response.body.message == "Amount must be a positive number"
 
         where:
@@ -174,6 +175,8 @@ class InventoryItemAPISpec extends Specification {
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
+
+        and:
         response.body.message == "Item with slug $SLUG is already defined"
     }
 
