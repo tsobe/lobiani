@@ -51,7 +51,10 @@ function mountWithStore(component) {
     localVue: vueWithVuex,
     store: new Vuex.Store(store)
   })
-  return {wrapper, store}
+  return {
+    wrapper,
+    store
+  }
 }
 
 describe('NewInventoryItem', () => {
@@ -368,7 +371,7 @@ describe('App navigation', () => {
 
     await wrapper.vm.$router.push('/new')
 
-    defineItem()
+    await defineItem()
 
     expect(wrapper.vm.$route.path).toBe('/items')
   })
