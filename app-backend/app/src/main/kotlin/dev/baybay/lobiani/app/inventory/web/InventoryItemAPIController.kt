@@ -8,6 +8,7 @@ import org.axonframework.messaging.interceptors.JSR303ViolationException
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.modelling.command.AggregateNotFoundException
 import org.axonframework.queryhandling.QueryGateway
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -31,6 +32,7 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     }
 
     @PostMapping
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
     fun defineNewItem(@RequestBody defineInventoryItem: DefineInventoryItem): InventoryItem {
         ensureItemIsNotDefined(defineInventoryItem.slug)
         commandGateway.send<Void>(defineInventoryItem)
@@ -38,12 +40,14 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     }
 
     @PostMapping("/{id}/stock")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
     fun addToStock(@PathVariable id: UUID, @RequestBody stock: Stock) {
         commandGateway.send<Void>(
                 AddInventoryItemToStock(id, Quantity.count(stock.amount)))
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
     fun deleteItem(@PathVariable id: UUID) {
         commandGateway.send<Void>(DeleteInventoryItem(id))
     }

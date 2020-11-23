@@ -58,7 +58,7 @@ class InventoryItemAPISpec extends Specification {
         def response = defineItem()
 
         then:
-        response.statusCode.is2xxSuccessful()
+        response.statusCode == HttpStatus.ACCEPTED
         assertItem(response.body)
     }
 
@@ -69,7 +69,7 @@ class InventoryItemAPISpec extends Specification {
         expect:
         conditions.eventually {
             def response = getItemEntity(id)
-            response.statusCode.is2xxSuccessful()
+            response.statusCode == HttpStatus.OK
             assertItem(response.body)
         }
     }
@@ -92,7 +92,7 @@ class InventoryItemAPISpec extends Specification {
         expect:
         conditions.eventually {
             def response = getItemsEntity()
-            response.statusCode.is2xxSuccessful()
+            response.statusCode == HttpStatus.OK
             def items = response.body
             items.size() == 1
             assertItem(items[0])
@@ -104,7 +104,7 @@ class InventoryItemAPISpec extends Specification {
         def response = getItemsEntity()
 
         then:
-        response.statusCode.is2xxSuccessful()
+        response.statusCode == HttpStatus.OK
         response.body.empty
     }
 
@@ -121,8 +121,7 @@ class InventoryItemAPISpec extends Specification {
         }
     }
 
-    @Ignore
-    def "NotFound is returned when deleting undefined item"() {
+    def "Accepted is returned when deleting undefined item"() {
         given:
         def undefinedItemId = UUID.randomUUID()
 
@@ -130,7 +129,7 @@ class InventoryItemAPISpec extends Specification {
         def response = deleteItem(undefinedItemId)
 
         then:
-        response.statusCode == HttpStatus.NOT_FOUND
+        response.statusCode == HttpStatus.ACCEPTED
     }
 
     def "item is added to stock"() {
@@ -141,7 +140,7 @@ class InventoryItemAPISpec extends Specification {
         def response = addItemToStock(10)
 
         then:
-        response.statusCode.is2xxSuccessful()
+        response.statusCode == HttpStatus.ACCEPTED
 
         expect:
         conditions.eventually {
