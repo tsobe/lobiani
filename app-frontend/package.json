@@ -20,6 +20,7 @@
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-unit-jest": "~4.5.0",
+    "@vue/cli-plugin-vuex": "^4.5.9",
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/test-utils": "^1.0.3",
@@ -32,6 +33,12 @@
     "eslint-plugin-vue": "^6.2.2",
     "flush-promises": "^1.0.2",
     "vue-template-compiler": "^2.6.11"
+  },
+  "vue": {
+    "devServer": {
+      "proxy": "http://localhost:9090",
+      "disableHostCheck": true
+    }
   },
   "eslintConfig": {
     "root": true,
@@ -87,12 +94,6 @@
         }
       }
     ]
-  },
-  "vue": {
-    "devServer": {
-      "proxy": "http://localhost:9090",
-      "disableHostCheck": true
-    }
   },
   "browserslist": [
     "> 1%",
