@@ -1,5 +1,5 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tsobe_lobiani&metric=alert_status)](https://sonarcloud.io/dashboard?id=tsobe_lobiani)
-[![CircleCI](https://circleci.com/gh/tsobe/lobiani.svg?style=shield)](https://app.circleci.com/pipelines/github/tsobe)
+[![CircleCI](https://circleci.com/gh/tsobe/lobiani.svg?style=shield)](https://circleci.com/gh/tsobe/lobiani)
 
 # Motivation
 This project is a personal exercise to gain/improve skills in various software engineering practices, will it be coding disciplines, architecture, technologies and anything in between or around them.
