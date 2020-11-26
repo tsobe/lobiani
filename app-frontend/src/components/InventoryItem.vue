@@ -1,11 +1,37 @@
 <template>
-  <div class="item" v-bind:data-slug="item.slug">
-    <span class="slug">{{ item.slug }}</span>
-    <span class="stock-level">{{ item.stockLevel }}</span>
-    <input name="amount" type="number" v-model.number="amount"/>
-    <button class="add-to-stock" v-on:click="addToStock">Add to stock</button>
-    <button class="delete" v-on:click="deleteItem">Delete</button>
-  </div>
+  <v-card class="ma-2" v-bind:data-item="item.slug">
+    <v-card-title>
+      <p class="display-1 text--primary" data-slug>{{ item.slug }}</p>
+    </v-card-title>
+    <v-card-text>
+      <p>Stock level <span data-stock-level>{{ item.stockLevel }}</span></p>
+    </v-card-text>
+
+    <v-divider></v-divider>
+
+    <v-card-actions>
+      <v-list>
+        <v-list-item>
+          <v-list-item-content>
+            <v-text-field label="amount" data-amount type="number" v-model.number="amount"/>
+            <v-btn color="primary" data-add-to-stock v-on:click="addToStock">
+              Add to stock
+            </v-btn>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item>
+          <v-list-item-content>
+            <v-btn color="red" data-delete v-on:click="deleteItem">
+              Delete
+            </v-btn>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
@@ -24,7 +50,10 @@
     },
     methods: {
       async addToStock() {
-        await this.$store.dispatch('addToStock', {item: this.item, amount: this.amount})
+        await this.$store.dispatch('addToStock', {
+          item: this.item,
+          amount: this.amount
+        })
         this.amount = null
       },
       async deleteItem() {

@@ -1,8 +1,20 @@
 <template>
-  <div>
-    <input type="text" class="slug" v-model="slug"/>
-    <button class="add" v-on:click="defineItem">Define item</button>
-  </div>
+  <v-container>
+    <v-row dense>
+      <v-card class="ma-auto pa-5">
+        <v-card-title>
+          <p class="display-1 text--primary">Define new inventory item</p>
+        </v-card-title>
+
+        <v-text-field label="slug" data-slug v-model="slug"></v-text-field>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="primary" data-save justify="end" v-on:click="defineItem">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

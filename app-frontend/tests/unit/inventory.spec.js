@@ -9,6 +9,7 @@ import inventoryItems from '@/store/inventoryItems'
 import VueRouter from 'vue-router'
 import App from '@/App'
 import routes from '@/router/routes'
+import Vuetify from 'vuetify'
 
 const vueWithVuex = createLocalVue()
 vueWithVuex.use(Vuex)
@@ -49,6 +50,7 @@ function mountWithStore(component) {
   const store = inventoryItems.createStore()
   const wrapper = mount(component, {
     localVue: vueWithVuex,
+    vuetify: new Vuetify(),
     store: new Vuex.Store(store)
   })
   return {
@@ -137,12 +139,12 @@ describe('NewInventoryItem', () => {
     const mounted = mountWithStore(NewInventoryItem)
     wrapper = mounted.wrapper
     store = mounted.store
-    slugWrapper = wrapper.find('.slug')
+    slugWrapper = wrapper.find('[data-slug]')
   }
 
   async function defineItem() {
     slugWrapper.setValue(slug)
-    await wrapper.find('.add').trigger('click')
+    await wrapper.find('[data-save]').trigger('click')
     await flushPromises()
   }
 
@@ -158,7 +160,7 @@ describe('InventoryItem', () => {
     beforeAll(mountComponent)
 
     it('should display slug', () => {
-      expect(wrapper.find('.slug').text()).toBe(slug)
+      expect(wrapper.find('[data-slug]').text()).toBe(slug)
     })
 
     it('should display initial stock level', () => {
@@ -238,8 +240,8 @@ describe('InventoryItem', () => {
       localVue: vueWithVuex,
       store
     })
-    amountWrapper = wrapper.find('input[name="amount"]')
-    stockLevelWrapper = wrapper.find('.stock-level')
+    amountWrapper = wrapper.find('[data-amount]')
+    stockLevelWrapper = wrapper.find('[data-stock-level]')
   }
 
   function createItem() {
@@ -252,7 +254,7 @@ describe('InventoryItem', () => {
 
   async function addToStock(amount) {
     amountWrapper.setValue(amount)
-    await wrapper.find('.add-to-stock').trigger('click')
+    await wrapper.find('[data-add-to-stock]').trigger('click')
     await flushPromises()
   }
 
@@ -287,7 +289,7 @@ describe('InventoryItems', () => {
 
         await mountComponent()
 
-        await deleteItem('memento')
+        await deleteItem(slugToDelete)
       })
 
       it('should call tha API', () => {
@@ -310,7 +312,7 @@ describe('InventoryItems', () => {
 
         await mountComponent()
 
-        await deleteItem('memento')
+        await deleteItem(slugToDelete)
       })
 
       it('should call tha API', () => {
@@ -325,12 +327,12 @@ describe('InventoryItems', () => {
     const slugToDelete = 'memento'
 
     async function deleteItem(slug) {
-      await findItemWrapper(slug).find('.delete').trigger('click')
+      await findItemWrapper(slug).find('[data-delete]').trigger('click')
       await flushPromises()
     }
 
     function findItemWrapper(slug) {
-      return wrapper.find('[data-slug="' + slug + '"]')
+      return wrapper.find('[data-item="' + slug + '"]')
     }
   })
 
@@ -382,7 +384,8 @@ describe('App navigation', () => {
     wrapper = mount(App, {
       localVue: vueWithVuex,
       router: new VueRouter({routes}),
-      store: new Vuex.Store(inventoryItems.createStore())
+      store: new Vuex.Store(inventoryItems.createStore()),
+      vuetify: new Vuetify()
     })
     await flushPromises()
   }

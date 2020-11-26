@@ -6,11 +6,11 @@ class InventoryItemsPage extends Page {
 
     static url = "/items"
 
-    static at = { waitFor { !$(".items").empty } }
+    static at = { waitFor { !$("[data-items]").empty } }
 
     static content = {
-        newItem { $("#new-item") }
-        items { $(".items .item").moduleList InventoryItemModule }
+        newItem { $("[data-new-item]") }
+        items { $("[data-items] [data-item]").moduleList InventoryItemModule }
     }
 
     def openNewItemPage() {

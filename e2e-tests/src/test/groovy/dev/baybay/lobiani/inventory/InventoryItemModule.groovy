@@ -3,11 +3,11 @@ package dev.baybay.lobiani.inventory
 class InventoryItemModule extends geb.Module {
 
     static content = {
-        slug { $(".slug").text() }
-        currentStockLevel { $(".stock-level").text() as Integer }
-        increaseStockLevelBy { $("input[name=\"amount\"]")  }
-        addToStockButton { $(".add-to-stock")  }
-        deleteAction { $(".delete") }
+        slug { $("[data-slug]").text() }
+        currentStockLevel { $("[data-stock-level]").text() as Integer }
+        increaseStockLevelBy { $("[data-amount]")  }
+        addToStockButton { $("[data-add-to-stock]")  }
+        deleteAction { $("[data-delete]") }
     }
 
     def delete() {

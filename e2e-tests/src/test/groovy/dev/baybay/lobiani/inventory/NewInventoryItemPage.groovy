@@ -7,8 +7,8 @@ class NewInventoryItemPage extends Page {
     static at = { !saveBtn.empty }
 
     static content = {
-        slugInput { $(".slug") }
-        saveBtn { $(".add") }
+        slugInput { $("[data-slug]") }
+        saveBtn { $("[data-save]") }
     }
 
     def enterSlug(slug) {
