@@ -14,7 +14,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-text-field label="amount" data-amount type="number" v-model.number="amount"/>
-            <v-btn color="primary" data-add-to-stock v-on:click="addToStock">
+            <v-btn color="primary" data-add-to-stock :disabled="!hasValidAmount" v-on:click="addToStock">
               Add to stock
             </v-btn>
           </v-list-item-content>
@@ -46,6 +46,11 @@
     data() {
       return {
         amount: null
+      }
+    },
+    computed: {
+      hasValidAmount() {
+        return this.amount > 0
       }
     },
     methods: {

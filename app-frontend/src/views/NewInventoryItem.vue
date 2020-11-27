@@ -10,7 +10,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="primary" data-save justify="end" v-on:click="defineItem">Save</v-btn>
+          <v-btn class="primary" data-save justify="end" :disabled="!hasValidSlug" v-on:click="defineItem">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-row>
@@ -24,6 +24,11 @@
     data() {
       return {
         slug: null
+      }
+    },
+    computed: {
+      hasValidSlug() {
+        return !!this.slug
       }
     },
     methods: {

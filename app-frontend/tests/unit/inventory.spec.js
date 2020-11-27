@@ -62,6 +62,29 @@ function mountWithStore(component) {
 describe('NewInventoryItem', () => {
   afterEach(jest.resetAllMocks)
 
+  it('should disable save button initially', () => {
+    mountComponent()
+
+    expect(saveWrapper.attributes().disabled).toBeTruthy()
+  })
+
+  it('should enable save button when slug is entered', async () => {
+    mountComponent()
+
+    await enterSlug()
+
+    expect(saveWrapper.attributes().disabled).toBeFalsy()
+  })
+
+  it('should disable save button again when slug is reset', async () => {
+    mountComponent()
+
+    await enterSlug()
+    await resetSlug()
+
+    expect(saveWrapper.attributes().disabled).toBe('disabled')
+  })
+
   describe('item can be defined when API call succeeds', () => {
     beforeAll(async () => {
       setupSuccessfulPOSTCall({
@@ -131,6 +154,7 @@ describe('NewInventoryItem', () => {
 
   let wrapper
   let slugWrapper
+  let saveWrapper
   let store
   const itemId = 'foo'
   const slug = 'the-matrix-trilogy'
@@ -140,11 +164,22 @@ describe('NewInventoryItem', () => {
     wrapper = mounted.wrapper
     store = mounted.store
     slugWrapper = wrapper.find('[data-slug]')
+    saveWrapper = wrapper.find('[data-save]')
   }
 
   async function defineItem() {
+    await enterSlug()
+    await saveWrapper.trigger('click')
+    await flushPromises()
+  }
+
+  async function enterSlug() {
     slugWrapper.setValue(slug)
-    await wrapper.find('[data-save]').trigger('click')
+    await flushPromises()
+  }
+
+  async function resetSlug() {
+    slugWrapper.setValue('')
     await flushPromises()
   }
 
@@ -166,7 +201,28 @@ describe('InventoryItem', () => {
     it('should display initial stock level', () => {
       expect(stockLevelWrapper.text()).toBe(initialStockLevel.toString())
     })
+
+    it('should disable add-to-stock button initially', () => {
+      expect(addToStockWrapper.attributes().disabled).toBeTruthy()
+    })
   })
+
+  it('should enable add-to-stock button when valid amount is entered', async () => {
+    mountComponent()
+
+    await enterAmount(1)
+
+    expect(addToStockWrapper.attributes().disabled).toBeFalsy()
+  })
+
+  it.each([-1, 0, 'foo'])('should disable add-to-stock button when invalid amount (%d) is entered',
+    async (amount) => {
+      mountComponent()
+
+      await enterAmount(amount)
+
+      expect(addToStockWrapper.attributes().disabled).toBeTruthy()
+    })
 
   describe('items can be added to stock when API call succeeds', () => {
     beforeAll(async () => {
@@ -212,10 +268,10 @@ describe('InventoryItem', () => {
     })
   })
 
-  it('should not accept NaN as amount', () => {
+  it('should not accept NaN as amount', async () => {
     mountComponent()
 
-    amountWrapper.setValue('foo')
+    await enterAmount('foo')
 
     expect(amountWrapper.element.value).toBeFalsy()
   })
@@ -223,6 +279,7 @@ describe('InventoryItem', () => {
   let wrapper
   let amountWrapper
   let stockLevelWrapper
+  let addToStockWrapper
   const itemId = 'foo'
   const slug = 'the-matrix-trilogy'
   const initialStockLevel = 0
@@ -242,6 +299,7 @@ describe('InventoryItem', () => {
     })
     amountWrapper = wrapper.find('[data-amount]')
     stockLevelWrapper = wrapper.find('[data-stock-level]')
+    addToStockWrapper = wrapper.find('[data-add-to-stock]')
   }
 
   function createItem() {
@@ -253,8 +311,13 @@ describe('InventoryItem', () => {
   }
 
   async function addToStock(amount) {
+    await enterAmount(amount)
+    await addToStockWrapper.trigger('click')
+    await flushPromises()
+  }
+
+  async function enterAmount(amount) {
     amountWrapper.setValue(amount)
-    await wrapper.find('[data-add-to-stock]').trigger('click')
     await flushPromises()
   }
 
