@@ -430,10 +430,7 @@ describe('App navigation', () => {
 
   it('should navigate to list of items after new item is defined', async () => {
     setupSuccessfulGETCallWithItems()
-    vueWithVuex.use(VueRouter)
-
     await mountComponent()
-
     await wrapper.vm.$router.push('/new')
 
     await defineItem()
@@ -441,11 +438,25 @@ describe('App navigation', () => {
     expect(wrapper.vm.$route.path).toBe('/items')
   })
 
+  it('should navigate to list of items when cancel is clicked', async () => {
+    setupSuccessfulGETCallWithItems()
+    await mountComponent()
+    await wrapper.vm.$router.push('/new')
+
+    await wrapper.find('[data-cancel]').trigger('click')
+
+    expect(wrapper.vm.$route.path).toBe('/items')
+  })
+
   let wrapper
 
   async function mountComponent() {
+    const localVue = createLocalVue()
+    localVue.use(Vuex)
+    localVue.use(VueRouter)
+
     wrapper = mount(App, {
-      localVue: vueWithVuex,
+      localVue: localVue,
       router: new VueRouter({routes}),
       store: new Vuex.Store(inventoryItems.createStore()),
       vuetify: new Vuetify()

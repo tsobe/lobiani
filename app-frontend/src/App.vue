@@ -21,7 +21,7 @@
 
     <v-main>
       <v-container fluid>
-        <router-view v-on:itemDefined="navigateToItems"></router-view>
+        <router-view v-on:itemDefined="navigateToItems" v-on:itemDefinitionCancelled="navigateToItems"></router-view>
       </v-container>
     </v-main>
 

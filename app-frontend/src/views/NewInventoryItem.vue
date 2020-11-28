@@ -10,6 +10,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn data-cancel v-on:click="cancel">Cancel</v-btn>
           <v-btn class="primary" data-save justify="end" :disabled="!hasValidSlug" v-on:click="defineItem">Save</v-btn>
         </v-card-actions>
       </v-card>
@@ -18,7 +19,6 @@
 </template>
 
 <script>
-
   export default {
     name: 'NewInventoryItem',
     data() {
@@ -36,6 +36,9 @@
         const item = await this.$store.dispatch('defineItem', this.slug)
         this.slug = null
         this.$emit('itemDefined', item)
+      },
+      cancel() {
+        this.$emit('itemDefinitionCancelled')
       }
     }
   }
