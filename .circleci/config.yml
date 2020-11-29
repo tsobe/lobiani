@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   docker: circleci/docker@1.0.1
   kubernetes: circleci/kubernetes@0.11.0
+  sonarcloud: sonarsource/sonarcloud@1.0.2
 
 parameters:
   check:
@@ -143,6 +144,7 @@ jobs:
       - run:
           name: Bundling the app
           command: npm run build
+      - sonarcloud/scan
       - persist_to_workspace:
           root: .
           paths:
