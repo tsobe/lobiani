@@ -44,7 +44,9 @@
       "proxy": "http://localhost:9090",
       "disableHostCheck": true
     },
-    "transpileDependencies": ["vuetify"]
+    "transpileDependencies": [
+      "vuetify"
+    ]
   },
   "eslintConfig": {
     "root": true,
@@ -108,6 +110,9 @@
   ],
   "jest": {
     "preset": "@vue/cli-plugin-unit-jest",
-    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setup.js"
+    ],
+    "collectCoverage": true
   }
 }
