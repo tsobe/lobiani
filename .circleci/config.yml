@@ -129,7 +129,7 @@ jobs:
       - image: circleci/node:14.8.0
     working_directory: ~/repo/app-frontend
     steps:
-      - checkout
+      - checkout:
           path: ~/repo
       - run:
           name: Installing npm dependencies
