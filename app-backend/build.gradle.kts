@@ -14,7 +14,8 @@ allprojects {
     }
     sonarqube {
         properties {
-            property("sonar.projectKey", "tsobe_lobiani")
+            property("sonar.projectKey", "lobiani-app-backend")
+            property("sonar.projectName", "lobiani-app-backend")
             property("sonar.organization", "tsobe")
             property("sonar.host.url", "https://sonarcloud.io")
             property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/jacoco/test/jacocoTestReport.xml")
