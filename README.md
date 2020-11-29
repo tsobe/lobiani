@@ -143,7 +143,7 @@ from `app-backend` directory
     ```
 ## The frontend
 
-To build test and run execute following commands from `app-frontend` directory 
+To build test and run, execute following commands from `app-frontend` directory 
 
     npm install
     npm run test:unit
@@ -157,7 +157,7 @@ To build test and run execute following commands from `app-frontend` directory
         && ./cm selenoid-ui start
     ```
 2. First ensure backend and frontend are both running, then execute the tests from `e2e-tests` directory 
-(use Java 8, hint [jenv](https://www.jenv.be/))
+(use JDK 8, hint [jenv](https://www.jenv.be/))
     ```
     ./gradlew test
     ```
