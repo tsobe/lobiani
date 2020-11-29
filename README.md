@@ -116,7 +116,7 @@ to microservices. There's gonna be a separate deployment unit for frontend (SPA)
 ### Milestone 1 objectives
 - ✓ System allows to define and add inventory items to stock
 - ✕ System allows to see the products available for sale
-- ✕ User interface is not ugly
+- ✓ User interface is not ugly
 - ✕ System is accessible to authenticated users only
 - ✓ Basic metrics such as HTTP success rate, latency and etc. are available
 - ✓ Basic CI/CD pipeline exists 
