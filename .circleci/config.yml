@@ -127,10 +127,10 @@ jobs:
   build-app-frontend:
     docker:
       - image: circleci/node:14.8.0
-    working_directory: ~/repo/app-frontend
+    working_directory: ~/project/app-frontend
     steps:
       - checkout:
-          path: ~/repo
+          path: ~/project
       - run:
           name: Installing npm dependencies
           command: npm install
@@ -144,7 +144,7 @@ jobs:
           name: Bundling the app
           command: npm run build
       - persist_to_workspace:
-          root: app-frontend
+          root: .
           paths:
             - dist
   build-and-publish-app-frontend-image:
