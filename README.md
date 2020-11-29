@@ -1,4 +1,3 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tsobe_lobiani&metric=alert_status)](https://sonarcloud.io/dashboard?id=tsobe_lobiani)
 [![CircleCI](https://circleci.com/gh/tsobe/lobiani.svg?style=shield)](https://circleci.com/gh/tsobe/lobiani)
 
 # Motivation

@@ -1,3 +1,5 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lobiani-app-frontend&metric=alert_status)](https://sonarcloud.io/dashboard?id=lobiani-app-frontend) <br/>
+
 # app-frontend
 
 ## Project setup
@@ -27,5 +29,3 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-
-Dummy change
