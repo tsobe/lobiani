@@ -1,4 +1,9 @@
-[![CircleCI](https://circleci.com/gh/tsobe/lobiani.svg?style=shield)](https://circleci.com/gh/tsobe/lobiani)
+|   |   |
+|---|---|
+| Backend | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lobiani-app-backend&metric=alert_status)](https://sonarcloud.io/dashboard?id=lobiani-app-backend) |
+| Frontend | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lobiani-app-frontend&metric=alert_status)](https://sonarcloud.io/dashboard?id=lobiani-app-frontend) |
+| CI     | [![CircleCI](https://circleci.com/gh/tsobe/lobiani.svg?style=shield)](https://circleci.com/gh/tsobe/lobiani) |
+
 
 # Motivation
 This project is a personal exercise to gain/improve skills in various software engineering practices, will it be coding disciplines, architecture, technologies and anything in between or around them.
