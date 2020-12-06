@@ -25,12 +25,16 @@
       </v-container>
     </v-main>
 
+    <notification-holder></notification-holder>
   </v-app>
 </template>
 
 <script>
+  import NotificationHolder from '@/components/NotificationHolder'
+
   export default {
     name: 'App',
+    components: {NotificationHolder},
     data() {
       return {drawerVisible: false}
     },
