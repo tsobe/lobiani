@@ -139,8 +139,8 @@ jobs:
           name: Running lint
           command: npm run lint --no-fix
       - run:
-          name: Running unit tests
-          command: npm run test:unit
+          name: Running unit tests with coverage
+          command: export COLLECT_COVERAGE=true && npm run test:unit
       - run:
           name: Bundling the app
           command: npm run build
