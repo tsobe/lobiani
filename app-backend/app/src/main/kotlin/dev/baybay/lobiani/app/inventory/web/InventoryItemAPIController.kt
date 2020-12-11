@@ -18,7 +18,10 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
                                  private val queryGateway: QueryGateway) {
 
     @GetMapping
-    fun getAllItems(): List<InventoryItem> {
+    fun getAllItems(@RequestParam(required = false) slug: String?): List<InventoryItem> {
+        if (slug != null) {
+            return listOfNotNull(queryBySlug(slug))
+        }
         return queryGateway.query(QueryAllInventoryItems(),
                 ResponseTypes.multipleInstancesOf(InventoryItem::class.java)).get()
     }
@@ -72,7 +75,10 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     }
 
     private fun isItemDefined(slug: String) =
-            queryGateway.query(QueryInventoryItemBySlug(slug), InventoryItem::class.java).get() != null
+            queryBySlug(slug) != null
+
+    private fun queryBySlug(slug: String) =
+            queryGateway.query(QueryInventoryItemBySlug(slug), InventoryItem::class.java).get()
 
     private fun notFound() = ResponseEntity.notFound().build<Void>()
 
