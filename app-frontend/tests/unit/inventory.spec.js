@@ -10,11 +10,17 @@ import VueRouter from 'vue-router'
 import App from '@/App'
 import routes from '@/router/routes'
 import Vuetify from 'vuetify'
+import _ from 'lodash'
 
 const vueWithVuex = createLocalVue()
 vueWithVuex.use(Vuex)
 
 jest.mock('axios')
+jest.mock('lodash')
+
+function setupImmediateDebounce() {
+  _.debounce = jest.fn((fn) => fn)
+}
 
 function setupFailingPOSTCall() {
   axios.post.mockRejectedValue({
@@ -60,7 +66,14 @@ function mountWithStore(component) {
 }
 
 describe('NewInventoryItem', () => {
-  afterEach(jest.resetAllMocks)
+  beforeEach(() => {
+    setupImmediateDebounce()
+    setupSuccessfulFindItemsBySlugAPICall()
+  })
+
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
 
   it('should disable save button initially', () => {
     mountComponent()
@@ -68,7 +81,14 @@ describe('NewInventoryItem', () => {
     expect(saveWrapper.attributes().disabled).toBeTruthy()
   })
 
-  it('should enable save button when slug is entered', async () => {
+  it('should not show validation message initially', () => {
+    mountComponent()
+
+    expect(validationMsgWrapper.isVisible()).toBe(false)
+    expect(validationMsgWrapper.text()).toBeFalsy()
+  })
+
+  it('should enable save button when unique slug is given', async () => {
     mountComponent()
 
     await enterSlug()
@@ -85,8 +105,45 @@ describe('NewInventoryItem', () => {
     expect(saveWrapper.attributes().disabled).toBe('disabled')
   })
 
+  it('should not allow saving when item with given slug is already defined', async () => {
+    mountComponent()
+
+    await enterSlug(alreadyDefinedItemSlug)
+
+    expect(saveWrapper.attributes().disabled).toBe('disabled')
+    expect(validationMsgWrapper.isVisible()).toBe(true)
+    expect(validationMsgWrapper.text()).toBe('An item with this slug is already defined')
+  })
+
+  it('should not allow saving when validating slug for uniqueness fails', async () => {
+    setupFailingFindItemsBySlugAPIResponse()
+    mountComponent()
+
+    await enterSlug(alreadyDefinedItemSlug)
+
+    expect(saveWrapper.attributes().disabled).toBe('disabled')
+    expect(validationMsgWrapper.isVisible()).toBe(true)
+    expect(validationMsgWrapper.text()).toBe('Failed to check slug availability')
+  })
+
+  it('should allow saving when unique slug is given eventually', async () => {
+    mountComponent()
+    jest.useFakeTimers()
+
+    await enterSlug(alreadyDefinedItemSlug)
+    await enterSlug()
+
+    jest.runOnlyPendingTimers()
+
+    expect(saveWrapper.attributes().disabled).toBeFalsy()
+    expect(validationMsgWrapper.isVisible()).toBe(false)
+    expect(validationMsgWrapper.text()).toBeFalsy()
+  })
+
   describe('item can be defined when API call succeeds', () => {
     beforeAll(async () => {
+      setupImmediateDebounce()
+      setupSuccessfulFindItemsBySlugAPICall()
       setupSuccessfulPOSTCall({
         id: itemId,
         slug: slug,
@@ -128,6 +185,8 @@ describe('NewInventoryItem', () => {
 
   describe('item can not be defined when API call fails', () => {
     beforeAll(async () => {
+      setupImmediateDebounce()
+      setupSuccessfulFindItemsBySlugAPICall()
       setupFailingPOSTCall()
 
       mountComponent()
@@ -155,9 +214,11 @@ describe('NewInventoryItem', () => {
   let wrapper
   let slugWrapper
   let saveWrapper
+  let validationMsgWrapper
   let store
   const itemId = 'foo'
   const slug = 'the-matrix-trilogy'
+  const alreadyDefinedItemSlug = 'already-defined-item-slug'
 
   function mountComponent() {
     const mounted = mountWithStore(NewInventoryItem)
@@ -165,6 +226,7 @@ describe('NewInventoryItem', () => {
     store = mounted.store
     slugWrapper = wrapper.find('[data-slug]')
     saveWrapper = wrapper.find('[data-save]')
+    validationMsgWrapper = wrapper.find('[data-validation-message]')
   }
 
   async function defineItem() {
@@ -173,8 +235,8 @@ describe('NewInventoryItem', () => {
     await flushPromises()
   }
 
-  async function enterSlug() {
-    slugWrapper.setValue(slug)
+  async function enterSlug(input = slug) {
+    slugWrapper.setValue(input)
     await flushPromises()
   }
 
@@ -185,6 +247,27 @@ describe('NewInventoryItem', () => {
 
   function expectAPIToHaveBeenCalled() {
     expect(axios.post).toHaveBeenCalledWith('/inventory-items', {slug: slug})
+  }
+
+  function setupSuccessfulFindItemsBySlugAPICall() {
+    axios.get.mockImplementation(uri => {
+      const itemsBySlug = uri === `/inventory-items?slug=${alreadyDefinedItemSlug}`
+        ? [{
+          id: 'foo',
+          slug,
+          stockLevel: 10
+        }]
+        : []
+      return {data: itemsBySlug}
+    })
+  }
+
+  function setupFailingFindItemsBySlugAPIResponse() {
+    axios.get.mockRejectedValue({
+      response: {
+        status: 500
+      }
+    })
   }
 })
 
