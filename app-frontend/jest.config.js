@@ -3,5 +3,8 @@ module.exports = {
   setupFilesAfterEnv: [
     '<rootDir>/tests/setup.js'
   ],
-  collectCoverage: process.env.COLLECT_COVERAGE === 'true'
+  collectCoverage: process.env.COLLECT_COVERAGE === 'true',
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx,vue}'
+  ]
 }
