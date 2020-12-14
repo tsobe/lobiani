@@ -121,13 +121,13 @@ to microservices. There's gonna be a separate deployment unit for frontend (SPA)
 - ✓ System allows to define and add inventory items to stock
 - ✕ System allows to see the products available for sale
 - ✓ User interface is not ugly
-- ✕ System is accessible to authenticated users only
+- ✕ Admin area is accessible to authenticated users only
 - ✓ Basic metrics such as HTTP success rate, latency and etc. are available
 - ✓ Basic CI/CD pipeline exists 
-    - ✓ Build and deployment is automated, preferably via GitOps approach
-    - ✓ Deployments to production are made after end-to-end tests pass in test env
-    - ✓ No blue/green and canary deployments
-    - ✓ No automatic rollback in case of production failures
+    - Build and deployment is automated, preferably via GitOps approach
+    - Deployments to production are made after end-to-end tests pass in test env
+    - No blue/green and canary deployments
+    - No automatic rollback in case of production failures
 
 # Building and running
 ## The backend
