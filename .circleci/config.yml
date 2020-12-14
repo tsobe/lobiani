@@ -12,7 +12,7 @@ parameters:
   build_backend:
     type: boolean
     default: false
-  build_frontend:
+  build_admin:
     type: boolean
     default: false
   test:
@@ -125,10 +125,10 @@ jobs:
       - run:
           command: |
             echo "Digest is: $(</tmp/backend_img_digest.txt)"
-  build-app-frontend:
+  build-admin:
     docker:
       - image: circleci/node:14.8.0
-    working_directory: ~/project/app-frontend
+    working_directory: ~/project/admin
     steps:
       - checkout:
           path: ~/project
@@ -149,27 +149,27 @@ jobs:
           root: .
           paths:
             - dist
-  build-and-publish-app-frontend-image:
+  build-and-publish-admin-image:
     executor: docker/docker
     steps:
       - setup_remote_docker
       - checkout
       - docker/check
       - attach_workspace:
-          at: app-frontend
+          at: admin
       - docker/build:
-          path: app-frontend
-          image: sevteen/lobiani-app-frontend
+          path: admin
+          image: sevteen/lobiani-admin
       - docker/push:
-          digest-path: /tmp/frontend_img_digest.txt
-          image: sevteen/lobiani-app-frontend
+          digest-path: /tmp/admin_img_digest.txt
+          image: sevteen/lobiani-admin
       - persist_to_workspace:
           root: /tmp
           paths:
-            - frontend_img_digest.txt
+            - admin_img_digest.txt
       - run:
           command: |
-            echo "Digest is: $(</tmp/frontend_img_digest.txt)"
+            echo "Digest is: $(</tmp/admin_img_digest.txt)"
   trigger-test:
     docker:
       - image: &git alpine/git:v2.26.2
@@ -321,16 +321,16 @@ workflows:
       - trigger-test:
           requires:
             - build-and-publish-app-backend-image
-  build-frontend:
-    when: << pipeline.parameters.build_frontend >>
+  build-admin:
+    when: << pipeline.parameters.build_admin >>
     jobs:
-      - build-app-frontend
-      - build-and-publish-app-frontend-image:
+      - build-admin
+      - build-and-publish-admin-image:
           requires:
-            - build-app-frontend
+            - build-admin
       - trigger-test:
           requires:
-            - build-and-publish-app-frontend-image
+            - build-and-publish-admin-image
   test:
     when: << pipeline.parameters.test >>
     jobs:

@@ -1,7 +1,7 @@
 |   |   |
 |---|---|
 | Backend | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lobiani-app-backend&metric=alert_status)](https://sonarcloud.io/dashboard?id=lobiani-app-backend) |
-| Frontend | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lobiani-app-frontend&metric=alert_status)](https://sonarcloud.io/dashboard?id=lobiani-app-frontend) |
+| Admin | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lobiani-admin&metric=alert_status)](https://sonarcloud.io/dashboard?id=lobiani-admin) |
 | CI     | [![CircleCI](https://circleci.com/gh/tsobe/lobiani.svg?style=shield)](https://circleci.com/gh/tsobe/lobiani) |
 
 
@@ -115,7 +115,7 @@ However for the sake of this exercise, I believe it should be fine.
 # Development process roadmap
 Monolith-first approach will be used where initially entire backend system is delivered as
 a single deployment unit, however it will be still modular internally, to allow easier transition
-to microservices. There's gonna be a separate deployment unit for frontend (SPA).
+to microservices. There's gonna be a separate deployment units for admin and frontend (SPAs).
 
 ## Milestones
 ### Milestone 1 objectives
@@ -147,9 +147,9 @@ from `app-backend` directory
     ```
     export SERVER_PORT=9090 && ./gradlew bootRun
     ```
-## The frontend
+## The admin
 
-To build test and run, execute following commands from `app-frontend` directory 
+To build test and run, execute following commands from `admin` directory 
 
     npm install
     npm run test:unit
@@ -162,7 +162,7 @@ To build test and run, execute following commands from `app-frontend` directory
         && ./cm selenoid start --vnc --tmpfs 128 \
         && ./cm selenoid-ui start
     ```
-2. First ensure backend and frontend are both running, then execute the tests from `e2e-tests` directory 
+2. First ensure backend and admin are both running, then execute the tests from `e2e-tests` directory 
 (use JDK 8, hint [jenv](https://www.jenv.be/))
     ```
     ./gradlew test

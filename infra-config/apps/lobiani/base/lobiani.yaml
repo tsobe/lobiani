@@ -52,26 +52,26 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: lobiani
-  name: lobiani-app-frontend
+  name: lobiani-admin
   labels:
-    app: lobiani-app-frontend
+    app: lobiani-admin
 spec:
   strategy:
     type: RollingUpdate
   replicas: 1
   selector:
     matchLabels:
-      app: lobiani-app-frontend
+      app: lobiani-admin
   template:
     metadata:
       annotations:
         linkerd.io/inject: enabled
       labels:
-        app: lobiani-app-frontend
+        app: lobiani-admin
     spec:
       containers:
-        - name: lobiani-app-frontend
-          image: sevteen/lobiani-app-frontend@sha256:929031a3f64a78648bb53c136a3da6995d1e9569909aa589e6630543737b36e9 # Modified by CI at Sat Dec 12 20:09:51 UTC 2020
+        - name: lobiani-admin
+          image: sevteen/lobiani-admin@sha256:1e8f3dc718c15d6dfb2bdad49f65f080a998a125cd49e250e67e1e542802cb69 # Modified by CI at Sun Nov 29 15:25:25 UTC 2020
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -109,12 +109,12 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: lobiani
-  name: lobiani-app-frontend
+  name: lobiani-admin
   labels:
-    app: lobiani-app-frontend
+    app: lobiani-admin
 spec:
   selector:
-    app: lobiani-app-frontend
+    app: lobiani-admin
   ports:
     - port: 80
       protocol: TCP

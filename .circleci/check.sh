@@ -9,7 +9,7 @@ PROJECT_SLUG="github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
 function trigger_pipeline {
     local check=$1
     local build_backend=$2
-    local build_frontend=$3
+    local build_admin=$3
     local test=$4
 
     curl -s -u ${CIRCLE_API_USER_TOKEN}: \
@@ -18,7 +18,7 @@ function trigger_pipeline {
               \"parameters\": {\
                 \"check\": $check,\
                 \"build_backend\": $build_backend,\
-                \"build_frontend\": $build_frontend,\
+                \"build_admin\": $build_admin,\
                 \"test\": $test\
               }
 		   }" \
@@ -51,7 +51,7 @@ function was_modified {
 collect_modified_dirs
 
 backend_dir="app-backend"
-frontend_dir="app-frontend"
+admin_dir="admin"
 infra_config_dir="infra-config"
 tests_dir="e2e-tests"
 
@@ -64,9 +64,9 @@ then
     pipeline_triggered=true
 fi
 
-if was_modified $frontend_dir
+if was_modified $admin_dir
 then
-    echo "Triggering pipeline: \"build_frontend\""
+    echo "Triggering pipeline: \"build_admin\""
     trigger_pipeline false false true false
     pipeline_triggered=true
 fi
@@ -80,5 +80,5 @@ fi
 
 if ! $pipeline_triggered
 then
-    echo "No changes made to $backend_dir, $frontend_dir, $infra_config_dir or $tests_dir, not triggering any pipeline"
+    echo "No changes made to $backend_dir, $admin_dir, $infra_config_dir or $tests_dir, not triggering any pipeline"
 fi

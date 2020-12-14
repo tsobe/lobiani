@@ -23,5 +23,5 @@ spec:
           - pathType: Prefix
             path: /
             backend:
-              serviceName: lobiani-app-frontend
+              serviceName: lobiani-admin
               servicePort: 80
