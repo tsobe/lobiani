@@ -33,8 +33,8 @@ However for the sake of this exercise, I believe it should be fine.
 
 ## Bounded contexts
 - Inventory - managing stock levels
-- Sales - searching and collecting products to be purchased
-- Billing - executing purchases initiated by customers
+- Marketing - searching and collecting products to be purchased
+- Sales - dealing with pricing rules and order execution
 - Shipping - delivering purchased products
 - Personalization - recommending products to customers
 
@@ -43,13 +43,14 @@ However for the sake of this exercise, I believe it should be fine.
 - Inventory - collection of items to be sold
 - Operator - responsible for adding items to inventory
 
-### Sales
+### Marketing
 - Manager - defines and publishes products
 - Product - representation of saleable inventory item
 - Customer - person who's willing to purchase products
-- Cart - container for products to be purchased later at once
 
-### Billing
+### Sales
+- Cart - container for products to be purchased later at once
+- Order - customer's intention to purchase product(s)
 - Account - personal and payment information about customer
 - Product - pricing information about product
 
@@ -66,13 +67,13 @@ However for the sake of this exercise, I believe it should be fine.
 ## Ubiquitous language (brief event storming)
 - Inventory item defined
 - Inventory item(s) added
-- Product described in the sales
-- Product published/unpublished in the sales
-- Pricing info defined in Billing
+- Product described in the marketing
+- Product published/unpublished in the marketing
+- Pricing info defined in sales
 - Product added to the cart
 - Product removed from the cart
 - Products reserved in the inventory
-	- Billing information added
+	- Sales information added
 	- Shipping information added
 		- Purchase confirmed by customer
 			- Customer recommendations updated
@@ -97,9 +98,9 @@ However for the sake of this exercise, I believe it should be fine.
 # Backlog
 - As an inventory operator I want to define an item so that actual items can be added to stock
 - As an inventory operator I want to add item to stock so that it can be purchased by customers
-- As a sales manager I want to describe product so that all the important information is presented to the customer
-- As a sales manager I want to publish/unpublish product to control whether a product will be visible (and hence sellable) to customer
-- As a billing manager I want to assign price to a product so that customer can be charged appropriately
+- As a marketing manager I want to describe product so that all the important information is presented to the customer
+- As a marketing manager I want to publish/unpublish product to control whether a product will be visible (and hence sellable) to customer
+- As a sales manager I want to assign price to a product so that customer can be charged appropriately
 - As a customer I want to browse through the list of all available products so that I can get some idea about what's available for sale
 - As a customer I want to search a particular product(s) by name or description so that I can filter out irrelevant items
 - As a customer I want to see the details of the particular product so that I can get more information
