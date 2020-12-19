@@ -34,11 +34,12 @@ However for the sake of this exercise, I believe it should be fine.
 ## Bounded contexts
 - Inventory - managing stock levels
 - Marketing - searching and collecting products to be purchased
-- Sales - dealing with pricing rules and order execution
+- Sales - dealing with pricing rules
+- Billing - charging customer to execute the order
 - Shipping - delivering purchased products
 - Personalization - recommending products to customers
 
-## Glossary
+## Ubiquitous Language
 ### Inventory
 - Inventory - collection of items to be sold
 - Operator - responsible for adding items to inventory
@@ -51,49 +52,25 @@ However for the sake of this exercise, I believe it should be fine.
 ### Sales
 - Cart - container for products to be purchased later at once
 - Order - customer's intention to purchase product(s)
-- Account - personal and payment information about customer
 - Product - pricing information about product
 
+### Billing
+- Order - pricing info
+- Account - payment information about customer
+
 ### Shipping
-- Address - address to deliver purchased products to
+- Address - address to deliver orders to
 - Product - description of a product to deliver
-- Courier - delivers purchased products to the specified address
+- Courier - delivers orders to the specified address
 
 ### Personalization
 - Product - product that was purchased previously
 - Customer - person who purchased product
 - Recommendation - recommended product for specific customer
 
-## Ubiquitous language (brief event storming)
-- Inventory item defined
-- Inventory item(s) added
-- Product described in the marketing
-- Product published/unpublished in the marketing
-- Pricing info defined in sales
-- Product added to the cart
-- Product removed from the cart
-- Products reserved in the inventory
-	- Sales information added
-	- Shipping information added
-		- Purchase confirmed by customer
-			- Customer recommendations updated
-				- Customer charged successfully
-					- Courier is notified
-					- Courier starts delivery
-					- Customer is notified that product(s) have shipped
-					- Courier updates delivery progress
-					- Product(s) failed to be delivered at the specified address
-						- Customer is notified
-						- Reservation released in the inventory
-					- Purchase delivered
-						- Customer is notified - successful end of story
-				- Customer charge failed
-				   - Customer is notified
-				   - Reservation released from the inventory
-	   - Purchase cancelled by customer
-	       - Reservation released from the inventory
-- Products' reservation failed in the inventory
-	- Customer is notified
+## Event Storming
+[![Event Storming](Event%20Storming.jpg)](https://miro.com/app/board/o9J_lavSVJ0=/)
+(Click on the image for interactive diagram)
 
 # Backlog
 - As an inventory operator I want to define an item so that actual items can be added to stock
@@ -188,3 +165,4 @@ To build test and run, execute following commands from `admin` directory
 - [Exposing CQRS Through a RESTful API](https://www.infoq.com/articles/rest-api-on-cqrs/)
 - [A Comprehensive Guide to Contract Testing APIs in a Service Oriented Architecture](https://medium.com/@liran.tal/a-comprehensive-guide-to-contract-testing-apis-in-a-service-oriented-architecture-5695ccf9ac5a)
 - [Strategic Domain Driven Design with Context Mapping](https://www.infoq.com/articles/ddd-contextmapping/)
+- [Modelling Reactive Systems with Event Storming and Domain-Driven Design](https://blog.redelastic.com/corporate-arts-crafts-modelling-reactive-systems-with-event-storming-73c6236f5dd7)
