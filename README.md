@@ -11,12 +11,10 @@ This project is a personal exercise to gain/improve skills in various software e
 # Desired areas to examine
 - Event Sourcing
 - DDD/CQRS
-- Ports and Adapters
 - TDD/BDD
 - Microservices
 - CI/CD
 - Cloud native solutions
-- BPMN workflows
 - Machine Learning
 
 # High level requirements
@@ -29,46 +27,17 @@ Develop eCommerce system capable of:
 
 # Domain model
 Disclaimer: I don't have a practical experience in the eCommerce domain, so model described here may seem utterly inadequate.
-However for the sake of this exercise, I believe it should be fine.   
+However for the sake of this exercise (despite of DDD being one of the primary focus), I hope that something will work out from it   
 
 ## Bounded contexts
 - Inventory - managing stock levels
-- Marketing - searching and collecting products to be purchased
-- Sales - dealing with pricing rules
+- Marketing - describing and presenting products to sell
+- Sales - dealing with pricing rules and the overall shopping experience 
 - Billing - charging customer to execute the order
-- Shipping - delivering purchased products
+- Shipping - delivering orders to customers
 - Personalization - recommending products to customers
 
-## Ubiquitous Language
-### Inventory
-- Inventory - collection of items to be sold
-- Operator - responsible for adding items to inventory
-
-### Marketing
-- Manager - defines and publishes products
-- Product - representation of saleable inventory item
-- Customer - person who's willing to purchase products
-
-### Sales
-- Cart - container for products to be purchased later at once
-- Order - customer's intention to purchase product(s)
-- Product - pricing information about product
-
-### Billing
-- Order - pricing info
-- Account - payment information about customer
-
-### Shipping
-- Address - address to deliver orders to
-- Product - description of a product to deliver
-- Courier - delivers orders to the specified address
-
-### Personalization
-- Product - product that was purchased previously
-- Customer - person who purchased product
-- Recommendation - recommended product for specific customer
-
-## Event Storming
+## Event Storming - Ubiquitous Language
 [![Event Storming](Event%20Storming.jpg)](https://miro.com/app/board/o9J_lavSVJ0=/)
 (Click on the image for interactive diagram)
 
