@@ -4,6 +4,20 @@
       <inventory-item v-for="item in items"
                       v-bind:key="item.id" v-bind:item="item"/>
     </v-row>
+    <v-btn
+      class="mx-2"
+      fab
+      dark
+      fixed
+      right
+      bottom
+      color="primary"
+      data-new-item
+      to="/new">
+      <v-icon dark>
+        mdi-plus
+      </v-icon>
+    </v-btn>
   </v-container>
 </template>
 

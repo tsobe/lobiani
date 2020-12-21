@@ -14,9 +14,6 @@
       <v-app-bar-nav-icon v-on:click="toggleDrawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Inventory</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn data-new-item to="/new">
-        Define new
-      </v-btn>
     </v-app-bar>
 
     <v-main>
