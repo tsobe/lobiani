@@ -94,6 +94,7 @@ Following environment variables must be configured in Circle CI before triggerin
 - `TEST_APP_BASE_URL` - e.g. `https://test-lobiani.baybay.dev`
 - `TF_API_TOKEN`
 - `SONAR_TOKEN` - visit [SonarCloud](https://sonarcloud.io/) for more
+- `AUTH0_DOMAIN` and `AUTH0_CLIENT_ID` - see [Applications in Auth0](https://auth0.com/docs/applications) for more
 
 ## Test env
 

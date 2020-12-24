@@ -133,6 +133,11 @@ jobs:
       - checkout:
           path: ~/project
       - run:
+          name: Generating auth_config.json
+          command: |
+            echo "{\"domain\": $AUTH0_DOMAIN, \"clientId\": $AUTH0_CLIENT_ID}" > auth_config.json
+            cat auth_config.json
+      - run:
           name: Installing npm dependencies
           command: npm install
       - run:
