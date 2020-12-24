@@ -542,7 +542,10 @@ describe('App navigation', () => {
       localVue: localVue,
       router: new VueRouter({routes}),
       store: new Vuex.Store(inventoryItems.createStore()),
-      vuetify: new Vuetify()
+      vuetify: new Vuetify(),
+      mocks: {
+        $auth: {}
+      }
     })
     await flushPromises()
   }
