@@ -14,6 +14,7 @@
       <v-app-bar-nav-icon v-on:click="toggleDrawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Inventory</v-toolbar-title>
       <v-spacer></v-spacer>
+      <profile></profile>
     </v-app-bar>
 
     <v-main>
@@ -28,10 +29,14 @@
 
 <script>
   import NotificationHolder from '@/components/NotificationHolder'
+  import Profile from '@/components/Profile'
 
   export default {
     name: 'App',
-    components: {NotificationHolder},
+    components: {
+      Profile,
+      NotificationHolder
+    },
     data() {
       return {drawerVisible: false}
     },

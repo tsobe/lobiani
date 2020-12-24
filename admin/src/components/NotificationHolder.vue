@@ -11,6 +11,11 @@
         visible: false
       }
     },
+    computed: {
+      color() {
+        return this.type === 'info' ? 'dark' : 'red'
+      }
+    },
     created() {
       this.unsubscribe = this.$store.subscribe((mutation, state) => {
         if (mutation.type === 'notifier/setMessage') {
@@ -22,11 +27,6 @@
     },
     destroyed() {
       this.unsubscribe()
-    },
-    computed: {
-      color() {
-        return this.type === 'info' ? 'dark' : 'red'
-      }
     }
   }
 </script>
