@@ -86,7 +86,7 @@ describe('profile', () => {
 
   async function mountComponent() {
     const localVue = createLocalVue()
-    localVue.use(Auth, {options: authOptions})
+    localVue.use(Auth, authOptions)
     wrapper = mount(Profile, {
       localVue,
       vuetify: new Vuetify()

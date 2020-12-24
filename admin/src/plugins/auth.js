@@ -1,7 +1,7 @@
 import createAuth0Client from '@auth0/auth0-spa-js'
 
 export default {
-  install(Vue, {options}) {
+  install(Vue, options) {
     Vue.prototype.$auth = new Vue({
       data() {
         return {
