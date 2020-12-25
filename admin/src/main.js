@@ -7,6 +7,7 @@ import vuetify from './plugins/vuetify'
 import Notifier from './plugins/notifier'
 import Auth from './plugins/auth'
 import {clientId, domain} from '../auth_config.json'
+import globalErrorHandler from './utils/globalErrorHandler'
 
 axios.defaults.baseURL = '/api'
 
@@ -21,16 +22,7 @@ Vue.use(Auth, {
   }
 })
 Vue.config.productionTip = false
-Vue.config.errorHandler = (err, vm) => {
-  console.error(err)
-  const response = err.response || {}
-  const responseData = response.data || {}
-  const errorMessage = responseData.message || responseData || err
-  vm.$notifier.showMessage({
-    text: errorMessage,
-    type: 'error'
-  })
-}
+Vue.config.errorHandler = globalErrorHandler.handle
 
 new Vue({
   router,
