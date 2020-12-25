@@ -4,8 +4,10 @@ import createAuth0Client from '@auth0/auth0-spa-js'
 import flushPromises from 'flush-promises'
 import Profile from '@/components/Profile'
 import Vuetify from 'vuetify'
+import createAuthGuard from '@/plugins/authGuard'
 
 jest.mock('@auth0/auth0-spa-js')
+jest.mock('@/plugins/authGuard')
 
 describe('profile', () => {
   beforeEach(setupAuth0ClientMock)
@@ -68,6 +70,17 @@ describe('profile', () => {
     expect(mockAuth0Client.logout).toHaveBeenCalledWith({returnTo: window.location.origin})
   })
 
+  it('should add authGuard to router when installing plugin', async () => {
+    const authGuard = {}
+    createAuthGuard.mockImplementation(() => {
+      return authGuard
+    })
+
+    installAuthPlugin()
+
+    expect(authOptions.router.beforeResolve).toHaveBeenCalledWith(authGuard)
+  })
+
   let wrapper, loginButtonWrapper, logoutButtonWrapper, profileWrapper
 
   const mockAuth0Client = {
@@ -81,14 +94,21 @@ describe('profile', () => {
     clientId: 'client_id',
     domain: 'example.eu.auth0.com',
     redirectUri: 'http://example.com',
-    onRedirectCallback: jest.fn()
+    onRedirectCallback: jest.fn(),
+    router: {
+      beforeResolve: jest.fn()
+    }
+  }
+
+  function installAuthPlugin() {
+    const localVue = createLocalVue()
+    localVue.use(Auth, authOptions)
+    return localVue
   }
 
   async function mountComponent() {
-    const localVue = createLocalVue()
-    localVue.use(Auth, authOptions)
     wrapper = mount(Profile, {
-      localVue,
+      localVue: installAuthPlugin(),
       vuetify: new Vuetify()
     })
     await flushPromises()

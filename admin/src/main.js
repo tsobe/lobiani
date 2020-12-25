@@ -12,6 +12,7 @@ axios.defaults.baseURL = '/api'
 
 Vue.use(Notifier, {store})
 Vue.use(Auth, {
+  router,
   clientId: clientId,
   domain: domain,
   redirectUri: window.location.origin,

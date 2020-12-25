@@ -1,8 +1,14 @@
 import createAuth0Client from '@auth0/auth0-spa-js'
+import createAuthGuard from '@/plugins/authGuard'
+
+function isRedirectCallback() {
+  return window.location.search.includes('code=') &&
+    window.location.search.includes('state=')
+}
 
 export default {
   install(Vue, options) {
-    Vue.prototype.$auth = new Vue({
+    const auth = new Vue({
       data() {
         return {
           authenticated: false,
@@ -36,9 +42,7 @@ export default {
       }
     })
 
-    function isRedirectCallback() {
-      return window.location.search.includes('code=') &&
-        window.location.search.includes('state=')
-    }
+    Vue.prototype.$auth = auth
+    options.router.beforeResolve(createAuthGuard({auth}))
   }
 }
