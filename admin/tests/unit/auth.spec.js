@@ -1,15 +1,13 @@
-import {createLocalVue, mount} from '@vue/test-utils'
+import {createLocalVue} from '@vue/test-utils'
 import Auth from '@/plugins/auth'
 import createAuth0Client from '@auth0/auth0-spa-js'
 import flushPromises from 'flush-promises'
-import Profile from '@/components/Profile'
-import Vuetify from 'vuetify'
 import createAuthGuard from '@/plugins/authGuard'
 
 jest.mock('@auth0/auth0-spa-js')
 jest.mock('@/plugins/authGuard')
 
-describe('profile', () => {
+describe('auth', () => {
   beforeEach(setupAuth0ClientMock)
 
   afterEach(() => {
@@ -17,71 +15,69 @@ describe('profile', () => {
     clearRedirect()
   })
 
-  it('should redirect to authorization server when login button is clicked', async () => {
-    await mountComponent()
+  it('should redirect to authorization server when login is requested', async () => {
+    await initAuth()
 
-    await loginButtonWrapper.trigger('click')
+    await auth.login()
 
     expect(mockAuth0Client.loginWithRedirect).toHaveBeenCalled()
   })
 
-  it('should hide login button and show profile when authenticated', async () => {
+  it('should be authenticated when authorization server indicates so', async () => {
     mockAuth0Client.isAuthenticated.mockResolvedValue(true)
 
-    await mountComponent()
+    await initAuth()
 
-    expect(loginButtonWrapper.exists()).toBe(false)
-    expect(profileWrapper.exists()).toBe(true)
+    expect(auth.authenticated).toBe(true)
   })
 
-  it('should show login button and hide profile when not authenticated', async () => {
+  it('should not be authenticated when authorization server does not indicate so', async () => {
     mockAuth0Client.isAuthenticated.mockResolvedValue(false)
 
-    await mountComponent()
+    await initAuth()
 
-    expect(loginButtonWrapper.exists()).toBe(true)
-    expect(profileWrapper.exists()).toBe(false)
+    expect(auth.authenticated).toBe(false)
   })
 
   it('should handle redirect callback when it is an authorization redirect', async () => {
     setupRedirect()
     mockAuth0Client.handleRedirectCallback.mockResolvedValue({appState: 'foo'})
 
-    await mountComponent()
+    await initAuth()
 
-    expect(mockAuth0Client.handleRedirectCallback).toHaveBeenCalled()
     expect(authOptions.onRedirectCallback).toHaveBeenCalledWith('foo')
   })
 
   it('should not handle redirect callback when it is not an authorization redirect', async () => {
-    await mountComponent()
+    await initAuth()
 
     expect(mockAuth0Client.handleRedirectCallback).not.toHaveBeenCalled()
+    expect(authOptions.onRedirectCallback).not.toHaveBeenCalled()
   })
 
-  it('should logout and redirect to home page when logout is clicked', async () => {
+  it('should logout from authorization server when logout is requested', async () => {
     mockAuth0Client.isAuthenticated.mockResolvedValue(true)
     mockAuth0Client.logout.mockResolvedValue({})
-    await mountComponent()
+    await initAuth()
+    const opts = {}
 
-    await logoutButtonWrapper.trigger('click')
-    await flushPromises()
+    await auth.logout(opts)
 
-    expect(mockAuth0Client.logout).toHaveBeenCalledWith({returnTo: window.location.origin})
+    expect(mockAuth0Client.logout).toHaveBeenCalledWith(opts)
   })
 
-  it('should add authGuard to router when installing plugin', async () => {
+  it('should add authGuard to router when initializing', async () => {
     const authGuard = {}
     createAuthGuard.mockImplementation(() => {
       return authGuard
     })
 
-    installAuthPlugin()
+    await initAuth()
 
     expect(authOptions.router.beforeResolve).toHaveBeenCalledWith(authGuard)
   })
 
-  let wrapper, loginButtonWrapper, logoutButtonWrapper, profileWrapper
+  let auth
 
   const mockAuth0Client = {
     loginWithRedirect: jest.fn(),
@@ -100,21 +96,11 @@ describe('profile', () => {
     }
   }
 
-  function installAuthPlugin() {
+  async function initAuth() {
     const localVue = createLocalVue()
     localVue.use(Auth, authOptions)
-    return localVue
-  }
-
-  async function mountComponent() {
-    wrapper = mount(Profile, {
-      localVue: installAuthPlugin(),
-      vuetify: new Vuetify()
-    })
+    auth = localVue.prototype.$auth
     await flushPromises()
-    loginButtonWrapper = wrapper.find('button[data-login]')
-    logoutButtonWrapper = wrapper.find('button[data-logout]')
-    profileWrapper = wrapper.find('[data-profile]')
   }
 
   function setupAuth0ClientMock() {
