@@ -6,7 +6,7 @@ import flushPromises from 'flush-promises'
 const {isNavigationFailure, NavigationFailureType} = VueRouter
 
 expect.extend({
-  toBeRedirect(failure) {
+  toBeRedirectFailure(failure) {
     return {
       pass: isNavigationFailure(failure, NavigationFailureType.redirected),
       message: () => `expected redirection, but got ${failure}`
@@ -20,7 +20,7 @@ describe('authGuard', () => {
   it('should redirect to login route when not authenticated', async () => {
     auth.authenticated = false
 
-    await expect(router.push('/protected')).rejects.toBeRedirect()
+    await expect(router.push('/protected')).rejects.toBeRedirectFailure()
 
     expect(router.currentRoute.path).toBe('/login')
   })
@@ -59,7 +59,7 @@ describe('authGuard', () => {
     const routePromise = router.push('/protected')
     completeAuthLoading(false)
 
-    await expect(routePromise).rejects.toBeRedirect()
+    await expect(routePromise).rejects.toBeRedirectFailure()
     expect(router.currentRoute.path).toBe('/login')
   })
 
@@ -79,7 +79,7 @@ describe('authGuard', () => {
     router = new VueRouter({
       routes: [
         {
-          path: '/protected',
+          path: '/protected'
         },
         {
           path: '/login'
