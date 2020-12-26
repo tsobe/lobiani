@@ -21,9 +21,9 @@
       <v-container fluid>
         <router-view v-on:itemDefined="navigateToItems" v-on:itemDefinitionCancelled="navigateToItems"></router-view>
       </v-container>
+      <notification-holder></notification-holder>
     </v-main>
 
-    <notification-holder></notification-holder>
   </v-app>
 </template>
 
