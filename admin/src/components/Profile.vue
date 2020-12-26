@@ -1,21 +1,12 @@
 <template>
-    <div v-show="!this.$auth.loading">
-      <v-btn v-if="!this.$auth.authenticated" @click="login" color="primary" data-login>Login</v-btn>
-      <div v-if="this.$auth.authenticated" data-profile>
-        <v-btn @click="logout" color="error" data-logout>Logout</v-btn>
-      </div>
-    </div>
-</template>
+  <v-list-item two-line>
+    <v-list-item-avatar>
+      <img alt="Avatar" :src="this.$auth.user.picture">
+    </v-list-item-avatar>
 
-<script>
-  export default {
-    methods: {
-      async login() {
-        await this.$auth.login()
-      },
-      async logout() {
-        await this.$auth.logout({returnTo: window.location.origin})
-      }
-    }
-  }
-</script>
+    <v-list-item-content>
+      <v-list-item-title data-name>{{ this.$auth.user.name }}</v-list-item-title>
+      <v-list-item-subtitle data-email>{{ this.$auth.user.email }}</v-list-item-subtitle>
+    </v-list-item-content>
+  </v-list-item>
+</template>

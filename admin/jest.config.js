@@ -1,7 +1,8 @@
 module.exports = {
   preset: '@vue/cli-plugin-unit-jest',
   setupFilesAfterEnv: [
-    '<rootDir>/tests/setup.js'
+    '<rootDir>/tests/setup.js',
+    'jest-extended'
   ],
   collectCoverage: process.env.COLLECT_COVERAGE === 'true',
   collectCoverageFrom: [

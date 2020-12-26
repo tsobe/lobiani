@@ -79,12 +79,41 @@ describe('auth', () => {
     expect(authOptions.router.beforeResolve).toHaveBeenCalledWith(authGuard)
   })
 
+  it('auth should have user when available', async () => {
+    const user = {}
+    mockAuth0Client.getUser.mockResolvedValue(user)
+
+    await initAuth()
+
+    expect(auth.user).toBe(user)
+  })
+
+  it('should retrieve user info after redirect callback is handled', async () => {
+    setupRedirect()
+    mockAuth0Client.handleRedirectCallback.mockResolvedValue({appState: 'foo'})
+    mockAuth0Client.getUser.mockResolvedValue({})
+
+    await initAuth()
+
+    expect(mockAuth0Client.getUser).toHaveBeenCalledAfter(mockAuth0Client.handleRedirectCallback)
+  })
+
+  it('should retrieve user info before authentication status is checked', async () => {
+    mockAuth0Client.isAuthenticated.mockResolvedValue(true)
+    mockAuth0Client.getUser.mockResolvedValue({})
+
+    await initAuth()
+
+    expect(mockAuth0Client.getUser).toHaveBeenCalledBefore(mockAuth0Client.isAuthenticated)
+  })
+
   let auth
 
   const mockAuth0Client = {
     loginWithRedirect: jest.fn(),
     handleRedirectCallback: jest.fn(),
     isAuthenticated: jest.fn(),
+    getUser: jest.fn(),
     logout: jest.fn()
   }
 

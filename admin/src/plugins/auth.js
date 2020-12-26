@@ -13,7 +13,8 @@ export default {
         return {
           authenticated: false,
           auth0Client: null,
-          loading: true
+          loading: true,
+          user: null
         }
       },
       methods: {
@@ -38,6 +39,7 @@ export default {
             options.onRedirectCallback(appState)
           }
         } finally {
+          this.user = await this.auth0Client.getUser()
           this.authenticated = await this.auth0Client.isAuthenticated()
         }
         this.loading = false

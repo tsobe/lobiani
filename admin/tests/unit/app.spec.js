@@ -65,7 +65,8 @@ describe('App', () => {
     }
   ]
   const authMock = {
-    authenticated: true
+    authenticated: true,
+    user: {}
   }
 
   async function mountComponent() {
