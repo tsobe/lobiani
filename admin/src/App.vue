@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer app clipped v-model="drawerVisible">
+    <v-navigation-drawer v-if="this.$auth.authenticated" app clipped v-model="drawerVisible">
       <v-list>
         <v-list-item to="/items">
           <v-list-item-content>
@@ -10,7 +10,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app clipped-left>
+    <v-app-bar v-if="this.$auth.authenticated" app clipped-left>
       <v-app-bar-nav-icon v-on:click="toggleDrawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Inventory</v-toolbar-title>
       <v-spacer></v-spacer>
