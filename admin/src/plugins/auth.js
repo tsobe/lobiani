@@ -18,9 +18,11 @@ export default {
       },
       methods: {
         async login(opts) {
+          this.loading = true
           await this.auth0Client.loginWithRedirect(opts)
         },
         async logout(opts) {
+          this.loading = true
           await this.auth0Client.logout(opts)
         }
       },

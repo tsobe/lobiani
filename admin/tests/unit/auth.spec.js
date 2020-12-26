@@ -20,6 +20,7 @@ describe('auth', () => {
 
     await auth.login()
 
+    expect(auth.loading).toBe(true)
     expect(mockAuth0Client.loginWithRedirect).toHaveBeenCalled()
   })
 
@@ -63,6 +64,7 @@ describe('auth', () => {
 
     await auth.logout(opts)
 
+    expect(auth.loading).toBe(true)
     expect(mockAuth0Client.logout).toHaveBeenCalledWith(opts)
   })
 
