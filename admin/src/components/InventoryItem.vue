@@ -14,7 +14,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-text-field label="amount" data-amount type="number" v-model.number="amount"/>
-            <v-btn color="primary" data-add-to-stock :disabled="!hasValidAmount" v-on:click="addToStock">
+            <v-btn class="ma-1" color="primary" data-add-to-stock :disabled="!hasValidAmount" v-on:click="addToStock">
               Add to stock
             </v-btn>
           </v-list-item-content>
@@ -24,7 +24,7 @@
 
         <v-list-item>
           <v-list-item-content>
-            <v-btn color="red" data-delete v-on:click="deleteItem">
+            <v-btn color="red" block data-delete v-on:click="deleteItem">
               Delete
             </v-btn>
           </v-list-item-content>
