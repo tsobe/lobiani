@@ -189,12 +189,12 @@ jobs:
           name: Replacing image version
           command: |
             export DIGEST_PATH=`ls /tmp/*_img_digest.txt`
-            export APP_TIER=`basename $DIGEST_PATH | sed 's/_img_digest.txt//g'`
+            export IMG_NAME=`cut -d @ -f 1 $DIGEST_PATH | cut -d / -f 2`
             export IMG_HASH=`cut -d @ -f 2 $DIGEST_PATH`
 
-            echo "Replacing image version for $APP_TIER tier"
+            echo "Replacing version for image $IMG_NAME"
 
-            sed -i "s#image: sevteen/lobiani-app-${APP_TIER}@.*#image: sevteen/lobiani-app-${APP_TIER}@${IMG_HASH} \# Modified by CI at `date`#g" \
+            sed -i "s#image: sevteen/${IMG_NAME}@.*#image: sevteen/${IMG_NAME}@${IMG_HASH} \# Modified by CI at `date`#g" \
               infra-config/apps/lobiani/base/lobiani.yaml
       - run:
           name: Printing diff
@@ -203,11 +203,11 @@ jobs:
           name: Pushing changes
           command: |
             export DIGEST_PATH=`ls /tmp/*_img_digest.txt`
-            export APP_TIER=`basename $DIGEST_PATH | sed 's/_img_digest.txt//g'`
+            export IMG_NAME=`cut -d @ -f 1 $DIGEST_PATH | cut -d / -f 2`
             export IMG_HASH=`cut -d @ -f 2 /tmp/*_img_digest.txt`
             git config user.email "b.tsotsoria@gmail.com"
             git config user.name "circleci"
-            git commit -am "[CI] Updated image version for $APP_TIER tier to $IMG_HASH" && git push
+            git commit -am "[CI] Updated version for image $IMG_NAME to $IMG_HASH" && git push
   setup-test-infra:
     docker:
       - image: &terraform hashicorp/terraform:0.12.28
