@@ -3,7 +3,6 @@ import axios from 'axios'
 import flushPromises from 'flush-promises'
 import NewInventoryItem from '@/views/NewInventoryItem'
 import InventoryItem from '@/components/InventoryItem'
-import InventoryItems from '@/views/InventoryItems'
 import Vuex from 'vuex'
 import inventoryItems from '@/store/inventoryItems'
 import Vuetify from 'vuetify'
@@ -30,23 +29,6 @@ function setupFailingPOSTCall() {
 
 function setupSuccessfulPOSTCall(data = {}) {
   axios.post.mockResolvedValue({data})
-}
-
-const items = [
-  {
-    id: 'foo',
-    slug: 'the-matrix-trilogy',
-    stockLevel: 10
-  },
-  {
-    id: 'bar',
-    slug: 'memento',
-    stockLevel: 17
-  }
-]
-
-function setupSuccessfulGETCallWithItems() {
-  axios.get.mockResolvedValue({data: [...items]})
 }
 
 function mountWithStore(component) {
@@ -403,104 +385,5 @@ describe('InventoryItem', () => {
 
   function expectAPIToHaveBeenCalled() {
     expect(axios.post).toHaveBeenCalledWith(`/inventory-items/${itemId}/stock`, {amount: validAmount})
-  }
-})
-
-describe('InventoryItems', () => {
-  afterEach(jest.resetAllMocks)
-
-  describe('mount', () => {
-    beforeAll(async () => {
-      setupSuccessfulGETCallWithItems()
-
-      await mountComponent()
-    })
-
-    it('should call the API', () => {
-      expect(axios.get).toHaveBeenCalledWith('/inventory-items')
-    })
-
-    it('should display all items', async () => {
-      expect(wrapper.findAllComponents(InventoryItem)).toHaveLength(2)
-    })
-  })
-
-  describe('delete', () => {
-    describe('item can be deleted when API call succeeds', () => {
-      beforeAll(async () => {
-        setupSuccessfulGETCallWithItems()
-
-        await mountComponent()
-
-        await deleteItem(slugToDelete)
-      })
-
-      it('should call tha API', () => {
-        expect(axios.delete).toHaveBeenCalledWith('/inventory-items/bar')
-      })
-
-      it('should remove the item from the list', () => {
-        expect(findItemWrapper(slugToDelete).exists()).toBe(false)
-      })
-    })
-
-    describe('item can not be deleted when API call fails', () => {
-      beforeAll(async () => {
-        setupSuccessfulGETCallWithItems()
-        axios.delete.mockRejectedValue({
-          response: {
-            status: 500
-          }
-        })
-
-        await mountComponent()
-
-        await deleteItem(slugToDelete)
-      })
-
-      it('should call tha API', () => {
-        expect(axios.delete).toHaveBeenCalledWith('/inventory-items/bar')
-      })
-
-      it('should not remove the item from the list', () => {
-        expect(findItemWrapper(slugToDelete).exists()).toBe(true)
-      })
-    })
-
-    const slugToDelete = 'memento'
-
-    async function deleteItem(slug) {
-      await findItemWrapper(slug).find('[data-delete]').trigger('click')
-      await flushPromises()
-    }
-
-    function findItemWrapper(slug) {
-      return wrapper.find('[data-item="' + slug + '"]')
-    }
-  })
-
-  it('should not fetch items from the API when mounted and store already has data', async () => {
-    const store = createStoreWithItems()
-
-    mount(InventoryItems, {
-      localVue: vueWithVuex,
-      store
-    })
-    await flushPromises()
-
-    expect(axios.get).not.toHaveBeenCalledWith('/inventory-items')
-  })
-
-  let wrapper
-
-  async function mountComponent() {
-    wrapper = mountWithStore(InventoryItems).wrapper
-    await flushPromises()
-  }
-
-  function createStoreWithItems() {
-    const store = new Vuex.Store(inventoryItems.createStore())
-    store.commit('setItems', items)
-    return store
   }
 })
