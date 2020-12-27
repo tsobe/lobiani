@@ -6,6 +6,7 @@ import InventoryItems from '@/views/InventoryItems'
 import Vuex from 'vuex'
 import inventoryItems from '@/store/inventoryItems'
 import Vuetify from 'vuetify'
+import {when} from 'jest-when'
 
 jest.mock('axios')
 
@@ -13,7 +14,7 @@ const vueWithVuex = createLocalVue()
 vueWithVuex.use(Vuex)
 
 describe('InventoryItems', () => {
-  beforeEach(setupSuccessfulGETCallWithItems)
+  beforeEach(setupFetchInventoryItemsAPI)
   afterEach(jest.resetAllMocks)
 
   it('should display all items when mounted', async () => {
@@ -22,17 +23,17 @@ describe('InventoryItems', () => {
     expect(wrapper.findAllComponents(InventoryItem)).toHaveLength(2)
   })
 
-  it('should disappear the item when delete API call succeeds', async () => {
+  it('should remove the item when delete API call succeeds', async () => {
+    when(axios.delete).calledWith(`/inventory-items/${idToDelete}`).mockResolvedValue({})
     await mountComponent()
 
     await deleteItem(slugToDelete)
 
     expect(findItemWrapper(slugToDelete).exists()).toBe(false)
-    expect(axios.delete).toHaveBeenCalledWith('/inventory-items/bar')
   })
 
-  it('should not disappear the item when delete API call succeeds', async () => {
-    axios.delete.mockRejectedValue({
+  it('should not remove the item when delete API call succeeds', async () => {
+    when(axios.delete).calledWith(`/inventory-items/${idToDelete}`).mockRejectedValue({
       response: {
         status: 500
       }
@@ -42,7 +43,6 @@ describe('InventoryItems', () => {
     await deleteItem(slugToDelete)
 
     expect(findItemWrapper(slugToDelete).exists()).toBe(true)
-    expect(axios.delete).toHaveBeenCalledWith('/inventory-items/bar')
   })
 
   it('should not fetch items from the API when mounted and store already has data', async () => {
@@ -55,14 +55,15 @@ describe('InventoryItems', () => {
 
   let wrapper
   const slugToDelete = 'memento'
+  const idToDelete = 'memento_id'
   const items = [
     {
-      id: 'foo',
+      id: 'matrix_id',
       slug: 'the-matrix-trilogy',
       stockLevel: 10
     },
     {
-      id: 'bar',
+      id: 'memento_id',
       slug: 'memento',
       stockLevel: 17
     }
@@ -83,8 +84,8 @@ describe('InventoryItems', () => {
     return store
   }
 
-  function setupSuccessfulGETCallWithItems() {
-    axios.get.mockResolvedValue({data: [...items]})
+  function setupFetchInventoryItemsAPI() {
+    when(axios.get).calledWith('/inventory-items').mockResolvedValue({data: [...items]})
   }
 
   async function deleteItem(slug) {
