@@ -1,6 +1,6 @@
 import VueRouter from 'vue-router'
 import {createLocalVue} from '@vue/test-utils'
-import createAuthGuard from '@/plugins/authGuard'
+import createAuthGuard from '@/auth/authGuard'
 import flushPromises from 'flush-promises'
 
 const {isNavigationFailure, NavigationFailureType} = VueRouter
