@@ -1,5 +1,5 @@
 import {mount} from '@vue/test-utils'
-import Profile from '@/components/profile'
+import Profile from '@/components/Profile'
 
 describe('Profile', () => {
   it('should show basic profile info when user inf is available', () => {
