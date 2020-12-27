@@ -28,7 +28,7 @@ describe('authGuard', () => {
   it('should allow access on public route when not authenticated', async () => {
     auth.authenticated = false
 
-    await expect(router.push('/public'))
+    router.push('/public')
 
     expect(router.currentRoute.path).toBe('/public')
   })
@@ -36,7 +36,7 @@ describe('authGuard', () => {
   it('should allow access on protected route when authenticated', async () => {
     auth.authenticated = true
 
-    await expect(router.push('/protected'))
+    router.push('/protected')
 
     expect(router.currentRoute.path).toBe('/protected')
   })

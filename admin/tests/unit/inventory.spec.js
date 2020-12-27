@@ -310,7 +310,7 @@ describe('InventoryItem', () => {
 
       setupSuccessfulPOSTCall()
 
-      await addToStock(amount)
+      await addToStock(validAmount)
     })
 
     it('should call the API', () => {
@@ -318,7 +318,7 @@ describe('InventoryItem', () => {
     })
 
     it('should increase the item stock level', () => {
-      expect(stockLevelWrapper.text()).toBe(amount.toString())
+      expect(stockLevelWrapper.text()).toBe(validAmount.toString())
     })
 
     it('should reset the amount', () => {
@@ -332,7 +332,7 @@ describe('InventoryItem', () => {
 
       setupFailingPOSTCall()
 
-      await addToStock(amount)
+      await addToStock(validAmount)
     })
 
     it('should call the API', () => {
@@ -344,7 +344,7 @@ describe('InventoryItem', () => {
     })
 
     it('should not reset the amount', () => {
-      expect(amountWrapper.element.value).toBe(amount.toString())
+      expect(amountWrapper.element.value).toBe(validAmount.toString())
     })
   })
 
@@ -363,7 +363,7 @@ describe('InventoryItem', () => {
   const itemId = 'foo'
   const slug = 'the-matrix-trilogy'
   const initialStockLevel = 0
-  const amount = 10
+  const validAmount = 10
 
   function mountComponent() {
     const item = createItem()
@@ -402,7 +402,7 @@ describe('InventoryItem', () => {
   }
 
   function expectAPIToHaveBeenCalled() {
-    expect(axios.post).toHaveBeenCalledWith(`/inventory-items/${itemId}/stock`, {amount: amount})
+    expect(axios.post).toHaveBeenCalledWith(`/inventory-items/${itemId}/stock`, {amount: validAmount})
   }
 })
 
