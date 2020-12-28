@@ -36,7 +36,7 @@
 </template>
 
 <script>
-  import NotificationHolder from '@/components/NotificationHolder'
+  import NotificationHolder from '@/notifier/NotificationHolder'
   import Profile from '@/components/Profile'
   import Logout from '@/components/Logout'
 

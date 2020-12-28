@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import inventoryItems from './inventoryItems'
-import createNotifier from './notifier'
+import createNotifier from '@/notifier/store'
 
 Vue.use(Vuex)
 
