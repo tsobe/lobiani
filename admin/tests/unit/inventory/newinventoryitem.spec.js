@@ -6,42 +6,13 @@ import Vuex from 'vuex'
 import inventoryItems from '@/store/inventoryItems'
 import Vuetify from 'vuetify'
 import _ from 'lodash'
+import {when} from 'jest-when'
 
 const vueWithVuex = createLocalVue()
 vueWithVuex.use(Vuex)
 
 jest.mock('axios')
 jest.mock('lodash')
-
-function setupImmediateDebounce() {
-  _.debounce = jest.fn((fn) => fn)
-}
-
-function setupFailingPOSTCall() {
-  axios.post.mockRejectedValue({
-    response: {
-      status: 500,
-      data: 'Boom'
-    }
-  })
-}
-
-function setupSuccessfulPOSTCall(data = {}) {
-  axios.post.mockResolvedValue({data})
-}
-
-function mountWithStore(component) {
-  const store = inventoryItems.createStore()
-  const wrapper = mount(component, {
-    localVue: vueWithVuex,
-    vuetify: new Vuetify(),
-    store: new Vuex.Store(store)
-  })
-  return {
-    wrapper,
-    store
-  }
-}
 
 describe('NewInventoryItem', () => {
   beforeEach(() => {
@@ -80,7 +51,7 @@ describe('NewInventoryItem', () => {
     await enterSlug()
     await resetSlug()
 
-    expect(saveWrapper.attributes().disabled).toBe('disabled')
+    expect(saveWrapper.attributes().disabled).toBeTruthy()
   })
 
   it('should not allow saving when item with given slug is already defined', async () => {
@@ -88,30 +59,27 @@ describe('NewInventoryItem', () => {
 
     await enterSlug(alreadyDefinedItemSlug)
 
-    expect(saveWrapper.attributes().disabled).toBe('disabled')
+    expect(saveWrapper.attributes().disabled).toBeTruthy()
     expect(validationMsgWrapper.isVisible()).toBe(true)
     expect(validationMsgWrapper.text()).toBe('An item with this slug is already defined')
   })
 
   it('should not allow saving when validating slug for uniqueness fails', async () => {
-    setupFailingFindItemsBySlugAPIResponse()
+    setupFailingFindItemsBySlugAPICall()
     mountComponent()
 
     await enterSlug(alreadyDefinedItemSlug)
 
-    expect(saveWrapper.attributes().disabled).toBe('disabled')
+    expect(saveWrapper.attributes().disabled).toBeTruthy()
     expect(validationMsgWrapper.isVisible()).toBe(true)
     expect(validationMsgWrapper.text()).toBe('Failed to check slug availability')
   })
 
   it('should allow saving when unique slug is given eventually', async () => {
     mountComponent()
-    jest.useFakeTimers()
 
     await enterSlug(alreadyDefinedItemSlug)
     await enterSlug()
-
-    jest.runOnlyPendingTimers()
 
     expect(saveWrapper.attributes().disabled).toBeFalsy()
     expect(validationMsgWrapper.isVisible()).toBe(false)
@@ -122,11 +90,7 @@ describe('NewInventoryItem', () => {
     beforeAll(async () => {
       setupImmediateDebounce()
       setupSuccessfulFindItemsBySlugAPICall()
-      setupSuccessfulPOSTCall({
-        id: itemId,
-        slug: slug,
-        stockLevel: 0
-      })
+      setupSuccessfulDefineNewItemAPICall()
 
       mountComponent()
 
@@ -159,13 +123,25 @@ describe('NewInventoryItem', () => {
     it('should reset the slug input', () => {
       expect(slugWrapper.element.value).toBeFalsy()
     })
+
+    function setupSuccessfulDefineNewItemAPICall() {
+      when(axios.post)
+        .calledWith('/inventory-items', {slug})
+        .mockResolvedValue({
+          data: {
+            id: itemId,
+            slug: slug,
+            stockLevel: 0
+          }
+        })
+    }
   })
 
   describe('item can not be defined when API call fails', () => {
     beforeAll(async () => {
       setupImmediateDebounce()
       setupSuccessfulFindItemsBySlugAPICall()
-      setupFailingPOSTCall()
+      setupFailingDefineNewItemAPICall()
 
       mountComponent()
 
@@ -187,6 +163,17 @@ describe('NewInventoryItem', () => {
     it('should not reset the slug input', () => {
       expect(slugWrapper.element.value).toBe(slug)
     })
+
+    function setupFailingDefineNewItemAPICall() {
+      when(axios.post)
+        .calledWith('/inventory-items', {slug})
+        .mockRejectedValue({
+          response: {
+            status: 500,
+            data: 'Boom'
+          }
+        })
+    }
   })
 
   let wrapper
@@ -199,9 +186,12 @@ describe('NewInventoryItem', () => {
   const alreadyDefinedItemSlug = 'already-defined-item-slug'
 
   function mountComponent() {
-    const mounted = mountWithStore(NewInventoryItem)
-    wrapper = mounted.wrapper
-    store = mounted.store
+    store = inventoryItems.createStore()
+    wrapper = mount(NewInventoryItem, {
+      localVue: vueWithVuex,
+      vuetify: new Vuetify(),
+      store: new Vuex.Store(store)
+    })
     slugWrapper = wrapper.find('[data-slug]')
     saveWrapper = wrapper.find('[data-save]')
     validationMsgWrapper = wrapper.find('[data-validation-message]')
@@ -240,11 +230,17 @@ describe('NewInventoryItem', () => {
     })
   }
 
-  function setupFailingFindItemsBySlugAPIResponse() {
-    axios.get.mockRejectedValue({
-      response: {
-        status: 500
-      }
-    })
+  function setupFailingFindItemsBySlugAPICall() {
+    when(axios.get)
+      .calledWith(`/inventory-items?slug=${alreadyDefinedItemSlug}`)
+      .mockRejectedValue({
+        response: {
+          status: 500
+        }
+      })
+  }
+
+  function setupImmediateDebounce() {
+    _.debounce = jest.fn((fn) => fn)
   }
 })
