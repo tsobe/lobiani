@@ -1,6 +1,5 @@
-import createNotifier from '@/notifier/store'
+import {createStore, Notifier} from '@/notifier'
 import NotificationHolder from '@/notifier/NotificationHolder'
-import Notifier from '@/notifier/plugin'
 import {createLocalVue, mount} from '@vue/test-utils'
 import Vuex from 'vuex'
 import Vuetify from 'vuetify'
@@ -46,7 +45,7 @@ function mountComponent(message) {
   localVue.use(Vuex)
   const store = new Vuex.Store({
     modules: {
-      notifier: createNotifier()
+      notifier: createStore()
     }
   })
   localVue.use(Notifier, {store})
