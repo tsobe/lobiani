@@ -7,9 +7,9 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
-    notifier: createNotifierStore()
-  },
-  ...inventoryItems.createStore()
+    notifier: createNotifierStore(),
+    inventory: inventoryItems.createStore()
+  }
 })
 
 export default store

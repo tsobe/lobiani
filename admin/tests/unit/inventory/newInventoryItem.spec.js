@@ -3,10 +3,10 @@ import axios from 'axios'
 import flushPromises from 'flush-promises'
 import NewInventoryItem from '@/views/NewInventoryItem'
 import Vuex from 'vuex'
-import inventoryItems from '@/store/inventoryItems'
 import Vuetify from 'vuetify'
 import _ from 'lodash'
 import {when} from 'jest-when'
+import {createStore} from './storeTestHelper'
 
 const vueWithVuex = createLocalVue()
 vueWithVuex.use(Vuex)
@@ -111,8 +111,8 @@ describe('item can be defined when API call succeeds', () => {
   })
 
   it('should add item to store', () => {
-    expect(store.state.items).toHaveLength(1)
-    expect(store.state.items[0]).toEqual({
+    expect(store.state.inventory.items).toHaveLength(1)
+    expect(store.state.inventory.items[0]).toEqual({
       id: itemId,
       slug: slug,
       stockLevel: 0
@@ -156,7 +156,7 @@ describe('item can not be defined when API call fails', () => {
   })
 
   it('should not add item to store', () => {
-    expect(store.state.items).toHaveLength(0)
+    expect(store.state.inventory.items).toHaveLength(0)
   })
 
   it('should not reset the slug input', () => {
@@ -185,11 +185,11 @@ const slug = 'the-matrix-trilogy'
 const alreadyDefinedItemSlug = 'already-defined-item-slug'
 
 function mountComponent() {
-  store = inventoryItems.createStore()
+  store = createStore()
   wrapper = mount(NewInventoryItem, {
     localVue: vueWithVuex,
     vuetify: new Vuetify(),
-    store: new Vuex.Store(store)
+    store
   })
   slugWrapper = wrapper.find('[data-slug]')
   saveWrapper = wrapper.find('[data-save]')

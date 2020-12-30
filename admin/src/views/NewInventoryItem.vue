@@ -59,7 +59,7 @@
     },
     methods: {
       async defineItem() {
-        const item = await this.$store.dispatch('defineItem', this.slug)
+        const item = await this.$store.dispatch('inventory/defineItem', this.slug)
         this.slug = null
         this.$emit('itemDefined', item)
       },

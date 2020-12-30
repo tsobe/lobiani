@@ -4,9 +4,9 @@ import flushPromises from 'flush-promises'
 import {createLocalVue, mount} from '@vue/test-utils'
 import InventoryItems from '@/views/InventoryItems'
 import Vuex from 'vuex'
-import inventoryItems from '@/store/inventoryItems'
 import Vuetify from 'vuetify'
 import {when} from 'jest-when'
+import {createStore, createStoreWithItems} from './storeTestHelper'
 
 jest.mock('axios')
 
@@ -45,7 +45,7 @@ it('should not remove the item when delete API call succeeds', async () => {
 })
 
 it('should not fetch items from the API when mounted and store already has data', async () => {
-  const store = createStoreWithItems()
+  const store = createStoreWithItems(items)
 
   await mountComponent(store)
 
@@ -68,19 +68,13 @@ const items = [
   }
 ]
 
-async function mountComponent(store = new Vuex.Store(inventoryItems.createStore())) {
+async function mountComponent(store = createStore()) {
   wrapper = mount(InventoryItems, {
     localVue: vueWithVuex,
     vuetify: new Vuetify(),
     store
   })
   await flushPromises()
-}
-
-function createStoreWithItems() {
-  const store = new Vuex.Store(inventoryItems.createStore())
-  store.commit('setItems', items)
-  return store
 }
 
 function setupFetchInventoryItemsAPI() {

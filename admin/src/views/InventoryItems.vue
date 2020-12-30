@@ -28,13 +28,13 @@
     name: 'InventoryItems',
     components: {InventoryItem},
     async mounted() {
-      if (!this.$store.getters.hasItems) {
-        await this.$store.dispatch('fetchItems')
+      if (!this.$store.getters['inventory/hasItems']) {
+        await this.$store.dispatch('inventory/fetchItems')
       }
     },
     computed: {
       items() {
-        return this.$store.state.items
+        return this.$store.state.inventory.items
       }
     }
   }

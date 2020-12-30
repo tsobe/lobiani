@@ -3,6 +3,7 @@ import axios from 'axios'
 export default {
   createStore() {
     return {
+      namespaced: true,
       state: {
         items: []
       },

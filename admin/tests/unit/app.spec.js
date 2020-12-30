@@ -3,11 +3,11 @@ import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import App from '@/App'
 import routes from '@/router/routes'
-import inventoryItems from '@/store/inventoryItems'
 import Vuetify from 'vuetify'
 import flushPromises from 'flush-promises'
 import NewInventoryItem from '@/views/NewInventoryItem'
 import axios from 'axios'
+import {createStore} from './inventory/storeTestHelper'
 
 jest.mock('axios')
 
@@ -75,7 +75,7 @@ async function mountComponent() {
   wrapper = mount(App, {
     localVue: localVue,
     router: new VueRouter({routes}),
-    store: new Vuex.Store(inventoryItems.createStore()),
+    store: createStore(),
     vuetify: new Vuetify(),
     mocks: {
       $auth: authMock

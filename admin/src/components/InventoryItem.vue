@@ -55,14 +55,14 @@
     },
     methods: {
       async addToStock() {
-        await this.$store.dispatch('addToStock', {
+        await this.$store.dispatch('inventory/addToStock', {
           item: this.item,
           amount: this.amount
         })
         this.amount = null
       },
       async deleteItem() {
-        await this.$store.dispatch('deleteItem', this.item)
+        await this.$store.dispatch('inventory/deleteItem', this.item)
       }
     }
   }

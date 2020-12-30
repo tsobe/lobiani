@@ -1,10 +1,10 @@
 import Vuex from 'vuex'
-import inventoryItems from '@/store/inventoryItems'
 import {createLocalVue, mount} from '@vue/test-utils'
 import InventoryItem from '@/components/InventoryItem'
 import flushPromises from 'flush-promises'
 import axios from 'axios'
 import {when} from 'jest-when'
+import {createStoreWithItems} from './storeTestHelper'
 
 jest.mock('axios')
 
@@ -108,8 +108,7 @@ const validAmount = 10
 
 function mountComponent() {
   const item = createItem()
-  const store = new Vuex.Store(inventoryItems.createStore())
-  store.commit('setItems', [item])
+  const store = createStoreWithItems([item])
 
   wrapper = mount(InventoryItem, {
     propsData: {
