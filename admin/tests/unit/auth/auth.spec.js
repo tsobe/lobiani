@@ -119,7 +119,7 @@ const mockAuth0Client = {
 const authOptions = {
   clientId: 'client_id',
   domain: 'example.eu.auth0.com',
-  redirectUri: 'http://example.com',
+  redirectUri: 'https://example.com',
   onRedirectCallback: jest.fn(),
   router: {
     beforeResolve: jest.fn()
@@ -143,12 +143,12 @@ function setupAuth0ClientMock() {
 
 function setupRedirect() {
   delete window.location
-  window.location = new URL('http://example.com?code=7tk6S5_uAu0iKtS5&state=fmdHMmE3')
+  window.location = new URL('https://example.com?code=7tk6S5_uAu0iKtS5&state=fmdHMmE3')
 }
 
 function clearRedirect() {
   delete window.location
-  window.location = new URL('http://example.com')
+  window.location = new URL('https://example.com')
 }
 
 function isExpectedOptions(options) {
