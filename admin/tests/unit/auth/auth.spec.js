@@ -106,12 +106,20 @@ it('should retrieve user info before authentication status is checked', async ()
   expect(mockAuth0Client.getUser).toHaveBeenCalledBefore(mockAuth0Client.isAuthenticated)
 })
 
+it('auth should have id_token', async () => {
+  await initAuth()
+
+  expect(auth.idToken).toBe(idToken)
+})
+
 let auth
+const idToken = 'xyz'
 
 const mockAuth0Client = {
   loginWithRedirect: jest.fn(),
   handleRedirectCallback: jest.fn(),
   isAuthenticated: jest.fn(),
+  getIdTokenClaims: jest.fn(),
   getUser: jest.fn(),
   logout: jest.fn()
 }
@@ -130,6 +138,9 @@ async function initAuth() {
   const localVue = createLocalVue()
   localVue.use(Auth, authOptions)
   auth = localVue.prototype.$auth
+  mockAuth0Client.getIdTokenClaims.mockResolvedValue({
+    __raw: idToken
+  })
   await flushPromises()
 }
 
