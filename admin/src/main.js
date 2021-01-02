@@ -5,7 +5,7 @@ import store from './store'
 import axios from 'axios'
 import vuetify from './plugins/vuetify'
 import {Notifier} from './notifier'
-import {Auth, getInstance} from './auth/plugin'
+import {Auth, getInstance} from './auth'
 import {clientId, domain} from '../auth_config.json'
 import globalErrorHandler from './utils/globalErrorHandler'
 

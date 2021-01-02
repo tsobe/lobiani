@@ -1,5 +1,5 @@
 import createAuth0Client from '@auth0/auth0-spa-js'
-import createAuthGuard from '@/auth/authGuard'
+import {createAuthGuard} from '.'
 
 function isRedirectCallback() {
   return window.location.search.includes('code=') &&

@@ -1,8 +1,7 @@
 import {createLocalVue} from '@vue/test-utils'
-import {Auth} from '@/auth/plugin'
+import {Auth, createAuthGuard} from '@/auth'
 import createAuth0Client from '@auth0/auth0-spa-js'
 import flushPromises from 'flush-promises'
-import createAuthGuard from '@/auth/authGuard'
 
 jest.mock('@auth0/auth0-spa-js')
 jest.mock('@/auth/authGuard')
