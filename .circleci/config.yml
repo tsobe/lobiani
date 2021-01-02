@@ -207,7 +207,8 @@ jobs:
             export IMG_HASH=`cut -d @ -f 2 /tmp/*_img_digest.txt`
             git config user.email "b.tsotsoria@gmail.com"
             git config user.name "circleci"
-            git commit -am "[CI] Updated version for image $IMG_NAME to $IMG_HASH" && git push
+            git commit -am "[CI] Updated version for image $IMG_NAME to $IMG_HASH"
+            git pull --rebase && git push
   setup-test-infra:
     docker:
       - image: &terraform hashicorp/terraform:0.12.28
