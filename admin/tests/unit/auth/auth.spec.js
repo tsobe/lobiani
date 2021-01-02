@@ -68,8 +68,8 @@ it('should logout from authorization server when logout is requested', async () 
 
 it('should add authGuard to router when initializing', async () => {
   const authGuard = {}
-  createAuthGuard.mockImplementation(({auth}) => {
-    return auth ? authGuard : null
+  createAuthGuard.mockImplementation((opts) => {
+    return opts.auth ? authGuard : null
   })
 
   await initAuth()
