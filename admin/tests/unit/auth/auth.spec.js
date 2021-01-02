@@ -106,7 +106,22 @@ it('should retrieve user info before authentication status is checked', async ()
   expect(mockAuth0Client.getUser).toHaveBeenCalledBefore(mockAuth0Client.isAuthenticated)
 })
 
-it('auth should have id_token', async () => {
+it('should retrieve id_token before authentication status is checked', async () => {
+  mockAuth0Client.isAuthenticated.mockResolvedValue(true)
+  mockAuth0Client.getIdTokenClaims.mockResolvedValue({
+    __raw: idToken
+  })
+
+  await initAuth()
+
+  expect(mockAuth0Client.getIdTokenClaims).toHaveBeenCalledBefore(mockAuth0Client.isAuthenticated)
+})
+
+it('auth should have id_token when available', async () => {
+  mockAuth0Client.getIdTokenClaims.mockResolvedValue({
+    __raw: idToken
+  })
+
   await initAuth()
 
   expect(auth.idToken).toBe(idToken)
@@ -138,9 +153,6 @@ async function initAuth() {
   const localVue = createLocalVue()
   localVue.use(Auth, authOptions)
   auth = localVue.prototype.$auth
-  mockAuth0Client.getIdTokenClaims.mockResolvedValue({
-    __raw: idToken
-  })
   await flushPromises()
 }
 

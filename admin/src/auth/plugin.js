@@ -40,7 +40,10 @@ export default {
           }
         } finally {
           this.user = await this.auth0Client.getUser()
-          this.idToken = (await this.auth0Client.getIdTokenClaims()).__raw
+          const claims = await this.auth0Client.getIdTokenClaims()
+          if (claims) {
+            this.idToken = claims.__raw
+          }
           this.authenticated = await this.auth0Client.isAuthenticated()
         }
         this.loading = false
