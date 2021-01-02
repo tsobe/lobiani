@@ -1,10 +1,10 @@
 group = "dev.baybay.lobiani.app"
 
 plugins {
-    id("org.springframework.boot") version "2.2.6.RELEASE"
-    id("io.spring.dependency-management") version "1.0.9.RELEASE"
+    id("org.springframework.boot") version "2.4.1"
+    id("io.spring.dependency-management") version "1.0.10.RELEASE"
     id("groovy")
-    kotlin("plugin.spring") version "1.3.71"
+    kotlin("plugin.spring") version "1.4.21"
 }
 
 val axonVersion = "4.4.2"
@@ -13,8 +13,10 @@ val spockVersion = "2.0-M2-groovy-2.5"
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.axonframework:axon-spring-boot-starter:$axonVersion")
+    implementation("org.hibernate.validator:hibernate-validator:6.0.13.Final")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 

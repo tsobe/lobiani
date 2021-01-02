@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.3.71"
+    kotlin("jvm") version "1.4.21"
     id("org.sonarqube") version "3.0"
     id("jacoco")
 }
@@ -30,13 +30,6 @@ subprojects {
     }
 
     version = "0.0.1-SNAPSHOT"
-
-    val developmentOnly by configurations.creating
-    configurations {
-        runtimeClasspath {
-            extendsFrom(developmentOnly)
-        }
-    }
 
     dependencies {
         implementation("org.jetbrains.kotlin:kotlin-reflect")
