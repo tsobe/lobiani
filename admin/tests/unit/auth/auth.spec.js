@@ -1,5 +1,5 @@
 import {createLocalVue} from '@vue/test-utils'
-import Auth from '@/auth/plugin'
+import {Auth} from '@/auth/plugin'
 import createAuth0Client from '@auth0/auth0-spa-js'
 import flushPromises from 'flush-promises'
 import createAuthGuard from '@/auth/authGuard'
@@ -69,8 +69,8 @@ it('should logout from authorization server when logout is requested', async () 
 
 it('should add authGuard to router when initializing', async () => {
   const authGuard = {}
-  createAuthGuard.mockImplementation(() => {
-    return authGuard
+  createAuthGuard.mockImplementation(({auth}) => {
+    return auth ? authGuard : null
   })
 
   await initAuth()

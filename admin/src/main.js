@@ -5,7 +5,7 @@ import store from './store'
 import axios from 'axios'
 import vuetify from './plugins/vuetify'
 import {Notifier} from './notifier'
-import Auth from './auth/plugin'
+import {Auth, getInstance} from './auth/plugin'
 import {clientId, domain} from '../auth_config.json'
 import globalErrorHandler from './utils/globalErrorHandler'
 
@@ -23,6 +23,12 @@ Vue.use(Auth, {
 })
 Vue.config.productionTip = false
 Vue.config.errorHandler = globalErrorHandler.handle
+
+axios.interceptors.request.use(config => {
+  const token = getInstance().idToken
+  config.headers.Authorization = `Bearer ${token}`
+  return config
+})
 
 new Vue({
   router,

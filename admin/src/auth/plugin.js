@@ -6,9 +6,13 @@ function isRedirectCallback() {
     window.location.search.includes('state=')
 }
 
-export default {
+let auth
+
+export const getInstance = () => auth
+
+export const Auth = {
   install(Vue, options) {
-    const auth = new Vue({
+    auth = new Vue({
       data() {
         return {
           authenticated: false,
