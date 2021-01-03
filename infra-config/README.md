@@ -53,8 +53,7 @@ configured and current context is set to production cluster (hint `doctl kuberne
    ```
    argocd account generate-token --account lobiani
    ```
-    
-   
+
 ## Set up Moon
 
 Similar to Argo CD, [Moon](https://aerokube.com/moon/) is deployed in production environment 
@@ -138,7 +137,6 @@ argocd app delete $ENV-apps
 
 After the Argo CD apps are destroyed, simply execute `terraform destroy` in `infra-config/terraform/test` 
 or `infra-config/terraform/prod`
-
 
 ## Known issues
  
