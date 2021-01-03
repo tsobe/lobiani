@@ -1,6 +1,10 @@
 # Infrastructure setup
 ## Bring up the production cluster
 
+### Prerequisites
+- Terraform CLI is [configured](https://www.terraform.io/docs/commands/cli-config.html#credentials-1) to interact with backend API 
+- `DIGITALOCEAN_TOKEN` environment variable is set 
+
 Run `terraform apply` in `infra-config/terraform/prod` directory. This will bring 
 up the cluster dedicated for production environment and other utility tools
 (Argo CD and Moon)
@@ -8,7 +12,7 @@ up the cluster dedicated for production environment and other utility tools
 ## Set up Argo CD
 
 [Argo CD](https://argoproj.github.io/argo-cd/) is deployed in the production environment. These instructions assume that kubeconfig is already
-configured and current context is set to production cluster
+configured and current context is set to production cluster (hint `doctl kubernetes cluster update lobiani-prod`)
 
 1. Install Argo CD
     ```
@@ -32,11 +36,7 @@ configured and current context is set to production cluster
     ```
    Initial password is the name of argocd pod. It can be obtained as
    `kubectl get pod -l app.kubernetes.io/name=argocd-server -n argocd`
-4. Add a private repository
-    ```
-    argocd repo add git@github.com:tsobe/lobiani --ssh-private-key-path ~/.ssh/argocd_rsa
-    ``` 
-5. Configure API access
+4. Configure API access
    
    Add following entry under the `data` element of `argocd-cm` ConfigMap
    ```
@@ -72,7 +72,7 @@ here.
 
 ## Production env
 ```
-argocd app create production-apps --repo git@github.com:tsobe/lobiani \
+argocd app create production-apps --repo https://@github.com/tsobe/lobiani \
     --path infra-config/argocd/aoa --dest-namespace argocd \
     --dest-server https://kubernetes.default.svc \
     --sync-policy automated -l environment=production \
@@ -87,7 +87,7 @@ Following environment variables must be configured in Circle CI before triggerin
 - `ARGOCD_AUTH_TOKEN` - obtained as described above
 - `ARGOCD_CLI_DOWNLOAD_URL`  - e.g. `https://argocd.baybay.dev/download/argocd-linux-amd64`
 - `CIRCLE_API_USER_TOKEN`
-- `DIGITALOCEAN_TOKEN`
+- `DIGITALOCEAN_TOKEN` - see [documentation](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs#DIGITALOCEAN_TOKEN)
 - `DOCKER_LOGIN`
 - `DOCKER_PASSWORD`
 - `REMOTE_WEBDRIVER_URL` - e.g. `http://moon.baybay.dev:4444/wd/hub`
@@ -114,7 +114,7 @@ It should produce similar output
 
 2. Capture the `cluster_endpoint` in `TEST_CLUSTER_ENDPOINT` environment variable and run
     ```
-    argocd app create test-apps --repo git@github.com:tsobe/lobiani \
+    argocd app create test-apps --repo https://@github.com/tsobe/lobiani \
         --path infra-config/argocd/aoa --dest-namespace argocd \
         --dest-server https://kubernetes.default.svc \
         --sync-policy automated --auto-prune -l environment=test \
