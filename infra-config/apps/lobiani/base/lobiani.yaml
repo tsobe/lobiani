@@ -31,6 +31,8 @@ spec:
           env:
             - name: AXON_AXONSERVER_SERVERS
               value: axonserver.axonserver
+            - name: SPRING_PROFILES_ACTIVE
+              value: secure
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -42,9 +44,9 @@ spec:
               cpu: 100m
               memory: 350Mi
           readinessProbe:
-            httpGet:
+            tcpSocket:
               port: 8080
-              path: /api/inventory-items
+            initialDelaySeconds: 5
       nodeSelector:
         node-type: worker-pool
 ---
