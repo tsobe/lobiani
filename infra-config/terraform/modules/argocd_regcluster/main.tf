@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    digitalocean = {
+      source = "digitalocean/digitalocean"
+      version = "~> 2.3.0"
+    }
+  }
+}
+
 data "digitalocean_kubernetes_cluster" "argo-cd" {
   name = var.argocd_k8s_cluster_name
 }

@@ -1,5 +1,18 @@
-provider "digitalocean" {
-  version = "= 1.22"
+terraform {
+  required_providers {
+    digitalocean = {
+      source = "digitalocean/digitalocean"
+      version = "~> 2.3.0"
+    }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "= 1.11.4"
+    }
+    helm = {
+      source = "hashicorp/helm"
+      version = "= 1.2.3"
+    }
+  }
 }
 
 resource "digitalocean_vpc" "vcp" {
@@ -27,7 +40,6 @@ resource "digitalocean_kubernetes_cluster" "cluster" {
 }
 
 provider "kubernetes" {
-  version = "= 1.11.4"
   host = digitalocean_kubernetes_cluster.cluster.kube_config.0.host
   token = digitalocean_kubernetes_cluster.cluster.kube_config.0.token
   cluster_ca_certificate = base64decode(digitalocean_kubernetes_cluster.cluster.kube_config.0.cluster_ca_certificate)
@@ -35,7 +47,6 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  version = "= 1.2.3"
   kubernetes {
     host = digitalocean_kubernetes_cluster.cluster.kube_config.0.host
     token = digitalocean_kubernetes_cluster.cluster.kube_config.0.token

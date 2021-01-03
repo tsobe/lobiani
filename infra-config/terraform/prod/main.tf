@@ -6,6 +6,12 @@ terraform {
       name = "lobiani-prod-fra1"
     }
   }
+  required_providers {
+    digitalocean = {
+      source = "digitalocean/digitalocean"
+      version = "~> 2.3.0"
+    }
+  }
 }
 
 module "platform" {

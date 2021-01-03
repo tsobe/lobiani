@@ -211,7 +211,7 @@ jobs:
             git pull --rebase && git push
   setup-test-infra:
     docker:
-      - image: &terraform hashicorp/terraform:0.12.28
+      - image: &terraform hashicorp/terraform:0.14.3
     steps:
       - checkout
       - run:
