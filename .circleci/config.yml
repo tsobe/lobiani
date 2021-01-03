@@ -271,6 +271,8 @@ jobs:
             cd e2e-tests && ./gradlew test -Dgeb.build.baseUrl=${TEST_APP_BASE_URL}/ \
               -Dremote.webdriver.url=$REMOTE_WEBDRIVER_URL \
               -Dremote.webdriver.acceptInsecure=true \
+              -Dtest.admin.user=$TEST_ADMIN_USER \
+              -Dtest.admin.password=$TEST_ADMIN_PASSWORD
       - save_test_results:
           dst_location: e2e-test-results
   trigger-promotion:

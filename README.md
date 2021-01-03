@@ -111,7 +111,9 @@ To build test and run, execute following commands from `admin` directory
 2. First ensure backend and admin are both running, then execute the tests from `e2e-tests` directory 
 (use JDK 8, hint [jenv](https://www.jenv.be/))
     ```
-    ./gradlew test
+    ./gradlew test \
+        -Dtest.admin.user=<user> \
+        -Dtest.admin.password=<password>
     ```
 
 # Known issues

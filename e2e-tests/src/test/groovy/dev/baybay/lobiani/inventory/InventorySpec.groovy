@@ -1,8 +1,17 @@
 package dev.baybay.lobiani.inventory
 
+import dev.baybay.lobiani.admin.AdminLoginPage
+import dev.baybay.lobiani.admin.AuthorizationServerLoginPage
 import geb.spock.GebSpec
 
 class InventorySpec extends GebSpec {
+
+    void setup() {
+        def adminLoginPage = to AdminLoginPage
+        adminLoginPage.login()
+        def authServerLoginPage = at AuthorizationServerLoginPage
+        authServerLoginPage.login()
+    }
 
     def "new inventory item defined, added to stock and then deleted"() {
         given:

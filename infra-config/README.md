@@ -95,6 +95,7 @@ Following environment variables must be configured in Circle CI before triggerin
 - `TF_API_TOKEN`
 - `SONAR_TOKEN` - visit [SonarCloud](https://sonarcloud.io/) for more
 - `AUTH0_DOMAIN` and `AUTH0_CLIENT_ID` - see [Applications in Auth0](https://auth0.com/docs/applications) for more
+- `TEST_ADMIN_USER` and `TEST_ADMIN_PASSWORD` - Admin credentials for e2e test
 
 ## Test env
 

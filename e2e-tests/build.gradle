@@ -28,4 +28,6 @@ test {
     systemProperty('remote.webdriver.url', System.getProperty('remote.webdriver.url', defaultWebDriverUrl))
     systemProperty('remote.webdriver.acceptInsecure', System.getProperty('remote.webdriver.acceptInsecure'))
     systemProperty('remote.webdriver.enableVideo', System.getProperty('remote.webdriver.enableVideo', 'false'))
+    systemProperty('test.admin.user', System.getProperty('test.admin.user'))
+    systemProperty('test.admin.password', System.getProperty('test.admin.password'))
 }
