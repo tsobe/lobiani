@@ -1,6 +1,7 @@
 package dev.baybay.lobiani.inventory
 
 import geb.Page
+import geb.module.FormElement
 
 class NewInventoryItemPage extends Page {
 
@@ -16,6 +17,7 @@ class NewInventoryItemPage extends Page {
     }
 
     def save() {
+        waitFor { saveBtn.module(FormElement).enabled }
         saveBtn.click()
     }
 }
