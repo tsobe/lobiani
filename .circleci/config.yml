@@ -208,7 +208,8 @@ jobs:
             git config user.email "b.tsotsoria@gmail.com"
             git config user.name "circleci"
             git commit -am "[CI] Updated version for image $IMG_NAME to $IMG_HASH"
-            git pull --rebase && git push
+            git pull
+            git push
   setup-test-infra:
     docker:
       - image: &terraform hashicorp/terraform:0.14.3
@@ -285,6 +286,7 @@ jobs:
       - run:
           name: Pushing to production branch
           command: |
+            git pull
             git push origin $CIRCLE_SHA1:production
   setup-prod-infra:
     docker:
