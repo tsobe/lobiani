@@ -15,11 +15,12 @@ afterEach(() => {
 
 it('should redirect to authorization server when login is requested', async () => {
   await initAuth()
+  const opts = {}
 
-  await auth.login()
+  await auth.login(opts)
 
   expect(auth.loading).toBe(true)
-  expect(mockAuth0Client.loginWithRedirect).toHaveBeenCalled()
+  expect(mockAuth0Client.loginWithRedirect).toHaveBeenCalledWith(opts)
 })
 
 it('should be authenticated when authorization server indicates so', async () => {

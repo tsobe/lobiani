@@ -13,5 +13,7 @@ it('should delegate to $auth when logout button is clicked', async () => {
 
   await wrapper.find('[data-logout]').trigger('click')
 
-  expect(authMock.logout).toHaveBeenCalled()
+  expect(authMock.logout).toHaveBeenCalledWith({
+    returnTo: window.location.origin
+  })
 })

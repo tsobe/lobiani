@@ -13,5 +13,5 @@ it('should delegate to $auth when login button is clicked', async () => {
 
   await wrapper.find('[data-login]').trigger('click')
 
-  expect(authMock.login).toHaveBeenCalled()
+  expect(authMock.login).toHaveBeenCalledWith({redirect_uri: window.location.origin})
 })
