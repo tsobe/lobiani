@@ -68,7 +68,7 @@ to microservices. There's gonna be a separate deployment units for admin and fro
 - ✓ System allows to define and add inventory items to stock
 - ✕ System allows to see the products available for sale
 - ✓ User interface is not ugly
-- ✕ Admin area is accessible to authenticated users only
+- ✓ Admin area is accessible to authenticated users only
 - ✓ Basic metrics such as HTTP success rate, latency and etc. are available
 - ✓ Basic CI/CD pipeline exists 
     - Build and deployment is automated, preferably via GitOps approach
