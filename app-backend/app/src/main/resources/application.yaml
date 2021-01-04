@@ -1,3 +1,10 @@
 logging:
   level:
     org.springframework.web: INFO
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://lobiani.eu.auth0.com/
