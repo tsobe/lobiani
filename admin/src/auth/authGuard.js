@@ -1,6 +1,6 @@
 export default ({auth, publicPaths = ['/login'], redirectTo = '/login'}) => {
   function buildRedirectURL(path) {
-    return redirectTo + (path === '/' ? '' : `?targetUrl=${encodeURIComponent(path)}`)
+    return redirectTo + (path === '/' ? '' : `?next=${encodeURIComponent(path)}`)
   }
 
   function isPublicPath(path) {

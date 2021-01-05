@@ -6,9 +6,9 @@ let undefined
 
 beforeEach(createRouterAndHandler)
 
-it('should redirect to targetUrl when appState contains it', () => {
+it('should redirect to next when appState contains it', () => {
   redirectHandler.handle({
-    targetUrl: '/protected'
+    next: '/protected'
   })
 
   expect(router.currentRoute.path).toBe('/protected')

@@ -15,9 +15,9 @@
     methods: {
       login() {
         const opts = {}
-        if (this.$route.query.targetUrl) {
+        if (this.$route.query.next) {
           opts.appState = {
-            targetUrl: this.$route.query.targetUrl
+            next: this.$route.query.next
           }
         }
         this.$auth.login(opts)

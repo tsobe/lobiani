@@ -5,18 +5,18 @@ import VueRouter from 'vue-router'
 beforeEach(mountComponent)
 afterEach(jest.resetAllMocks)
 
-it('should delegate to $auth with targetUrl in appState when logged in with targetUrl', async () => {
-  await router.push('/login?targetUrl=%2Fprotected%3Fqp1%3Done%26qp2%3Dtwo')
+it('should delegate to $auth with next in appState when logged in with next', async () => {
+  await router.push('/login?next=%2Fprotected%3Fqp1%3Done%26qp2%3Dtwo')
   await login()
 
   expect(authMock.login).toHaveBeenCalledWith({
     appState: {
-      targetUrl: '/protected?qp1=one&qp2=two'
+      next: '/protected?qp1=one&qp2=two'
     }
   })
 })
 
-it('should delegate to $auth with empty options when logged in without targetUrl', async () => {
+it('should delegate to $auth with empty options when logged in without next', async () => {
   await router.push('/login')
   await login()
 
