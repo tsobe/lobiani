@@ -2,8 +2,6 @@ import {createRedirectHandler} from '@/auth'
 import VueRouter from 'vue-router'
 import {createLocalVue} from '@vue/test-utils'
 
-let undefined
-
 beforeEach(createRouterAndHandler)
 
 it('should redirect to next when appState contains it', () => {
