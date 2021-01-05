@@ -14,9 +14,13 @@
   export default {
     methods: {
       login() {
-        this.$auth.login({
-          redirect_uri: window.location.origin
-        })
+        const opts = {}
+        if (this.$route.query.targetUrl) {
+          opts.appState = {
+            targetUrl: this.$route.query.targetUrl
+          }
+        }
+        this.$auth.login(opts)
       }
     }
   }

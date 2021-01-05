@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import {Notifier} from './notifier'
-import {Auth} from './auth'
+import {Auth, createRedirectHandler} from './auth'
 import Http from './plugins/http'
 import {clientId, domain} from '../auth_config.json'
 import globalErrorHandler from './utils/globalErrorHandler'
@@ -15,9 +15,7 @@ Vue.use(Auth, {
   clientId: clientId,
   domain: domain,
   redirectUri: window.location.origin,
-  onRedirectCallback: () => {
-    router.push('/')
-  }
+  onRedirectCallback: createRedirectHandler(router).handle
 })
 Vue.use(Http)
 Vue.config.productionTip = false

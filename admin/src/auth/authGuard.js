@@ -1,22 +1,30 @@
 export default ({auth, publicPaths = ['/login'], redirectTo = '/login'}) => {
+  function buildRedirectURL(path) {
+    return redirectTo + (path === '/' ? '' : `?targetUrl=${encodeURIComponent(path)}`)
+  }
+
+  function isPublicPath(path) {
+    return publicPaths.includes(path)
+  }
+
+  function onLoadingComplete(cb) {
+    auth.$watch('loading', loading => {
+      if (!loading) {
+        cb()
+      }
+    })
+  }
+
   return (to, from, next) => {
     function check() {
-      if (!auth.authenticated && !publicPaths.includes(to.path)) {
+      if (!auth.authenticated && !isPublicPath(to.path)) {
         next({
-          path: redirectTo,
+          path: buildRedirectURL(to.fullPath),
           replace: true
         })
       } else {
         next()
       }
-    }
-
-    function onLoadingComplete(cb) {
-      auth.$watch('loading', loading => {
-        if (!loading) {
-          cb()
-        }
-      })
     }
 
     if (!auth.loading) {

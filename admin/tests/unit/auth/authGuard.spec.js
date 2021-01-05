@@ -19,9 +19,17 @@ beforeEach(createRouter)
 it('should redirect to login route when not authenticated', async () => {
   auth.authenticated = false
 
-  await expect(router.push('/protected')).rejects.toBeRedirectFailure()
+  await expect(router.push('/')).rejects.toBeRedirectFailure()
 
-  expect(router.currentRoute.path).toBe('/login')
+  expect(router.currentRoute.fullPath).toBe('/login')
+})
+
+it('should redirect to login route and include encoded original URL as targetUrl when not authenticated', async () => {
+  auth.authenticated = false
+
+  await expect(router.push('/protected?qp1=one&qp2=two')).rejects.toBeRedirectFailure()
+
+  expect(router.currentRoute.fullPath).toBe('/login?targetUrl=%2Fprotected%3Fqp1%3Done%26qp2%3Dtwo')
 })
 
 it('should allow access on public route when not authenticated', async () => {
