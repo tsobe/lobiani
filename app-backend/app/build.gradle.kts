@@ -16,7 +16,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.axonframework:axon-spring-boot-starter:$axonVersion")
-    implementation("org.hibernate.validator:hibernate-validator:6.0.13.Final")
+    implementation("org.hibernate.validator:hibernate-validator:7.0.0.Final")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
