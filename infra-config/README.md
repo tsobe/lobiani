@@ -130,6 +130,13 @@ It should produce similar output
     ```
 
 # Destroy
+## Automated option
+
+```
+./destroy.sh <test|prod>
+```
+for manual option, continue reading
+
 ## Argo CD apps
 
 In order to gracefully destroy the environment, some of the Argo CD apps
