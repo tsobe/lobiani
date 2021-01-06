@@ -9,10 +9,6 @@ updates:
     schedule:
       interval: daily
   - package-ecosystem: gradle
-    directory: /app-backend/app
-    schedule:
-      interval: daily
-  - package-ecosystem: gradle
     directory: /e2e-tests
     schedule:
       interval: daily
