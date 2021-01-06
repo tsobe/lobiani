@@ -236,7 +236,7 @@ jobs:
           paths:
             - terraform/test/cluster_endpoint.txt
       - store_artifacts:
-          path: errored.tfstate
+          path: infra-config/terraform/test/errored.tfstate
   deploy-to-test-env:
     docker:
       - image: *base_image
@@ -312,7 +312,7 @@ jobs:
             terraform apply --auto-approve=true
             cd - > /dev/null
       - store_artifacts:
-          path: errored.tfstate
+          path: infra-config/terraform/prod/errored.tfstate
   deploy-to-prod-env:
     docker:
       - image: *base_image
