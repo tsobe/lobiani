@@ -38,6 +38,9 @@ subprojects {
 
     tasks.withType<Test> {
         useJUnitPlatform()
+        testLogging {
+            showStandardStreams = true
+        }
         finalizedBy("jacocoTestReport")
     }
 
