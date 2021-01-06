@@ -7,5 +7,6 @@ module.exports = {
   collectCoverage: process.env.COLLECT_COVERAGE === 'true',
   collectCoverageFrom: [
     'src/**/*.{js,jsx,vue}'
-  ]
+  ],
+  reporters: process.env.ADD_JUNIT_REPORTER === 'true' ? ['default', 'jest-junit'] : ['default']
 }

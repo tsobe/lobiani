@@ -145,7 +145,15 @@ jobs:
           command: npm run lint --no-fix
       - run:
           name: Running unit tests with coverage
-          command: export COLLECT_COVERAGE=true && npm run test:unit
+          command: npm run test:unit
+          environment:
+            COLLECT_COVERAGE: true
+            ADD_JUNIT_REPORTER: true
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+      - store_test_results:
+          path: ./reports/junit/
+      - store_artifacts:
+          path: ./reports/junit
       - run:
           name: Bundling the app
           command: npm run build

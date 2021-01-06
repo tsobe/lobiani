@@ -36,6 +36,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "flush-promises": "^1.0.2",
     "jest-extended": "^0.11.5",
+    "jest-junit": "^12.0.0",
     "jest-when": "^3.0.1",
     "nock": "^13.0.5",
     "sass": "^1.19.0",
