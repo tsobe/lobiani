@@ -145,11 +145,11 @@ jobs:
           command: npm run lint --no-fix
       - run:
           name: Running unit tests with coverage
-          command: npm run test:unit
-          environment:
-            COLLECT_COVERAGE: true
-            ADD_JUNIT_REPORTER: true
-            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+          command: |
+            export COLLECT_COVERAGE=true
+            export ADD_JUNIT_REPORTER=true
+            export JEST_JUNIT_OUTPUT_DIR=./reports/junit/
+            npm run test:unit
       - store_test_results:
           path: ./reports/junit/
       - store_artifacts:
