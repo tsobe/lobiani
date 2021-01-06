@@ -354,6 +354,12 @@ workflows:
       - trigger-test:
           requires:
             - build-and-publish-admin-image
+  check-admin:
+    jobs:
+      - build-admin:
+          filters:
+            branches:
+              only: /dependabot\/npm_and_yarn\/admin.*/
   test:
     when: << pipeline.parameters.test >>
     jobs:
