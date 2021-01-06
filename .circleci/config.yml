@@ -53,7 +53,7 @@ commands:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
           key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed" }}-{{ checksum ".circleci/config.yml" }}
-  save_test_results:
+  save_gradle_test_results:
     parameters:
       dst_location:
         type: string
@@ -102,7 +102,7 @@ jobs:
           root: app-backend/app
           paths:
             - build/libs/app-*.jar
-      - save_test_results:
+      - save_gradle_test_results:
           dst_location: unit-test-results
   build-and-publish-app-backend-image:
     executor: docker/docker
@@ -284,7 +284,7 @@ jobs:
               -Dremote.webdriver.acceptInsecure=true \
               -Dtest.admin.user=$TEST_ADMIN_USER \
               -Dtest.admin.password=$TEST_ADMIN_PASSWORD
-      - save_test_results:
+      - save_gradle_test_results:
           dst_location: e2e-test-results
   trigger-promotion:
     docker:
