@@ -227,6 +227,8 @@ jobs:
           root: infra-config
           paths:
             - terraform/test/cluster_endpoint.txt
+      - store_artifacts:
+          path: errored.tfstate
   deploy-to-test-env:
     docker:
       - image: *base_image
@@ -301,6 +303,8 @@ jobs:
             terraform init -backend-config="token=${TF_API_TOKEN}"
             terraform apply --auto-approve=true
             cd - > /dev/null
+      - store_artifacts:
+          path: errored.tfstate
   deploy-to-prod-env:
     docker:
       - image: *base_image
