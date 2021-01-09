@@ -27,5 +27,5 @@ dependencies {
     testImplementation("org.spockframework:spock-core:$spockVersion")
     testImplementation("org.spockframework:spock-spring:$spockVersion")
     testImplementation("org.testcontainers:testcontainers:1.15.0-rc2")
-    testImplementation("org.testcontainers:spock:1.14.3")
+    testImplementation("org.testcontainers:spock:1.15.1")
 }
