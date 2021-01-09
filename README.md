@@ -38,7 +38,7 @@ However for the sake of this exercise (despite of DDD being one of the primary f
 - Personalization - recommending products to customers
 
 ## Event Storming - Ubiquitous Language
-[![Event Storming](doc/Event%20Storming.jpg)](https://miro.com/app/board/o9J_lavSVJ0=/)
+[![Event Storming](doc/images/Event%20Storming.jpg)](https://miro.com/app/board/o9J_lavSVJ0=/)
 (Click on the image for interactive diagram)
 
 # Backlog
