@@ -6,6 +6,8 @@ Date: 2021-01-09
 
 Accepted
 
+Also see [7. Use AxonFramework in backend](0007-use-axonframework-in-backend.md)
+
 ## Context
 
 Almost every software project needs to interact with the 3rd party libraries and frameworks to some extent. 
