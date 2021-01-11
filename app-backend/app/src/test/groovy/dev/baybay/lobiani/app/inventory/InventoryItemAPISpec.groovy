@@ -34,7 +34,7 @@ class InventoryItemAPISpec extends Specification {
     GenericContainer container = new GenericContainer("axoniq/axonserver:4.4")
             .withExposedPorts(AXON_SERVER_HTTP_PORT, AXON_SERVER_GRPC_PORT)
             .waitingFor(Wait.forHttp("/actuator/info").forPort(AXON_SERVER_HTTP_PORT))
-            .withStartupTimeout(Duration.ofSeconds(120))
+            .withStartupTimeout(Duration.ofSeconds(360))
 
     PollingConditions conditions = new PollingConditions(timeout: 5)
 
