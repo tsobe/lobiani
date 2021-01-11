@@ -62,6 +62,7 @@ However for the sake of this exercise (despite of DDD being one of the primary f
 Monolith-first approach will be used where initially entire backend system is delivered as
 a single deployment unit, however it will be still modular internally, to allow easier transition
 to microservices. There's gonna be a separate deployment units for admin and frontend (SPAs).
+See [ADR](doc/adr) for more info
 
 ## Milestones
 ### Milestone 1 objectives

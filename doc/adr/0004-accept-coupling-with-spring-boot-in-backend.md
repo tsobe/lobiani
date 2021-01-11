@@ -6,7 +6,7 @@ Date: 2021-01-09
 
 Accepted
 
-Also see [7. Use AxonFramework in backend](0007-use-axonframework-in-backend.md)
+Also see [8. Use AxonFramework in backend](0008-use-axonframework-in-backend.md)
 
 ## Context
 
