@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait
-import org.testcontainers.containers.wait.strategy.WaitAllStrategy
 import org.testcontainers.spock.Testcontainers
 import spock.lang.Ignore
 import spock.lang.Shared
@@ -34,9 +33,7 @@ class InventoryItemAPISpec extends Specification {
     @Shared
     GenericContainer container = new GenericContainer("axoniq/axonserver:4.4")
             .withExposedPorts(AXON_SERVER_HTTP_PORT, AXON_SERVER_GRPC_PORT)
-            .waitingFor(new WaitAllStrategy()
-                    .withStrategy(Wait.forHttp("/actuator/info").forPort(AXON_SERVER_HTTP_PORT))
-                    .withStrategy(Wait.forListeningPort()))
+            .waitingFor(Wait.forLogMessage(".*Started AxonServer in.*\n", 1))
             .withStartupTimeout(Duration.ofSeconds(360))
 
     PollingConditions conditions = new PollingConditions(timeout: 5)
