@@ -85,8 +85,8 @@ jobs:
           name: Determining the workflow to execute next
           command: .circleci/check.sh
   build-app-backend-jar:
-    machine:
-      image: circleci/classic:201808-01
+    docker:
+      image: cimg/openjdk:14.0.1
     steps:
       - checkout
       - with_gradle_cache:
