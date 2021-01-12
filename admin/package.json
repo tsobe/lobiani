@@ -39,7 +39,7 @@
     "jest-junit": "^12.0.0",
     "jest-when": "^3.0.1",
     "nock": "^13.0.5",
-    "sass": "^1.32.2",
+    "sass": "^1.32.4",
     "sass-loader": "^10.1.0",
     "vue-cli-plugin-vuetify": "^2.0.9",
     "vue-template-compiler": "^2.6.12",
