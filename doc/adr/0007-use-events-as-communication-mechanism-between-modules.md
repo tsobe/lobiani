@@ -19,6 +19,6 @@ second approach - events as the communication mechanism
 ## Consequences
 
 - Overall system will be more loosely coupled
-- Transitionint to microservices will be easier due to location transparency
+- Transitioning to microservices will be easier due to location transparency
 - System complexity will increase due to increased indirection and asynchronous nature of messaging
 - We'll have to cope with eventual consistency

@@ -15,11 +15,11 @@ patterns can be quite overwhelming, especially that we are not very experienced.
 
 ## Decision
 
-We will use AxonFramework to aid in:
-- implementing EDA thanks to the provided EventBus support
-- adopting the DDD building blocks
-- implementing read model projections
-- adopting the EventSourcing (optional)
+We will use AxonFramework to aid in
+- Implementing EDA thanks to the provided EventBus support
+- Adopting the DDD building blocks
+- Implementing read model projections
+- Adopting EventSourcing (optional)
 
 ## Consequences
 
