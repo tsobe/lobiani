@@ -36,6 +36,7 @@ the page is loaded
 
 - More pipelines need to be maintained in CI
 - Compatibility issues between frontend and backend may be detected later, during the integration stage
+- Complete client-side rendering may degrade the user experience a bit
 
 ## Decision
 
