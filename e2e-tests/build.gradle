@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.5.2'
-    testImplementation 'org.spockframework:spock-core:2.0-M2-groovy-2.5'
+    testImplementation 'org.spockframework:spock-core:2.0-M4-groovy-3.0'
     testImplementation 'org.seleniumhq.selenium:selenium-remote-driver:3.141.59'
     testImplementation('org.gebish:geb-spock:3.4') {
         exclude group: 'org.codehaus.groovy'
