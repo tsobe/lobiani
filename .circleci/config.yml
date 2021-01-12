@@ -254,7 +254,7 @@ jobs:
             argocd app create test-apps --repo https://github.com/tsobe/lobiani \
                 --path infra-config/argocd/aoa --dest-namespace argocd \
                 --dest-server https://kubernetes.default.svc \
-                --revision $CIRCLE_BRANCH -l environment=test \
+                --revision $CIRCLE_SHA1 -l environment=test \
                 --helm-set spec.destination.server=$TEST_CLUSTER_ENDPOINT \
                 --values test-values.yaml \
                 --upsert
