@@ -37,7 +37,7 @@ function collect_modified_dirs {
         commits="origin/$CIRCLE_BRANCH"
     else
         commits="${CIRCLE_SHA1}..${last_successful_commit}"
-        last_successful_commit_log=`git log $CIRCLE_SHA1 -n 1 --oneline --pretty=format:"%ai - %s by %an"`
+        last_successful_commit_log=`git log $last_successful_commit -n 1 --oneline --pretty=format:"%ai - %s by %an"`
     fi
 
     git diff --name-only $commits | cut -d/ -f1 | sort -u > modified-dirs
