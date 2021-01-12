@@ -28,11 +28,11 @@ function trigger_pipeline {
 function collect_modified_dirs {
     # Originally influenced by
     # https://github.com/Tufin/circleci-monorepo/blob/master/.circleci/config.yml
-    last_completed_build_url="https://circleci.com/api/v1.1/project/$PROJECT_SLUG/tree/$CIRCLE_BRANCH?filter=completed&limit=1"
-    last_successful_commit=`curl -Ss -u "$CIRCLE_API_USER_TOKEN:" $last_completed_build_url | jq -r '.[0]["vcs_revision"]'`
+    last_successful_build_url="https://circleci.com/api/v1.1/project/$PROJECT_SLUG/tree/$CIRCLE_BRANCH?filter=successful&limit=1"
+    last_successful_commit=`curl -Ss -u "$CIRCLE_API_USER_TOKEN:" $last_successful_build_url | jq -r '.[0]["vcs_revision"]'`
 
     # First commit in a branch
-    if [[ ${last_successful_commit} == "null" ]]
+    if [[ ${last_successful_commit} == "null" || -z "${last_successful_commit}" ]]
     then
         commits="origin/$CIRCLE_BRANCH"
     else
