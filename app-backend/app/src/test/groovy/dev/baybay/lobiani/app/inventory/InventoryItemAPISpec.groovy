@@ -1,49 +1,32 @@
 package dev.baybay.lobiani.app.inventory
 
+import dev.baybay.lobiani.app.TestConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.testcontainers.containers.GenericContainer
-import org.testcontainers.containers.wait.strategy.Wait
-import org.testcontainers.spock.Testcontainers
+import org.springframework.test.context.ActiveProfiles
 import spock.lang.Ignore
-import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 import spock.util.concurrent.PollingConditions
 
-import java.time.Duration
-
-@Testcontainers
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = TestConfig)
 class InventoryItemAPISpec extends Specification {
 
     private static final URI = "/api/inventory-items"
     private static final THE_MATRIX_TRILOGY = "the-matrix-trilogy"
     private static final MEMENTO = "memento"
-    private static final int AXON_SERVER_HTTP_PORT = 8024
-    private static final int AXON_SERVER_GRPC_PORT = 8124
 
     @Autowired
     TestRestTemplate restTemplate
 
-    @Shared
-    GenericContainer container = new GenericContainer("axoniq/axonserver:4.4")
-            .withExposedPorts(AXON_SERVER_HTTP_PORT, AXON_SERVER_GRPC_PORT)
-            .waitingFor(Wait.forHttp("/actuator/info").forPort(AXON_SERVER_HTTP_PORT))
-            .withStartupTimeout(Duration.ofSeconds(360))
-
     PollingConditions conditions = new PollingConditions(timeout: 5)
 
     def definedItemIds = []
-
-    void setupSpec() {
-        def port = container.getMappedPort(AXON_SERVER_GRPC_PORT)
-        System.setProperty("axon.axonserver.servers", "${container.getHost()}:$port")
-    }
 
     void cleanup() {
         definedItemIds.each { id ->
