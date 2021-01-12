@@ -58,7 +58,7 @@ However for the sake of this exercise (despite of DDD being one of the primary f
 - As a customer I want to see recommended products based on my purchase history so that suggestions are personalized for me
 - As a courier I want to update delivery status so that customers see the progress
 
-# Development process roadmap
+# Development process and roadmap
 Monolith-first approach will be used where initially entire backend system is delivered as
 a single deployment unit, however it will be still modular internally, to allow easier transition
 to microservices. There's gonna be a separate deployment units for admin and frontend (SPAs).
