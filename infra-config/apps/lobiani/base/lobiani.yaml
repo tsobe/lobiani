@@ -31,8 +31,6 @@ spec:
           env:
             - name: AXON_AXONSERVER_SERVERS
               value: axonserver.axonserver
-            - name: SPRING_PROFILES_ACTIVE
-              value: secure
           ports:
             - containerPort: 8080
               protocol: TCP
