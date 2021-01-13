@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk14
+FROM adoptopenjdk/openjdk14-openj9
 
 COPY build/libs/app-*.jar .
 
