@@ -37,11 +37,11 @@ function collect_modified_dirs {
         commits="origin/$CIRCLE_BRANCH"
     else
         commits="${CIRCLE_SHA1}..${last_successful_commit}"
-        last_successful_commit_log=`git log $last_successful_commit -n 1 --oneline --pretty=format:"%ai - %s by %an"`
+        last_successful_commit_log=`git log $last_successful_commit -n 1 --pretty=format:"%ai - \"%s\" by %an"`
     fi
 
     git diff --name-only $commits | cut -d/ -f1 | sort -u > modified-dirs
-    echo -e "Since the last successful commit:\n$last_successful_commit_log\nfollowing directories were modified:\n`cat modified-dirs`\n"
+    echo -e "Since the last successful commit:\n$last_successful_commit_log\n\nfollowing directories were modified:\n`cat modified-dirs`\n"
 }
 
 function was_modified {
