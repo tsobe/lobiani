@@ -32,6 +32,7 @@ then
     do
         running_apps_count="`argocd app list -l $argocd_label -o name | grep -Ev "(apps|cert-manager)" | wc -l | xargs`"
         echo "1st pass: waiting for $running_apps_count apps to get deleted..."
+        sleep 1
     done
 fi
 
@@ -44,6 +45,7 @@ then
     do
         running_apps_count="`argocd app list -l $argocd_label -o name | wc -l | xargs`"
         echo "2nd pass: waiting for $running_apps_count apps to get deleted..."
+        sleep 1
     done
 fi
 
