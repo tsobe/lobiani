@@ -8,3 +8,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://lobiani.eu.auth0.com/
+  profiles:
+    active:
+      - secure

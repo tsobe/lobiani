@@ -9,12 +9,16 @@ plugins {
 
 val axonVersion = "4.4.5"
 val spockVersion = "2.0-M2-groovy-2.5"
+val openAPIVersion = "1.5.2"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.springdoc:springdoc-openapi-ui:$openAPIVersion")
+    implementation("org.springdoc:springdoc-openapi-kotlin:$openAPIVersion")
+    implementation("org.springdoc:springdoc-openapi-security:$openAPIVersion")
     implementation("org.axonframework:axon-spring-boot-starter:$axonVersion")
     implementation("org.hibernate.validator:hibernate-validator:6.0.13.Final")
 
