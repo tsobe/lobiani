@@ -21,6 +21,21 @@ spec:
               serviceName: lobiani-app-backend
               servicePort: 8080
           - pathType: Prefix
+            path: /v3/api-docs
+            backend:
+              serviceName: lobiani-app-backend
+              servicePort: 8080
+          - pathType: Prefix
+            path: /swagger-ui
+            backend:
+              serviceName: lobiani-app-backend
+              servicePort: 8080
+          - pathType: Prefix
+            path: /swagger-ui.html
+            backend:
+              serviceName: lobiani-app-backend
+              servicePort: 8080
+          - pathType: Prefix
             path: /
             backend:
               serviceName: lobiani-admin
