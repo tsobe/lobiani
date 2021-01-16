@@ -42,9 +42,14 @@ spec:
               cpu: 100m
               memory: 350Mi
           readinessProbe:
-            tcpSocket:
+            httpGet:
               port: 8080
+              path: /healthz
             initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /healthz
       nodeSelector:
         node-type: worker-pool
 ---
