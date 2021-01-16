@@ -46,10 +46,6 @@ spec:
               port: 8080
               path: /healthz
             initialDelaySeconds: 5
-          livenessProbe:
-            httpGet:
-              port: 8080
-              path: /healthz
       nodeSelector:
         node-type: worker-pool
 ---
