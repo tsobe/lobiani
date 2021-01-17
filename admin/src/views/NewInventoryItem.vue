@@ -65,7 +65,7 @@
     },
     methods: {
       hasValidSlugFormat() {
-        return this.slug.toLowerCase() === this.slug && !/\s/g.test(this.slug) && /^[a-z0-9-]+$/g.test(this.slug)
+        return /^[a-z0-9-]+$/g.test(this.slug)
       },
       async defineItem() {
         const item = await this.$store.dispatch('inventory/defineItem', this.slug)

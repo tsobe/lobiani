@@ -13,8 +13,8 @@ data class DefineInventoryItem(
     @JsonCreator
     constructor(slug: String) : this(UUID.randomUUID(), slug)
 
-    @AssertTrue(message = "Valid slug must consist of lowercase alpha-numeric and dash('-') characters")
+    @AssertTrue(message = "Slug must consist of lowercase alpha-numeric and dash('-') characters")
     fun hasValidSlug(): Boolean {
-        return slug.toLowerCase() == slug && !slug.contains("\\s+".toRegex())
+        return slug.matches("^[a-z0-9-]+$".toRegex())
     }
 }

@@ -101,10 +101,10 @@ class InventoryItemAPISpec extends Specification {
         response.statusCode == HttpStatus.BAD_REQUEST
 
         and:
-        response.body.message == "Valid slug must consist of lowercase alpha-numeric and dash('-') characters"
+        response.body.message == "Slug must consist of lowercase alpha-numeric and dash('-') characters"
 
         where:
-        slug << ['Uppercase', 'space cowboy']
+        slug << ['Uppercase', 'space cowboy', 'blah#', 'meh?']
     }
 
     def "defined item is deleted"() {
