@@ -92,6 +92,21 @@ class InventoryItemAPISpec extends Specification {
         response.body.empty
     }
 
+    @Unroll
+    def "BadRequest is returned for invalid slug '#slug'"() {
+        when:
+        def response = defineItem(slug)
+
+        then:
+        response.statusCode == HttpStatus.BAD_REQUEST
+
+        and:
+        response.body.message == "Valid slug must consist of lowercase alpha-numeric and dash('-') characters"
+
+        where:
+        slug << ['Uppercase', 'space cowboy']
+    }
+
     def "defined item is deleted"() {
         given:
         def id = itemDefined(THE_MATRIX_TRILOGY)
