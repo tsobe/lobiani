@@ -44,8 +44,14 @@
     watch: {
       slug(newSlug) {
         if (newSlug) {
-          this.checkingSlugAvailability = true
-          this.debounceCheckSlugAvailability()
+          if (!this.hasValidSlugFormat()) {
+            this.validationMessage = 'Slug must consist of lowercase alpha-numeric and dash(\'-\') characters'
+            this.debounceCheckSlugAvailability.cancel()
+            this.checkingSlugAvailability = false
+          } else {
+            this.checkingSlugAvailability = true
+            this.debounceCheckSlugAvailability()
+          }
         }
       }
     },
@@ -58,6 +64,9 @@
       }
     },
     methods: {
+      hasValidSlugFormat() {
+        return this.slug.toLowerCase() === this.slug && !/\s/g.test(this.slug) && /^[a-z0-9-]+$/g.test(this.slug)
+      },
       async defineItem() {
         const item = await this.$store.dispatch('inventory/defineItem', this.slug)
         this.slug = null

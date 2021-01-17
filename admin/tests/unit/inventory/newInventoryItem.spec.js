@@ -74,6 +74,26 @@ it('should not allow saving when validating slug for uniqueness fails', async ()
   expect(validationMsgWrapper.text()).toBe('Failed to check slug availability')
 })
 
+it.each(['Upperacase', 'space cowboy', 'meh#', 'blah?'])('should not allow saving when slug (%s) has invalid format',
+  async (invalidSlug) => {
+    mountComponent()
+
+    await enterSlug(invalidSlug)
+
+    expect(saveWrapper.attributes().disabled).toBeTruthy()
+    expect(validationMsgWrapper.isVisible()).toBe(true)
+    expect(validationMsgWrapper.text()).toBe('Slug must consist of lowercase alpha-numeric and dash(\'-\') characters')
+  })
+
+it('should cancel slug uniqueness validation when invalid character is appended', async () => {
+  mountComponent()
+
+  await enterSlug('valid-slug')
+  await enterSlug('valid-slug#')
+
+  expect(debounceCancel).toHaveBeenCalled()
+})
+
 it('should allow saving when unique slug is given eventually', async () => {
   mountComponent()
 
@@ -180,6 +200,7 @@ let slugWrapper
 let saveWrapper
 let validationMsgWrapper
 let store
+let debounceCancel
 const itemId = 'foo'
 const slug = 'the-matrix-trilogy'
 const alreadyDefinedItemSlug = 'already-defined-item-slug'
@@ -240,5 +261,9 @@ function setupFailingFindItemsBySlugAPICall() {
 }
 
 function setupImmediateDebounce() {
-  _.debounce = jest.fn((fn) => fn)
+  debounceCancel = jest.fn()
+  _.debounce = jest.fn((fn) => {
+    fn.cancel = debounceCancel
+    return fn
+  })
 }
