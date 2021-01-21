@@ -1,7 +1,7 @@
 package dev.baybay.lobiani.app.inventory.command
 
 
-import dev.baybaydev.lobiani.testutil.AxonSpec
+import dev.baybaydev.lobiani.testutil.AggregateSpec
 import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
@@ -12,7 +12,7 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier
 import static org.axonframework.modelling.command.AggregateLifecycle.apply
 import static org.axonframework.modelling.command.AggregateLifecycle.markDeleted
 
-class AggregateNotFoundHandlerSpec extends AxonSpec {
+class AggregateNotFoundHandlerSpec extends AggregateSpec {
 
     def static DELETE_RETURN_VALUE = 10
     def id = "aggregate-id"

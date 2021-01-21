@@ -1,9 +1,9 @@
 package dev.baybay.lobiani.app.inventory.command
 
 import dev.baybay.lobiani.app.inventory.api.*
-import dev.baybaydev.lobiani.testutil.AxonSpec
+import dev.baybaydev.lobiani.testutil.AggregateSpec
 
-class InventoryItemSpec extends AxonSpec {
+class InventoryItemSpec extends AggregateSpec {
 
     def id = UUID.randomUUID()
     def slug = "the-matrix-trilogy"

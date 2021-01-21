@@ -7,7 +7,7 @@ import org.axonframework.test.aggregate.ResultValidator
 import org.axonframework.test.aggregate.TestExecutor
 import spock.lang.Specification
 
-class AxonSpec extends Specification {
+class AggregateSpec extends Specification {
 
     private FixtureConfiguration fixture
     private TestExecutor testExecutor
