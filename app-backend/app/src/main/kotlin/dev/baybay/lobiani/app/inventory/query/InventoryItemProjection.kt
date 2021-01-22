@@ -26,18 +26,18 @@ class InventoryItemProjection {
     }
 
     @QueryHandler
-    fun allItems(q: QueryAllInventoryItems): MutableList<InventoryItem> {
+    fun handle(q: QueryAllInventoryItems): List<InventoryItem> {
         return items
     }
 
     @QueryHandler
-    fun byID(q: QueryInventoryItemByID): InventoryItem? {
-        return items.firstOrNull { i -> i.id == q.id }
+    fun handle(q: QueryInventoryItemByID): InventoryItem? {
+        return items.find { it.id == q.id }
     }
 
     @QueryHandler
-    fun bySlug(q: QueryInventoryItemBySlug): InventoryItem? {
-        return items.firstOrNull { i -> i.slug == q.slug }
+    fun handle(q: QueryInventoryItemBySlug): InventoryItem? {
+        return items.find { it.slug == q.slug }
     }
 
 }

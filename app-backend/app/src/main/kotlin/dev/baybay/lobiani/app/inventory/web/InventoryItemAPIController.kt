@@ -18,7 +18,7 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
                                  private val queryGateway: QueryGateway) {
 
     @GetMapping
-    fun getAllItems(@RequestParam(required = false) slug: String?): List<InventoryItem> {
+    fun getItems(@RequestParam(required = false) slug: String?): List<InventoryItem> {
         if (slug != null) {
             return listOfNotNull(queryBySlug(slug))
         }
@@ -53,11 +53,6 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
         commandGateway.send<Void>(DeleteInventoryItem(id))
     }
 
-    @ExceptionHandler(NoSuchElementException::class)
-    fun handleNoResult(): ResponseEntity<Void> {
-        return notFound()
-    }
-
     @ExceptionHandler(JSR303ViolationException::class)
     fun handleValidationFailure(e: JSR303ViolationException): ResponseEntity<APIError> {
         return badRequest(e.violations.first().message)
@@ -79,8 +74,6 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
 
     private fun queryBySlug(slug: String) =
             queryGateway.query(QueryInventoryItemBySlug(slug), InventoryItem::class.java).get()
-
-    private fun notFound() = ResponseEntity.notFound().build<Void>()
 
     private fun badRequest(message: String): ResponseEntity<APIError> {
         return ResponseEntity.badRequest().body(APIError(message))

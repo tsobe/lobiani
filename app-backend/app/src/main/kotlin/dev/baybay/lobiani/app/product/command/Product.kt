@@ -1,6 +1,9 @@
-package dev.baybay.lobiani.app.inventory.command
+package dev.baybay.lobiani.app.product.command
 
-import dev.baybay.lobiani.app.inventory.api.*
+import dev.baybay.lobiani.app.product.api.DefineProduct
+import dev.baybay.lobiani.app.product.api.DeleteProduct
+import dev.baybay.lobiani.app.product.api.ProductDefined
+import dev.baybay.lobiani.app.product.api.ProductDeleted
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
@@ -10,37 +13,30 @@ import org.axonframework.spring.stereotype.Aggregate
 import java.util.*
 
 @Aggregate
-class InventoryItem {
+class Product {
 
     @AggregateIdentifier
     private lateinit var id: UUID
-    private lateinit var slug: String
 
     constructor()
 
     @CommandHandler
-    constructor(c: DefineInventoryItem) {
-        apply(InventoryItemDefined(c.id, c.slug))
+    constructor(c: DefineProduct) {
+        apply(ProductDefined(c.id, c.slug, c.title, c.description))
     }
 
     @CommandHandler
-    fun handle(c: DeleteInventoryItem) {
-        apply(InventoryItemDeleted(id, slug))
-    }
-
-    @CommandHandler
-    fun handle(c: AddInventoryItemToStock) {
-        apply(InventoryItemAddedToStock(c.inventoryItemId, c.quantity))
+    fun handle(c: DeleteProduct) {
+        apply(ProductDeleted(id))
     }
 
     @EventSourcingHandler
-    fun on(e: InventoryItemDefined) {
+    fun on(e: ProductDefined) {
         id = e.id
-        slug = e.slug
     }
 
     @EventSourcingHandler
-    fun on(e: InventoryItemDeleted) {
+    fun on(e: ProductDeleted) {
         markDeleted()
     }
 }
