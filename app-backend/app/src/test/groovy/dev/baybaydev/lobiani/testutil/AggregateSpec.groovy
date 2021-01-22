@@ -1,6 +1,6 @@
 package dev.baybaydev.lobiani.testutil
 
-import dev.baybay.lobiani.app.common.AggregateNotFoundHandler
+
 import org.axonframework.test.aggregate.AggregateTestFixture
 import org.axonframework.test.aggregate.FixtureConfiguration
 import org.axonframework.test.aggregate.ResultValidator
@@ -13,9 +13,9 @@ class AggregateSpec extends Specification {
     private TestExecutor testExecutor
     private ResultValidator resultValidator
 
-    def useAggregate(aggregateType) {
+    def <T> void useAggregate(Class<T> aggregateType, FixtureConfigurer<T> fixtureConfigurer = {}) {
         fixture = new AggregateTestFixture(aggregateType)
-                .registerCommandHandlerInterceptor(new AggregateNotFoundHandler())
+        fixtureConfigurer.configure(fixture)
         testExecutor = fixture.givenNoPriorActivity()
     }
 
@@ -53,5 +53,9 @@ class AggregateSpec extends Specification {
         def captor = new ActualCaptor<T>(c)
         resultValidator.expectResultMessagePayloadMatching(captor)
         return captor.actualItem
+    }
+
+    interface FixtureConfigurer<T> {
+        void configure(FixtureConfiguration<T> configuration)
     }
 }

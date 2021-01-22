@@ -18,7 +18,9 @@ class AggregateNotFoundHandlerSpec extends AggregateSpec {
     def id = "aggregate-id"
 
     void setup() {
-        useAggregate TestAggregate
+        useAggregate(TestAggregate) {
+            it.registerCommandHandlerInterceptor(new AggregateNotFoundHandler())
+        }
     }
 
     def "should create new aggregate"() {
