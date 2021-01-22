@@ -1,4 +1,4 @@
-package dev.baybay.lobiani.app.inventory.command
+package dev.baybay.lobiani.app.common
 
 import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.CommandMessage
@@ -23,5 +23,4 @@ class AggregateNotFoundHandler : MessageHandlerInterceptor<CommandMessage<*>> {
             throw CommandExecutionException("Aggregate not found", e, e)
         }
     }
-
 }

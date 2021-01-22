@@ -1,4 +1,4 @@
-package dev.baybay.lobiani.app.inventory.command
+package dev.baybay.lobiani.app.common
 
 
 import dev.baybaydev.lobiani.testutil.AggregateSpec

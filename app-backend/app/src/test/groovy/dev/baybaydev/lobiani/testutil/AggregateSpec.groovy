@@ -1,6 +1,6 @@
 package dev.baybaydev.lobiani.testutil
 
-import dev.baybay.lobiani.app.inventory.command.AggregateNotFoundHandler
+import dev.baybay.lobiani.app.common.AggregateNotFoundHandler
 import org.axonframework.test.aggregate.AggregateTestFixture
 import org.axonframework.test.aggregate.FixtureConfiguration
 import org.axonframework.test.aggregate.ResultValidator

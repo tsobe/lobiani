@@ -1,6 +1,6 @@
 package dev.baybay.lobiani.app
 
-import dev.baybay.lobiani.app.inventory.command.AggregateNotFoundHandler
+import dev.baybay.lobiani.app.common.AggregateNotFoundHandler
 import org.axonframework.commandhandling.CommandBus
 import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor

@@ -1,4 +1,4 @@
-package dev.baybay.lobiani.app
+package dev.baybay.lobiani.app.common
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
