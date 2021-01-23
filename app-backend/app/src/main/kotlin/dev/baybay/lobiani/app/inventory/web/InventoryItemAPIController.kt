@@ -1,9 +1,9 @@
 package dev.baybay.lobiani.app.inventory.web
 
+import dev.baybay.lobiani.app.common.APIError
 import dev.baybay.lobiani.app.inventory.api.*
 import dev.baybay.lobiani.app.inventory.query.InventoryItem
 import org.axonframework.commandhandling.gateway.CommandGateway
-import org.axonframework.messaging.interceptors.JSR303ViolationException
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.http.HttpStatus
@@ -35,9 +35,9 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     @PostMapping
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     fun defineNewItem(@RequestBody defineInventoryItem: DefineInventoryItem): InventoryItem {
-        ensureItemIsNotDefined(defineInventoryItem.slug)
+        ensureItemIsNotDefined(defineInventoryItem.slug.value)
         commandGateway.send<Void>(defineInventoryItem)
-        return InventoryItem(defineInventoryItem.id, defineInventoryItem.slug)
+        return InventoryItem(defineInventoryItem.id, defineInventoryItem.slug.value)
     }
 
     @PostMapping("/{id}/stock")
@@ -51,11 +51,6 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     fun deleteItem(@PathVariable id: UUID) {
         commandGateway.send<Void>(DeleteInventoryItem(id))
-    }
-
-    @ExceptionHandler(JSR303ViolationException::class)
-    fun handleValidationFailure(e: JSR303ViolationException): ResponseEntity<APIError> {
-        return badRequest(e.violations.first().message)
     }
 
     @ExceptionHandler(ItemAlreadyDefinedException::class)
@@ -80,8 +75,6 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     }
 
     data class Stock(val amount: Int)
-
-    data class APIError(val message: String)
 
     class ItemAlreadyDefinedException(val slug: String) : RuntimeException()
 }

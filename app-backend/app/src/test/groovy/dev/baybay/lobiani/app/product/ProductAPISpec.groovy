@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
+import spock.lang.Unroll
 import spock.util.concurrent.PollingConditions
 
 @ActiveProfiles("test")
@@ -104,6 +105,22 @@ class ProductAPISpec extends Specification {
 
         and:
         response.body.empty
+    }
+
+    @Unroll
+    def "should return BadRequest for invalid slug '#slug'"() {
+        when:
+        def product = [slug: slug, title: TITLE, description: DESCRIPTION]
+        def response = defineProduct product
+
+        then:
+        response.statusCode == HttpStatus.BAD_REQUEST
+
+        and:
+        response.body.message == "Slug must consist of lowercase alpha-numeric and dash('-') characters"
+
+        where:
+        slug << ['Uppercase', 'space cowboy', 'blah#', 'meh?']
     }
 
     ResponseEntity<Object> defineProduct(product) {

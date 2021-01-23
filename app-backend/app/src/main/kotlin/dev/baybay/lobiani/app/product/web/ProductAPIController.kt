@@ -31,7 +31,7 @@ class ProductAPIController(private val commandGateway: CommandGateway,
     @PostMapping
     fun defineProduct(@RequestBody defineProduct: DefineProduct): Product {
         commandGateway.sendAndWait<Void>(defineProduct)
-        return Product(defineProduct.id, defineProduct.slug, defineProduct.title, defineProduct.description)
+        return Product(defineProduct.id, defineProduct.slug.value, defineProduct.title, defineProduct.description)
     }
 
     @DeleteMapping("/{id}")
