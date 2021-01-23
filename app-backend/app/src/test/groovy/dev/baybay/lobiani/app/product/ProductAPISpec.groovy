@@ -27,10 +27,10 @@ class ProductAPISpec extends Specification {
 
     PollingConditions conditions = new PollingConditions(timeout: 5)
 
-    def definedItemIds = []
+    def definedProductIds = []
 
     void cleanup() {
-        definedItemIds.forEach { id ->
+        definedProductIds.forEach { id ->
             deleteProduct id
             conditions.call {
                 getProductEntity id == HttpStatus.NOT_FOUND
@@ -123,10 +123,37 @@ class ProductAPISpec extends Specification {
         slug << ['Uppercase', 'space cowboy', 'blah#', 'meh?']
     }
 
+    def "should retrieve defined item by slug eventually"() {
+        given:
+        def anotherProduct = [slug: "memento", title: "Memento", description: "This is Memento"]
+        productDefined anotherProduct
+        productDefined PRODUCT
+
+        expect:
+        conditions.eventually {
+            def response = getProductsEntityBySlug SLUG
+            response.statusCode == HttpStatus.OK
+            def products = response.body
+            products.size() == 1
+            assertProduct products[0]
+        }
+    }
+
+    def "should return empty list when queried by slug and no products are defined"() {
+        when:
+        def response = getProductsEntityBySlug SLUG
+
+        then:
+        response.statusCode == HttpStatus.OK
+
+        and:
+        response.body.empty
+    }
+
     ResponseEntity<Object> defineProduct(product) {
         def response = restTemplate.postForEntity URI, product, Object
         def id = response.body.id
-        definedItemIds.add id
+        definedProductIds.add id
         return response
     }
 
@@ -139,12 +166,16 @@ class ProductAPISpec extends Specification {
         restTemplate.getForEntity "$URI", List
     }
 
+    ResponseEntity<List> getProductsEntityBySlug(slug) {
+        restTemplate.getForEntity "$URI?slug=$slug", List
+    }
+
     ResponseEntity<Object> getProductEntity(id) {
         restTemplate.getForEntity"$URI/$id", Object
     }
 
     ResponseEntity<Object> deleteProduct(id) {
-        restTemplate.exchange("$URI/$id", HttpMethod.DELETE, null, Object)
+        restTemplate.exchange "$URI/$id", HttpMethod.DELETE, null, Object
     }
 
     static void assertProduct(product) {
