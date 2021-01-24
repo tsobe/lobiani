@@ -154,7 +154,7 @@ class ProductAPISpec extends Specification {
         def response = restTemplate.postForEntity URI, product, Object
         def id = response.body.id
         definedProductIds.add id
-        return response
+        response
     }
 
     def productDefined(product) {
