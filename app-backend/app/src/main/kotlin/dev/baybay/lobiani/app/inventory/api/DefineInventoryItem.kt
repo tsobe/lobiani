@@ -1,6 +1,5 @@
 package dev.baybay.lobiani.app.inventory.api
 
-import com.fasterxml.jackson.annotation.JsonCreator
 import dev.baybay.lobiani.app.common.Slug
 import org.axonframework.modelling.command.TargetAggregateIdentifier
 import java.util.*
@@ -14,6 +13,5 @@ data class DefineInventoryItem(
 
     constructor(id: UUID, slug: String) : this(id, Slug(slug))
 
-    @JsonCreator
     constructor(slug: String) : this(UUID.randomUUID(), slug)
 }

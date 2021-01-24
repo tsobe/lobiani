@@ -34,7 +34,8 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    fun defineNewItem(@RequestBody defineInventoryItem: DefineInventoryItem): InventoryItem {
+    fun defineNewItem(@RequestBody definition: InventoryItemDefinition): InventoryItem {
+        val defineInventoryItem = definition.asCommand()
         ensureItemIsNotDefined(defineInventoryItem.slug.value)
         commandGateway.send<Void>(defineInventoryItem)
         return InventoryItem(defineInventoryItem.id, defineInventoryItem.slug.value)
@@ -73,8 +74,6 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     private fun badRequest(message: String): ResponseEntity<APIError> {
         return ResponseEntity.badRequest().body(APIError(message))
     }
-
-    data class Stock(val amount: Int)
 
     class ItemAlreadyDefinedException(val slug: String) : RuntimeException()
 }

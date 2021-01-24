@@ -1,6 +1,5 @@
 package dev.baybay.lobiani.app.product.api
 
-import com.fasterxml.jackson.annotation.JsonCreator
 import dev.baybay.lobiani.app.common.Slug
 import org.axonframework.modelling.command.TargetAggregateIdentifier
 import java.util.*
@@ -16,6 +15,5 @@ data class DefineProduct(
 
     constructor(id: UUID, slug: String, title: String, description: String) : this(id, Slug(slug), title, description)
 
-    @JsonCreator
     constructor(slug: String, title: String, description: String) : this(UUID.randomUUID(), slug, title, description)
 }
