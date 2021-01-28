@@ -18,6 +18,11 @@
             <v-list-item-title>Inventory items</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item to="/products">
+          <v-list-item-content>
+            <v-list-item-title>Products</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 

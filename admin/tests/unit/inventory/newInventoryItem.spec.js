@@ -74,7 +74,7 @@ it('should not allow saving when validating slug for uniqueness fails', async ()
   expect(validationMsgWrapper.text()).toBe('Failed to check slug availability')
 })
 
-it.each(['Upperacase', 'space cowboy', 'meh#', 'blah?'])('should not allow saving when slug (%s) has invalid format',
+it.each([' ', 'Upperacase', 'space cowboy', 'meh#', 'blah?'])('should not allow saving when slug (%s) has invalid format',
   async (invalidSlug) => {
     mountComponent()
 
