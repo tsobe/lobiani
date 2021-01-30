@@ -7,18 +7,17 @@
             <p class="display-1 text--primary">Define new inventory item</p>
           </v-card-title>
 
-          <v-text-field label="slug"
-                        autofocus
-                        data-slug
-                        v-model="slug"
-                        :rules="slugRules"
-                        :error-messages="validationMessage"
-          ></v-text-field>
+          <slug v-model="slug"
+                @checkingAvailability="checkingSlugAvailability = $event"
+                resource="inventory-items">
+          </slug>
 
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn data-cancel @click="cancel">Cancel</v-btn>
-            <v-btn class="primary" data-save justify="end"
+            <v-btn class="primary"
+                   data-save
+                   justify="end"
                    :disabled="!valid"
                    :loading="checkingSlugAvailability"
                    @click="defineItem">
@@ -32,43 +31,19 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import _ from 'lodash'
+  import Slug from '@/components/Slug'
 
   export default {
     name: 'NewInventoryItem',
+    components: {Slug},
     data() {
       return {
         valid: false,
         slug: null,
-        validationMessage: '',
-        checkingSlugAvailability: false,
-        slugRules: [
-          v => !!v || 'Slug is required',
-          v => this.hasValidSlugFormat(v) || 'Slug must consist of lowercase alpha-numeric and dash(\'-\') characters'
-        ]
-      }
-    },
-    created() {
-      this.debounceCheckSlugAvailability = _.debounce(this.checkSlugAvailability, 500)
-    },
-    watch: {
-      slug(newSlug) {
-        if (newSlug) {
-          if (!this.hasValidSlugFormat(newSlug)) {
-            this.debounceCheckSlugAvailability.cancel()
-            this.checkingSlugAvailability = false
-          } else {
-            this.checkingSlugAvailability = true
-            this.debounceCheckSlugAvailability()
-          }
-        }
+        checkingSlugAvailability: false
       }
     },
     methods: {
-      hasValidSlugFormat(slug) {
-        return /^[a-z0-9-]+$/g.test(slug)
-      },
       async defineItem() {
         const item = await this.$store.dispatch('inventory/defineItem', this.slug)
         this.slug = null
@@ -76,19 +51,6 @@
       },
       cancel() {
         this.$emit('itemDefinitionCancelled')
-      },
-      async checkSlugAvailability() {
-        try {
-          const response = await axios.get(`/inventory-items?slug=${this.slug}`)
-          const isGivenSlugAvailable = response.data.length === 0
-          this.validationMessage = isGivenSlugAvailable
-            ? ''
-            : 'An item with this slug is already defined'
-        } catch (e) {
-          this.validationMessage = 'Failed to check slug availability'
-        } finally {
-          this.checkingSlugAvailability = false
-        }
       }
     }
   }
