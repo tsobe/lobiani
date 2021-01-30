@@ -4,6 +4,7 @@ import flushPromises from 'flush-promises'
 import Vuetify from 'vuetify'
 import {when} from 'jest-when'
 import axios from 'axios'
+import Slug from '@/components/Slug'
 
 jest.mock('axios')
 
@@ -11,11 +12,6 @@ beforeEach(mountComponent)
 
 it('should disable save button initially', () => {
   expect(saveWrapper.attributes().disabled).toBeTruthy()
-})
-
-it('should not show validation message initially', () => {
-  expect(validationMsgWrapper.isVisible()).toBe(false)
-  expect(validationMsgWrapper.text()).toBeFalsy()
 })
 
 it('should enable save button when valid info is provided', async () => {
@@ -42,8 +38,6 @@ it.each([' ',
     await flushPromises()
 
     expect(saveWrapper.attributes().disabled).toBeTruthy()
-    expect(validationMsgWrapper.isVisible()).toBe(true)
-    expect(validationMsgWrapper.text()).toBe('Slug must consist of lowercase alpha-numeric and dash(\'-\') characters')
   })
 
 it.each([
@@ -62,6 +56,12 @@ it.each([
 
     expect(saveWrapper.attributes().disabled).toBeTruthy()
   })
+
+it('should set resource property on slug', () => {
+  const slugWrapper = wrapper.findComponent(Slug)
+
+  expect(slugWrapper.vm.$props.resource).toBe('products')
+})
 
 it('should navigate to list of products when product defined', async () => {
   when(axios.post)
@@ -120,7 +120,6 @@ let cancelWrapper
 let slugWrapper
 let titleWrapper
 let descriptionWrapper
-let validationMsgWrapper
 let router
 
 function mountComponent() {
@@ -138,5 +137,4 @@ function mountComponent() {
   slugWrapper = wrapper.find('[data-slug]')
   titleWrapper = wrapper.find('[data-title]')
   descriptionWrapper = wrapper.find('[data-description]')
-  validationMsgWrapper = wrapper.find('[data-validation-message]')
 }

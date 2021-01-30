@@ -33,6 +33,7 @@
         if (newValue) {
           if (!this.isValidFormat(newValue)) {
             this.debounceCheckAvailability.cancel()
+            this.validationMessage = ''
             this.emitCheckingAvailability(false)
           } else {
             this.emitCheckingAvailability(true)
