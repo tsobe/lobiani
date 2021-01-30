@@ -32,7 +32,6 @@ it('should disable save button initially', () => {
 it('should not show validation message initially', () => {
   mountComponent()
 
-  expect(validationMsgWrapper.isVisible()).toBe(false)
   expect(validationMsgWrapper.text()).toBeFalsy()
 })
 
@@ -59,7 +58,6 @@ it('should not allow saving when item with given slug is already defined', async
   await enterSlug(alreadyDefinedItemSlug)
 
   expect(saveWrapper.attributes().disabled).toBeTruthy()
-  expect(validationMsgWrapper.isVisible()).toBe(true)
   expect(validationMsgWrapper.text()).toBe('An item with this slug is already defined')
 })
 
@@ -70,7 +68,6 @@ it('should not allow saving when validating slug for uniqueness fails', async ()
   await enterSlug(alreadyDefinedItemSlug)
 
   expect(saveWrapper.attributes().disabled).toBeTruthy()
-  expect(validationMsgWrapper.isVisible()).toBe(true)
   expect(validationMsgWrapper.text()).toBe('Failed to check slug availability')
 })
 
@@ -81,7 +78,6 @@ it.each([' ', 'Upperacase', 'space cowboy', 'meh#', 'blah?'])('should not allow 
     await enterSlug(invalidSlug)
 
     expect(saveWrapper.attributes().disabled).toBeTruthy()
-    expect(validationMsgWrapper.isVisible()).toBe(true)
     expect(validationMsgWrapper.text()).toBe('Slug must consist of lowercase alpha-numeric and dash(\'-\') characters')
   })
 
@@ -101,7 +97,6 @@ it('should allow saving when unique slug is given eventually', async () => {
   await enterSlug()
 
   expect(saveWrapper.attributes().disabled).toBeFalsy()
-  expect(validationMsgWrapper.isVisible()).toBe(false)
   expect(validationMsgWrapper.text()).toBeFalsy()
 })
 
@@ -214,7 +209,7 @@ function mountComponent() {
   })
   slugWrapper = wrapper.find('[data-slug]')
   saveWrapper = wrapper.find('[data-save]')
-  validationMsgWrapper = wrapper.find('[data-validation-message]')
+  validationMsgWrapper = wrapper.find('.v-messages__wrapper')
 }
 
 async function defineItem() {
