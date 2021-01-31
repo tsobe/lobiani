@@ -58,7 +58,7 @@ it('should not allow saving when item with given slug is already defined', async
   await enterSlug(alreadyDefinedItemSlug)
 
   expect(saveWrapper.attributes().disabled).toBeTruthy()
-  expect(validationMsgWrapper.text()).toBe('An item with this slug is already defined')
+  expect(validationMsgWrapper.text()).toBe('This slug is already in use')
 })
 
 it('should not allow saving when validating slug for uniqueness fails', async () => {
