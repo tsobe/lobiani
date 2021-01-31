@@ -33,7 +33,7 @@
     </v-app-bar>
 
     <v-main>
-      <router-view v-on:itemDefined="navigateToItems" v-on:itemDefinitionCancelled="navigateToItems"></router-view>
+      <router-view></router-view>
       <notification-holder></notification-holder>
     </v-main>
 
@@ -56,9 +56,6 @@
       return {drawerVisible: null}
     },
     methods: {
-      navigateToItems() {
-        this.$router.push('/items')
-      },
       toggleDrawer() {
         this.drawerVisible = !this.drawerVisible
       }

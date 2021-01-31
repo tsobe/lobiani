@@ -100,115 +100,84 @@ it('should allow saving when unique slug is given eventually', async () => {
   expect(validationMsgWrapper.text()).toBeFalsy()
 })
 
-describe('item can be defined when API call succeeds', () => {
-  beforeAll(async () => {
-    setupImmediateDebounce()
-    setupSuccessfulFindItemsBySlugAPICall()
-    setupSuccessfulDefineNewItemAPICall()
+it('should navigate to list of items when item is successfully defined', async () => {
+  setupSuccessfulDefineNewItemAPICall()
+  mountComponent()
 
-    mountComponent()
+  await defineItem()
 
-    await defineItem()
-  })
-
-  it('should call the API', () => {
-    expectAPIToHaveBeenCalled()
-  })
-
-  it('should emit the "itemDefined" event', () => {
-    expect(wrapper.emitted().itemDefined).toBeTruthy()
-    expect(wrapper.emitted().itemDefined).toHaveLength(1)
-    expect(wrapper.emitted().itemDefined[0]).toEqual([{
-      id: itemId,
-      slug: slug,
-      stockLevel: 0
-    }])
-  })
-
-  it('should add item to store', () => {
-    expect(store.state.inventory.items).toHaveLength(1)
-    expect(store.state.inventory.items[0]).toEqual({
-      id: itemId,
-      slug: slug,
-      stockLevel: 0
-    })
-  })
-
-  it('should reset the slug input', () => {
-    expect(slugWrapper.element.value).toBeFalsy()
-  })
-
-  function setupSuccessfulDefineNewItemAPICall() {
-    when(axios.post)
-      .calledWith('/inventory-items', {slug})
-      .mockResolvedValue({
-        data: {
-          id: itemId,
-          slug: slug,
-          stockLevel: 0
-        }
-      })
-  }
+  expect(router.push).toHaveBeenCalledWith('/items')
 })
 
-describe('item can not be defined when API call fails', () => {
-  beforeAll(async () => {
-    setupImmediateDebounce()
-    setupSuccessfulFindItemsBySlugAPICall()
-    setupFailingDefineNewItemAPICall()
+it('should add item to store when item is successfully defined', async () => {
+  setupSuccessfulDefineNewItemAPICall()
+  mountComponent()
 
-    mountComponent()
+  await defineItem()
 
-    await defineItem()
+  expect(store.state.inventory.items).toHaveLength(1)
+  expect(store.state.inventory.items[0]).toEqual({
+    id: itemId,
+    slug: slug,
+    stockLevel: 0
   })
+})
 
-  it('should call the API', () => {
-    expectAPIToHaveBeenCalled()
-  })
+it('should not navigate to list of items when item can not be defined', async () => {
+  setupFailingDefineNewItemAPICall()
+  mountComponent()
 
-  it('should not emit the "itemDefined" event', () => {
-    expect(wrapper.emitted().itemDefined).toBeFalsy()
-  })
+  await defineItem()
 
-  it('should not add item to store', () => {
-    expect(store.state.inventory.items).toHaveLength(0)
-  })
+  expect(router.push).not.toHaveBeenCalledWith('/items')
+})
 
-  it('should not reset the slug input', () => {
-    expect(slugWrapper.element.value).toBe(slug)
-  })
+it('should not add item to store when item can not be defined', async () => {
+  setupFailingDefineNewItemAPICall()
+  mountComponent()
 
-  function setupFailingDefineNewItemAPICall() {
-    when(axios.post)
-      .calledWith('/inventory-items', {slug})
-      .mockRejectedValue({
-        response: {
-          status: 500,
-          data: 'Boom'
-        }
-      })
-  }
+  await defineItem()
+
+  expect(store.state.inventory.items).toHaveLength(0)
+})
+
+it('should navigate back when cancel is clicked', async () => {
+  mountComponent()
+
+  await cancelWrapper.trigger('click')
+
+  expect(router.go).toHaveBeenCalledWith(-1)
 })
 
 let wrapper
 let slugWrapper
 let saveWrapper
+let cancelWrapper
 let validationMsgWrapper
 let store
 let debounceCancel
+let router
 const itemId = 'foo'
 const slug = 'the-matrix-trilogy'
 const alreadyDefinedItemSlug = 'already-defined-item-slug'
 
 function mountComponent() {
+  router = {
+    go: jest.fn(),
+    push: jest.fn()
+  }
   store = createStore()
   wrapper = mount(NewInventoryItem, {
     localVue: vueWithVuex,
     vuetify: new Vuetify(),
-    store
+    store,
+    mocks: {
+      $router: router
+    }
   })
   slugWrapper = wrapper.find('[data-slug]')
   saveWrapper = wrapper.find('[data-save]')
+  cancelWrapper = wrapper.find('[data-cancel]')
   validationMsgWrapper = wrapper.find('.v-messages__wrapper')
 }
 
@@ -226,10 +195,6 @@ async function enterSlug(input = slug) {
 async function resetSlug() {
   slugWrapper.setValue('')
   await flushPromises()
-}
-
-function expectAPIToHaveBeenCalled() {
-  expect(axios.post).toHaveBeenCalledWith('/inventory-items', {slug: slug})
 }
 
 function setupSuccessfulFindItemsBySlugAPICall() {
@@ -251,6 +216,29 @@ function setupFailingFindItemsBySlugAPICall() {
     .mockRejectedValue({
       response: {
         status: 500
+      }
+    })
+}
+
+function setupSuccessfulDefineNewItemAPICall() {
+  when(axios.post)
+    .calledWith('/inventory-items', {slug})
+    .mockResolvedValue({
+      data: {
+        id: itemId,
+        slug: slug,
+        stockLevel: 0
+      }
+    })
+}
+
+function setupFailingDefineNewItemAPICall() {
+  when(axios.post)
+    .calledWith('/inventory-items', {slug})
+    .mockRejectedValue({
+      response: {
+        status: 500,
+        data: 'Boom'
       }
     })
 }

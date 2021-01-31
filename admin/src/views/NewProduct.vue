@@ -72,7 +72,7 @@
         await this.$router.push('/products')
       },
       cancel() {
-        this.$router.push('/products')
+        this.$router.go(-1)
       }
     }
   }

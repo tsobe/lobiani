@@ -45,12 +45,11 @@
     },
     methods: {
       async defineItem() {
-        const item = await this.$store.dispatch('inventory/defineItem', this.slug)
-        this.slug = null
-        this.$emit('itemDefined', item)
+        await this.$store.dispatch('inventory/defineItem', this.slug)
+        await this.$router.push('/items')
       },
-      cancel() {
-        this.$emit('itemDefinitionCancelled')
+      async cancel() {
+        await this.$router.go(-1)
       }
     }
   }

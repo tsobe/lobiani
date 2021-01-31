@@ -63,7 +63,7 @@ it('should set resource property on slug', () => {
   expect(slugWrapper.vm.$props.resource).toBe('products')
 })
 
-it('should navigate to list of products when product defined', async () => {
+it('should navigate to list of products when product is successfully defined', async () => {
   when(axios.post)
     .calledWith('/products', {
       slug: 'the-matrix-trilogy',
@@ -108,10 +108,10 @@ it('should not navigate to list of products when product can not be defined', as
   expect(router.push).not.toHaveBeenCalled()
 })
 
-it('should navigate to list of products when cancel is clicked', async () => {
+it('should navigate back when cancel is clicked', async () => {
   await cancelWrapper.trigger('click')
 
-  expect(router.push).toHaveBeenCalledWith('/products')
+  expect(router.go).toHaveBeenCalledWith(-1)
 })
 
 let wrapper
@@ -124,7 +124,8 @@ let router
 
 function mountComponent() {
   router = {
-    push: jest.fn()
+    push: jest.fn(),
+    go: jest.fn()
   }
   wrapper = mount(NewProduct, {
     vuetify: new Vuetify(),
