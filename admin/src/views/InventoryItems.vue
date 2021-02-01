@@ -13,7 +13,7 @@
       bottom
       color="primary"
       data-new-item
-      to="/new">
+      to="/inventory/new">
       <v-icon dark>
         mdi-plus
       </v-icon>

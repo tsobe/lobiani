@@ -13,9 +13,9 @@
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item to="/items">
+        <v-list-item to="/inventory">
           <v-list-item-content>
-            <v-list-item-title>Inventory items</v-list-item-title>
+            <v-list-item-title>Inventory</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item to="/products">

@@ -15,12 +15,18 @@ const routes = [
   },
   {
     path: '/items',
-    name: 'InventoryItems',
+    redirect: '/inventory'
+  },
+  {
+    path: '/inventory',
     component: InventoryItems
   },
   {
     path: '/new',
-    name: 'NewInventoryItem',
+    redirect: '/inventory/new'
+  },
+  {
+    path: '/inventory/new',
     component: NewInventoryItem
   },
   {
