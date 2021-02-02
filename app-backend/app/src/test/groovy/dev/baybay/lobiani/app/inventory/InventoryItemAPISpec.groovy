@@ -30,7 +30,7 @@ class InventoryItemAPISpec extends Specification {
 
     void cleanup() {
         definedItemIds.each { id ->
-            deleteItem(id)
+            deleteItem id
             conditions.call {
                 getItemEntity(id).statusCode == HttpStatus.NOT_FOUND
             }
@@ -39,20 +39,20 @@ class InventoryItemAPISpec extends Specification {
 
     def "defined item should be retrieved eventually"() {
         when:
-        def response = defineItem(THE_MATRIX_TRILOGY)
+        def response = defineItem THE_MATRIX_TRILOGY
         def id = response.body.id
 
         then:
         response.statusCode == HttpStatus.ACCEPTED
 
         and:
-        assertItem(response.body)
+        assertItem response.body
 
         and:
         conditions.eventually {
-            def r = getItemEntity(id)
+            def r = getItemEntity id
             r.statusCode == HttpStatus.OK
-            assertItem(r.body)
+            assertItem r.body
         }
     }
 
@@ -61,7 +61,7 @@ class InventoryItemAPISpec extends Specification {
         def undefinedItemId = UUID.randomUUID()
 
         when:
-        def response = getItemEntity(undefinedItemId)
+        def response = getItemEntity undefinedItemId
 
         then:
         response.statusCode == HttpStatus.NOT_FOUND
@@ -69,7 +69,7 @@ class InventoryItemAPISpec extends Specification {
 
     def "defined items are retrieved eventually"() {
         given:
-        itemDefined(THE_MATRIX_TRILOGY)
+        itemDefined THE_MATRIX_TRILOGY
 
         expect:
         conditions.eventually {
@@ -77,7 +77,7 @@ class InventoryItemAPISpec extends Specification {
             response.statusCode == HttpStatus.OK
             def items = response.body
             items.size() == 1
-            assertItem(items[0])
+            assertItem items[0]
         }
     }
 
@@ -95,7 +95,7 @@ class InventoryItemAPISpec extends Specification {
     @Unroll
     def "BadRequest is returned for invalid slug '#slug'"() {
         when:
-        def response = defineItem(slug)
+        def response = defineItem slug
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
@@ -109,7 +109,7 @@ class InventoryItemAPISpec extends Specification {
 
     def "defined item is deleted"() {
         given:
-        def id = itemDefined(THE_MATRIX_TRILOGY)
+        def id = itemDefined THE_MATRIX_TRILOGY
 
         when:
         deleteItem(id)
@@ -125,7 +125,7 @@ class InventoryItemAPISpec extends Specification {
         def undefinedItemId = UUID.randomUUID()
 
         when:
-        def response = deleteItem(undefinedItemId)
+        def response = deleteItem undefinedItemId
 
         then:
         response.statusCode == HttpStatus.ACCEPTED
@@ -133,10 +133,10 @@ class InventoryItemAPISpec extends Specification {
 
     def "item is added to stock"() {
         given:
-        def id = itemDefined(THE_MATRIX_TRILOGY)
+        def id = itemDefined THE_MATRIX_TRILOGY
 
         when:
-        def response = addItemToStock(id, 10)
+        def response = addItemToStock id, 10
 
         then:
         response.statusCode == HttpStatus.ACCEPTED
@@ -150,10 +150,10 @@ class InventoryItemAPISpec extends Specification {
     @Unroll
     def "BadRequest is returned when #amount items are added to stock"() {
         given:
-        def id = itemDefined(THE_MATRIX_TRILOGY)
+        def id = itemDefined THE_MATRIX_TRILOGY
 
         when:
-        def response = addItemToStock(id, amount)
+        def response = addItemToStock id, amount
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
@@ -168,10 +168,10 @@ class InventoryItemAPISpec extends Specification {
     @Ignore
     def "BadRequest is returned when item with same slug is already defined"() {
         given:
-        itemDefined(THE_MATRIX_TRILOGY)
+        itemDefined THE_MATRIX_TRILOGY
 
         when:
-        def response = defineItem(THE_MATRIX_TRILOGY)
+        def response = defineItem THE_MATRIX_TRILOGY
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
@@ -182,22 +182,22 @@ class InventoryItemAPISpec extends Specification {
 
     def "defined item should be retrieved by slug eventually"() {
         given:
-        itemDefined(MEMENTO)
-        itemDefined(THE_MATRIX_TRILOGY)
+        itemDefined MEMENTO
+        itemDefined THE_MATRIX_TRILOGY
 
         expect:
         conditions.eventually {
-            def response = getItemsEntityBySlug(THE_MATRIX_TRILOGY)
+            def response = getItemsEntityBySlug THE_MATRIX_TRILOGY
             response.statusCode == HttpStatus.OK
             def items = response.body
             items.size() == 1
-            assertItem(items[0])
+            assertItem items[0]
         }
     }
 
     def "empty result is returned when queried by slug and no items are defined"() {
         when:
-        def response = getItemsEntityBySlug(THE_MATRIX_TRILOGY)
+        def response = getItemsEntityBySlug THE_MATRIX_TRILOGY
 
         then:
         response.statusCode == HttpStatus.OK
@@ -207,12 +207,12 @@ class InventoryItemAPISpec extends Specification {
     }
 
     ResponseEntity<Object> defineItem(slug) {
-        def response = restTemplate.postForEntity(URI, [slug: slug], Object)
+        def response = restTemplate.postForEntity URI, [slug: slug], Object
         def id = response.body.id
         if (id) {
-            definedItemIds.add(id)
+            definedItemIds.add id
         }
-        return response
+        response
     }
 
     def itemDefined(slug) {
@@ -220,23 +220,23 @@ class InventoryItemAPISpec extends Specification {
     }
 
     ResponseEntity<Object> getItemEntity(id) {
-        restTemplate.getForEntity("$URI/$id", Object)
+        restTemplate.getForEntity"$URI/$id", Object
     }
 
     ResponseEntity<List> getItemsEntity() {
-        restTemplate.getForEntity(URI, List)
+        restTemplate.getForEntity URI, List
     }
 
-    ResponseEntity<Object> getItemsEntityBySlug(slug) {
-        restTemplate.getForEntity("$URI?slug=${slug}", Object)
+    ResponseEntity<List> getItemsEntityBySlug(slug) {
+        restTemplate.getForEntity"$URI?slug=${slug}", List
     }
 
     ResponseEntity<Object> deleteItem(id) {
-        restTemplate.exchange("$URI/$id", HttpMethod.DELETE, null, Object)
+        restTemplate.exchange"$URI/$id", HttpMethod.DELETE, null, Object
     }
 
     ResponseEntity<Object> addItemToStock(id, amount) {
-        restTemplate.postForEntity("$URI/${id}/stock", [amount: amount], Object)
+        restTemplate.postForEntity"$URI/${id}/stock", [amount: amount], Object
     }
 
     static void assertItem(item) {

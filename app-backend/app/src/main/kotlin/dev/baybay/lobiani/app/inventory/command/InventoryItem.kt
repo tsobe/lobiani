@@ -20,7 +20,7 @@ class InventoryItem {
 
     @CommandHandler
     constructor(c: DefineInventoryItem) {
-        apply(InventoryItemDefined(c.id, c.slug))
+        apply(InventoryItemDefined(c.id, c.slug.value))
     }
 
     @CommandHandler

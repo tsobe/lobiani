@@ -13,9 +13,14 @@
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item to="/items">
+        <v-list-item to="/inventory">
           <v-list-item-content>
-            <v-list-item-title>Inventory items</v-list-item-title>
+            <v-list-item-title>Inventory</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item to="/products">
+          <v-list-item-content>
+            <v-list-item-title>Products</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -28,7 +33,7 @@
     </v-app-bar>
 
     <v-main>
-      <router-view v-on:itemDefined="navigateToItems" v-on:itemDefinitionCancelled="navigateToItems"></router-view>
+      <router-view></router-view>
       <notification-holder></notification-holder>
     </v-main>
 
@@ -51,9 +56,6 @@
       return {drawerVisible: null}
     },
     methods: {
-      navigateToItems() {
-        this.$router.push('/items')
-      },
       toggleDrawer() {
         this.drawerVisible = !this.drawerVisible
       }

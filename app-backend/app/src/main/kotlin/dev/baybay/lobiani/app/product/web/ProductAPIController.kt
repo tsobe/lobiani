@@ -1,9 +1,6 @@
 package dev.baybay.lobiani.app.product.web
 
-import dev.baybay.lobiani.app.product.api.DefineProduct
-import dev.baybay.lobiani.app.product.api.DeleteProduct
-import dev.baybay.lobiani.app.product.api.QueryAllProducts
-import dev.baybay.lobiani.app.product.api.QueryProductByID
+import dev.baybay.lobiani.app.product.api.*
 import dev.baybay.lobiani.app.product.query.Product
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.responsetypes.ResponseTypes
@@ -18,7 +15,11 @@ class ProductAPIController(private val commandGateway: CommandGateway,
                            private val queryGateway: QueryGateway) {
 
     @GetMapping
-    fun getProducts(): List<Product> {
+    fun getProducts(@RequestParam(required = false) slug: String?): List<Product> {
+        if (slug != null) {
+            return listOfNotNull(
+                    queryGateway.query(QueryProductBySlug(slug), ResponseTypes.instanceOf(Product::class.java)).get())
+        }
         return queryGateway.query(QueryAllProducts(), ResponseTypes.multipleInstancesOf(Product::class.java)).get()
     }
 
@@ -29,9 +30,10 @@ class ProductAPIController(private val commandGateway: CommandGateway,
     }
 
     @PostMapping
-    fun defineProduct(@RequestBody defineProduct: DefineProduct): Product {
+    fun defineProduct(@RequestBody definition: ProductDefinition): Product {
+        val defineProduct = definition.asCommand()
         commandGateway.sendAndWait<Void>(defineProduct)
-        return Product(defineProduct.id, defineProduct.slug, defineProduct.title, defineProduct.description)
+        return Product(defineProduct.id, defineProduct.slug.value, definition.title, definition.description)
     }
 
     @DeleteMapping("/{id}")

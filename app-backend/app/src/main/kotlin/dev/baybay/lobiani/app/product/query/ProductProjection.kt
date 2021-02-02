@@ -1,9 +1,6 @@
 package dev.baybay.lobiani.app.product.query
 
-import dev.baybay.lobiani.app.product.api.ProductDefined
-import dev.baybay.lobiani.app.product.api.ProductDeleted
-import dev.baybay.lobiani.app.product.api.QueryAllProducts
-import dev.baybay.lobiani.app.product.api.QueryProductByID
+import dev.baybay.lobiani.app.product.api.*
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.queryhandling.QueryHandler
 import org.springframework.stereotype.Component
@@ -26,6 +23,11 @@ class ProductProjection {
     @QueryHandler
     fun handle(q: QueryProductByID): Product? {
         return products.find { it.id == q.id }
+    }
+
+    @QueryHandler
+    fun handle(q: QueryProductBySlug): Product? {
+        return products.find { it.slug == q.slug }
     }
 
     @QueryHandler

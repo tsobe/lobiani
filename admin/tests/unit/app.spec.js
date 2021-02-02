@@ -5,7 +5,6 @@ import App from '@/App'
 import routes from '@/router/routes'
 import Vuetify from 'vuetify'
 import flushPromises from 'flush-promises'
-import NewInventoryItem from '@/views/NewInventoryItem'
 import axios from 'axios'
 import {createStore} from './inventory/storeTestHelper'
 
@@ -30,24 +29,6 @@ it('should not render navigation drawer and app bar when not authenticated', asy
 
   expect(wrapper.find('nav').exists()).toBe(false)
   expect(wrapper.find('header').exists()).toBe(false)
-})
-
-it('should navigate to list of items after new item is defined', async () => {
-  await mountComponent()
-  await wrapper.vm.$router.push('/new')
-
-  await defineItem()
-
-  expect(wrapper.vm.$route.path).toBe('/items')
-})
-
-it('should navigate to list of items when cancel is clicked', async () => {
-  await mountComponent()
-  await wrapper.vm.$router.push('/new')
-
-  await wrapper.find('[data-cancel]').trigger('click')
-
-  expect(wrapper.vm.$route.path).toBe('/items')
 })
 
 let wrapper
@@ -80,16 +61,6 @@ async function mountComponent() {
     mocks: {
       $auth: authMock
     }
-  })
-  await flushPromises()
-}
-
-async function defineItem() {
-  const newItemWrapper = wrapper.findComponent(NewInventoryItem)
-  newItemWrapper.vm.$emit('itemDefined', {
-    id: 'baz',
-    slug: 'the-simpsons',
-    stockLevel: 0
   })
   await flushPromises()
 }

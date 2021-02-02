@@ -1,6 +1,8 @@
 import InventoryItems from '@/views/InventoryItems'
 import NewInventoryItem from '@/views/NewInventoryItem'
 import Login from '@/views/Login'
+import NewProduct from '@/views/NewProduct'
+import Products from '@/views/Products'
 
 const routes = [
   {
@@ -13,13 +15,27 @@ const routes = [
   },
   {
     path: '/items',
-    name: 'InventoryItems',
+    redirect: '/inventory'
+  },
+  {
+    path: '/inventory',
     component: InventoryItems
   },
   {
     path: '/new',
-    name: 'NewInventoryItem',
+    redirect: '/inventory/new'
+  },
+  {
+    path: '/inventory/new',
     component: NewInventoryItem
+  },
+  {
+    path: '/products',
+    component: Products
+  },
+  {
+    path: '/products/new',
+    component: NewProduct
   },
   {
     path: '*',

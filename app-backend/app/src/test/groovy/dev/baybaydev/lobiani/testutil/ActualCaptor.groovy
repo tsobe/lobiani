@@ -21,6 +21,6 @@ class ActualCaptor<T> extends TypeSafeMatcher<T> {
 
     @Override
     void describeTo(Description description) {
-        description.appendText(String.format("item of type [%s]", expectedType.getSimpleName()));
+        description.appendText String.format("item of type [%s]", expectedType.getSimpleName())
     }
 }

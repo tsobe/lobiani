@@ -15,20 +15,20 @@ class AggregateSpec extends Specification {
 
     def <T> void useAggregate(Class<T> aggregateType, FixtureConfigurer<T> fixtureConfigurer = {}) {
         fixture = new AggregateTestFixture(aggregateType)
-        fixtureConfigurer.configure(fixture)
+        fixtureConfigurer.configure fixture
         testExecutor = fixture.givenNoPriorActivity()
     }
 
     def pastEvent(event) {
         if (testExecutor == null) {
-            testExecutor = fixture.given(event)
+            testExecutor = fixture.given event
         } else {
-            testExecutor.andGiven(event)
+            testExecutor.andGiven event
         }
     }
 
     def actingWith(command) {
-        resultValidator = testExecutor.when(command)
+        resultValidator = testExecutor.when command
     }
 
     def expectSuccess() {
@@ -36,22 +36,22 @@ class AggregateSpec extends Specification {
     }
 
     def expectEvent(event) {
-        resultValidator.expectEvents(event)
+        resultValidator.expectEvents event
     }
 
     def <T> T expectException(Class<T> c) {
         def captor = new ActualCaptor<T>(c)
-        resultValidator.expectException(captor)
+        resultValidator.expectException captor
         return captor.actualItem
     }
 
     def <T> void expectResultMessagePayload(T payload) {
-        resultValidator.expectResultMessagePayload(payload)
+        resultValidator.expectResultMessagePayload payload
     }
 
     def <T> T expectResultMessagePayload(Class<T> c = Object) {
         def captor = new ActualCaptor<T>(c)
-        resultValidator.expectResultMessagePayloadMatching(captor)
+        resultValidator.expectResultMessagePayloadMatching captor
         return captor.actualItem
     }
 

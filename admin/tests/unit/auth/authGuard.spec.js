@@ -52,7 +52,7 @@ it('should allow access on protected route after auth loading completes with aut
   auth.authenticated = false
   auth.loading = true
 
-  expect(router.push('/protected'))
+  router.push('/protected')
   completeAuthLoading(true)
   await flushPromises()
 

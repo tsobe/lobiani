@@ -19,7 +19,7 @@ class AggregateNotFoundHandlerSpec extends AggregateSpec {
 
     void setup() {
         useAggregate(TestAggregate) {
-            it.registerCommandHandlerInterceptor(new AggregateNotFoundHandler())
+            it.registerCommandHandlerInterceptor new AggregateNotFoundHandler()
         }
     }
 

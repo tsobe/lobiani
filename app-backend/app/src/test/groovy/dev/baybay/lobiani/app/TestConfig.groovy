@@ -10,6 +10,6 @@ class TestConfig {
 
     @Bean
     EventStorageEngine inMemoryEventStorageEngine() {
-        return new InMemoryEventStorageEngine()
+        new InMemoryEventStorageEngine()
     }
 }

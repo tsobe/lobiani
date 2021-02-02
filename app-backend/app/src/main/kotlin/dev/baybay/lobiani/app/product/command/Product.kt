@@ -22,7 +22,7 @@ class Product {
 
     @CommandHandler
     constructor(c: DefineProduct) {
-        apply(ProductDefined(c.id, c.slug, c.title, c.description))
+        apply(ProductDefined(c.id, c.slug.value, c.title, c.description))
     }
 
     @CommandHandler
