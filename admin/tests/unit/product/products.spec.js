@@ -6,6 +6,7 @@ import axios from 'axios'
 import Vuex from 'vuex'
 import {createStore} from '@/store/products'
 import flushPromises from 'flush-promises'
+import Vuetify from 'vuetify'
 
 jest.mock('axios')
 
@@ -35,6 +36,7 @@ it('should display all products when mounted', async () => {
   localVue.use(Vuex)
   const wrapper = mount(Products, {
     localVue,
+    vuetify: new Vuetify(),
     store: new Vuex.Store({
       modules: {
         product: createStore()
