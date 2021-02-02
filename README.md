@@ -33,7 +33,7 @@ However for the sake of this exercise (despite of DDD being one of the primary f
 - Inventory - managing stock levels
 - Marketing - describing and presenting products to sell
 - Sales - dealing with pricing rules and the overall shopping experience 
-- Billing - charging customer to execute the order
+- Billing - charging customers to execute the orders
 - Shipping - delivering orders to customers
 - Personalization - recommending products to customers
 
@@ -118,7 +118,7 @@ To build test and run, execute following commands from `admin` directory
     ```
 
 # Known issues
-- Gradle doesn't work with JDK 14, more info [here](https://github.com/gradle/gradle/issues/10248)
+- Gradle for Groovy DSL doesn't work with JDK 14, more info [here](https://github.com/gradle/gradle/issues/10248)
 
 # Resources
 - [Microservices, bounded context, cohesion. What do they have in common?](https://hackernoon.com/microservices-bounded-context-cohesion-what-do-they-have-in-common-1107b70342b3)
