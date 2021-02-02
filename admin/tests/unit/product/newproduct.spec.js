@@ -58,9 +58,9 @@ it.each([
   })
 
 it('should set resource property on slug', () => {
-  const slugWrapper = wrapper.findComponent(Slug)
+  const slugComponentWrapper = wrapper.findComponent(Slug)
 
-  expect(slugWrapper.vm.$props.resource).toBe('products')
+  expect(slugComponentWrapper.vm.$props.resource).toBe('products')
 })
 
 it('should navigate to list of products when product is successfully defined', async () => {
