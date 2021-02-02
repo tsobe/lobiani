@@ -4,7 +4,6 @@ updates:
     directory: /admin
     schedule:
       interval: daily
-    open-pull-requests-limit: 10
   - package-ecosystem: gradle
     directory: /app-backend
     schedule:
