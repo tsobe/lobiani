@@ -4,7 +4,7 @@ import geb.Page
 
 class InventoryItemsPage extends Page {
 
-    static url = "/items"
+    static url = "/inventory"
 
     static at = { waitFor { !$("[data-items]").empty } }
 
