@@ -1,8 +1,7 @@
 <template>
   <v-container>
     <v-row justify="start" data-items>
-      <inventory-item v-for="item in items"
-                      v-bind:key="item.id" v-bind:item="item"/>
+      <inventory-item v-for="item in items" :key="item.id" :item="item"/>
     </v-row>
     <v-btn
       class="mx-2"

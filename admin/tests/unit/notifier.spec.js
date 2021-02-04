@@ -29,7 +29,7 @@ it('should show notification when triggered with message object', async () => {
 })
 
 const HelperComponent = {
-  template: '<div><button v-on:click="triggerShowMessage"></button><notification-holder></notification-holder></div>',
+  template: '<div><button @click="triggerShowMessage"></button><notification-holder></notification-holder></div>',
   components: {NotificationHolder},
   methods: {
     triggerShowMessage() {

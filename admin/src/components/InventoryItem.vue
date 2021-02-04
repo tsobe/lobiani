@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-2" v-bind:data-item="item.slug">
+  <v-card class="ma-2" :data-item="item.slug">
     <v-card-title>
       <p class="display-1 text--primary" data-slug>{{ item.slug }}</p>
     </v-card-title>
@@ -14,7 +14,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-text-field label="amount" data-amount type="number" v-model.number="amount"/>
-            <v-btn class="ma-1" color="primary" data-add-to-stock :disabled="!hasValidAmount" v-on:click="addToStock">
+            <v-btn class="ma-1" color="primary" data-add-to-stock :disabled="!hasValidAmount" @click="addToStock">
               Add to stock
             </v-btn>
           </v-list-item-content>
@@ -24,7 +24,7 @@
 
         <v-list-item>
           <v-list-item-content>
-            <v-btn color="red" block data-delete v-on:click="deleteItem">
+            <v-btn color="red" block data-delete @click="deleteItem">
               Delete
             </v-btn>
           </v-list-item-content>

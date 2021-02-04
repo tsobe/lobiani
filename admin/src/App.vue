@@ -27,7 +27,7 @@
     </v-navigation-drawer>
 
     <v-app-bar v-if="this.$auth.authenticated" app>
-      <v-app-bar-nav-icon v-on:click="toggleDrawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Admin</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
