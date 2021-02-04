@@ -179,6 +179,7 @@ class ProductAPISpec extends Specification {
     }
 
     static void assertProduct(product) {
+        assert product.id != null
         assert product.slug == SLUG
         assert product.title == TITLE
         assert product.description == DESCRIPTION
