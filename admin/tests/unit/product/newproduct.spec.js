@@ -1,10 +1,12 @@
-import {mount} from '@vue/test-utils'
+import {createLocalVue, mount} from '@vue/test-utils'
 import NewProduct from '@/views/NewProduct'
 import flushPromises from 'flush-promises'
 import Vuetify from 'vuetify'
 import {when} from 'jest-when'
 import axios from 'axios'
 import Slug from '@/components/Slug'
+import Vuex from 'vuex'
+import {createStore} from '@/store/products'
 
 jest.mock('axios')
 
@@ -64,48 +66,61 @@ it('should set resource property on slug', () => {
 })
 
 it('should navigate to list of products when product is successfully defined', async () => {
-  when(axios.post)
-    .calledWith('/products', {
-      slug: 'the-matrix-trilogy',
-      title: 'The Matrix Trilogy',
-      description: 'This is Matrix'
-    })
-    .mockResolvedValue({
-      data: {}
-    })
+  const product = newProduct()
+  when(axios.post).calledWith('/products', product).mockResolvedValue({
+    data: {
+      id: 'prod-1',
+      ...newProduct()
+    }
+  })
 
-  slugWrapper.setValue('the-matrix-trilogy')
-  titleWrapper.setValue('The Matrix Trilogy')
-  descriptionWrapper.setValue('This is Matrix')
-  await flushPromises()
-
-  await saveWrapper.trigger('click')
+  await defineProduct(product)
 
   expect(router.push).toHaveBeenCalledWith('/products')
 })
 
+it('should add product to store when product is successfully defined', async () => {
+  const product = newProduct()
+  const definedProduct = {
+    id: 'prod-1',
+    ...newProduct()
+  }
+  when(axios.post).calledWith('/products', product).mockResolvedValue({
+    data: definedProduct
+  })
+
+  await defineProduct(product)
+
+  expect(store.state.product.products).toHaveLength(1)
+  expect(store.state.product.products[0]).toEqual(definedProduct)
+})
+
 it('should not navigate to list of products when product can not be defined', async () => {
-  when(axios.post)
-    .calledWith('/products', {
-      slug: 'the-matrix-trilogy',
-      title: 'The Matrix Trilogy',
-      description: 'This is Matrix'
-    })
-    .mockRejectedValue({
-      response: {
-        status: 500,
-        data: 'Boom'
-      }
-    })
+  const product = newProduct()
+  when(axios.post).calledWith('/products', product).mockRejectedValue({
+    response: {
+      status: 500,
+      data: 'Boom'
+    }
+  })
 
-  slugWrapper.setValue('the-matrix-trilogy')
-  titleWrapper.setValue('The Matrix Trilogy')
-  descriptionWrapper.setValue('This is Matrix')
-  await flushPromises()
-
-  await saveWrapper.trigger('click')
+  await defineProduct(product)
 
   expect(router.push).not.toHaveBeenCalled()
+})
+
+it('should not add product to store when product can not be defined', async () => {
+  const product = newProduct()
+  when(axios.post).calledWith('/products', product).mockRejectedValue({
+    response: {
+      status: 500,
+      data: 'Boom'
+    }
+  })
+
+  await defineProduct(product)
+
+  expect(store.state.product.products).toHaveLength(0)
 })
 
 it('should navigate back when cancel is clicked', async () => {
@@ -121,13 +136,23 @@ let slugWrapper
 let titleWrapper
 let descriptionWrapper
 let router
+let store
 
 function mountComponent() {
   router = {
     push: jest.fn(),
     go: jest.fn()
   }
+  const localVue = createLocalVue()
+  localVue.use(Vuex)
+  store = new Vuex.Store({
+    modules: {
+      product: createStore()
+    }
+  })
   wrapper = mount(NewProduct, {
+    localVue,
+    store,
     vuetify: new Vuetify(),
     mocks: {
       $router: router
@@ -138,4 +163,20 @@ function mountComponent() {
   slugWrapper = wrapper.find('[data-slug]')
   titleWrapper = wrapper.find('[data-title]')
   descriptionWrapper = wrapper.find('[data-description]')
+}
+
+function newProduct() {
+  return {
+    slug: 'the-matrix-trilogy',
+    title: 'The Matrix Trilogy',
+    description: 'This is Matrix'
+  }
+}
+
+async function defineProduct(product) {
+  slugWrapper.setValue(product.slug)
+  titleWrapper.setValue(product.title)
+  descriptionWrapper.setValue(product.description)
+  await flushPromises()
+  await saveWrapper.trigger('click')
 }

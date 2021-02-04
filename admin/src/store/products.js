@@ -17,12 +17,19 @@ export function createStore() {
       },
       delete(state, id) {
         state.products = state.products.filter(p => p.id !== id)
+      },
+      add(state, product) {
+        state.products.push(product)
       }
     },
     actions: {
       async fetch(context) {
         const response = await axios.get('/products')
         context.commit('set', response.data)
+      },
+      async define(context, product) {
+        const response = await axios.post('/products', product)
+        context.commit('add', response.data)
       },
       async delete(context, id) {
         await axios.delete(`/products/${id}`)

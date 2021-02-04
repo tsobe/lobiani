@@ -41,7 +41,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import Slug from '@/components/Slug'
 
   export default {
@@ -64,7 +63,7 @@
     },
     methods: {
       async defineProduct() {
-        await axios.post('/products', {
+        await this.$store.dispatch('product/define', {
           slug: this.slug,
           title: this.title,
           description: this.description
