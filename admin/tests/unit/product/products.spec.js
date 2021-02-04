@@ -22,7 +22,7 @@ it('should display all products when mounted', async () => {
       newProduct('prod-2', 'memento')
     ]
   })
-  const wrapper = await mountComponent()
+  await mountComponent()
 
   expect(wrapper.findAllComponents(Product)).toHaveLength(2)
 })
@@ -37,11 +37,11 @@ it('should delete product when API call succeeds', async () => {
     ]
   })
   when(axios.delete).calledWith(`/products/${id}`).mockResolvedValue({})
-  const wrapper = await mountComponent()
+  await mountComponent()
 
-  await deleteProduct(wrapper, slug)
+  await deleteProduct(slug)
 
-  expect(findProductWrapper(wrapper, slug).exists()).toBe(false)
+  expect(findProductWrapper(slug).exists()).toBe(false)
 })
 
 it('should not delete product when API call fails', async () => {
@@ -58,11 +58,11 @@ it('should not delete product when API call fails', async () => {
       status: 500
     }
   })
-  const wrapper = await mountComponent()
+  await mountComponent()
 
-  await deleteProduct(wrapper, 'the-matrix-trilogy')
+  await deleteProduct('the-matrix-trilogy')
 
-  expect(findProductWrapper(wrapper, 'the-matrix-trilogy').exists()).toBe(true)
+  expect(findProductWrapper('the-matrix-trilogy').exists()).toBe(true)
 })
 
 it('should not fetch products from the API when mounted and store already has data', async () => {
@@ -74,6 +74,18 @@ it('should not fetch products from the API when mounted and store already has da
   expect(axios.get).not.toHaveBeenCalledWith('/products')
 })
 
+let wrapper
+
+async function mountComponent(store = createStore()) {
+  wrapper = mount(Products, {
+    localVue: vueWithVuex,
+    vuetify: new Vuetify(),
+    store
+  })
+  await flushPromises()
+  return wrapper
+}
+
 function newProduct(id, slug) {
   return {
     id: id,
@@ -81,16 +93,6 @@ function newProduct(id, slug) {
     title: `${id}-title`,
     description: `${id}-description`
   }
-}
-
-async function mountComponent(store = createStore()) {
-  const wrapper = mount(Products, {
-    localVue: vueWithVuex,
-    vuetify: new Vuetify(),
-    store
-  })
-  await flushPromises()
-  return wrapper
 }
 
 function createStore() {
@@ -101,10 +103,10 @@ function createStore() {
   })
 }
 
-async function deleteProduct(wrapper, slug) {
-  await findProductWrapper(wrapper, slug).find('[data-delete]').trigger('click')
+async function deleteProduct(slug) {
+  await findProductWrapper(slug).find('[data-delete]').trigger('click')
 }
 
-function findProductWrapper(wrapper, slug) {
+function findProductWrapper(slug) {
   return wrapper.find(`[data-product="${slug}"]`)
 }
