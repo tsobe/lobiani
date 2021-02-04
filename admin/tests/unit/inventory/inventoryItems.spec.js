@@ -86,5 +86,5 @@ async function deleteItem(slug) {
 }
 
 function findItemWrapper(slug) {
-  return wrapper.find('[data-item="' + slug + '"]')
+  return wrapper.find(`[data-item="${slug}"]`)
 }

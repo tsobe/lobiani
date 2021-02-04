@@ -19,13 +19,16 @@
     </v-btn>
   </v-container>
 </template>
+
 <script>
   import Product from '@/components/Product'
 
   export default {
     components: {Product},
     async mounted() {
-      await this.$store.dispatch('product/fetchProducts')
+      if (!this.$store.getters['product/hasProducts']) {
+        await this.$store.dispatch('product/fetch')
+      }
     },
     computed: {
       products() {

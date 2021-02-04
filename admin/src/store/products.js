@@ -6,15 +6,27 @@ export function createStore() {
     state: {
       products: []
     },
+    getters: {
+      hasProducts: state => {
+        return state.products.length > 0
+      }
+    },
     mutations: {
-      setProducts(state, products) {
+      set(state, products) {
         state.products = products
+      },
+      delete(state, id) {
+        state.products = state.products.filter(p => p.id !== id)
       }
     },
     actions: {
-      async fetchProducts(context) {
+      async fetch(context) {
         const response = await axios.get('/products')
-        context.commit('setProducts', response.data)
+        context.commit('set', response.data)
+      },
+      async delete(context, id) {
+        await axios.delete(`/products/${id}`)
+        context.commit('delete', id)
       }
     }
   }
