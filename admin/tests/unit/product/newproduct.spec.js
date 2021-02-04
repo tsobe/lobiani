@@ -6,7 +6,7 @@ import {when} from 'jest-when'
 import axios from 'axios'
 import Slug from '@/components/Slug'
 import Vuex from 'vuex'
-import {createStore} from '@/store/products'
+import {createStore} from './storeTestHelper'
 
 jest.mock('axios')
 
@@ -145,11 +145,7 @@ function mountComponent() {
   }
   const localVue = createLocalVue()
   localVue.use(Vuex)
-  store = new Vuex.Store({
-    modules: {
-      product: createStore()
-    }
-  })
+  store = createStore()
   wrapper = mount(NewProduct, {
     localVue,
     store,

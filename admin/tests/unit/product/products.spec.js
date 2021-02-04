@@ -6,7 +6,7 @@ import axios from 'axios'
 import Vuex from 'vuex'
 import flushPromises from 'flush-promises'
 import Vuetify from 'vuetify'
-import {createStore as createProductStore} from '@/store/products'
+import {createStore, createStoreWithProducts} from './storeTestHelper'
 
 const vueWithVuex = createLocalVue()
 vueWithVuex.use(Vuex)
@@ -66,8 +66,7 @@ it('should not delete product when API call fails', async () => {
 })
 
 it('should not fetch products from the API when mounted and store already has data', async () => {
-  const store = createStore()
-  store.commit('product/set', [newProduct('prod-1', 'the-matrix-trilogy')])
+  const store = createStoreWithProducts([newProduct('prod-1', 'the-matrix-trilogy')])
 
   await mountComponent(store)
 
@@ -93,14 +92,6 @@ function newProduct(id, slug) {
     title: `${id}-title`,
     description: `${id}-description`
   }
-}
-
-function createStore() {
-  return new Vuex.Store({
-    modules: {
-      product: createProductStore()
-    }
-  })
 }
 
 async function deleteProduct(slug) {
