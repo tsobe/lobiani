@@ -8,6 +8,9 @@ import Slug from '@/components/Slug'
 import Vuex from 'vuex'
 import {createStore} from './storeTestHelper'
 
+const vueWithVuex = createLocalVue()
+vueWithVuex.use(Vuex)
+
 jest.mock('axios')
 
 beforeEach(mountComponent)
@@ -143,11 +146,9 @@ function mountComponent() {
     push: jest.fn(),
     go: jest.fn()
   }
-  const localVue = createLocalVue()
-  localVue.use(Vuex)
   store = createStore()
   wrapper = mount(NewProduct, {
-    localVue,
+    localVue: vueWithVuex,
     store,
     vuetify: new Vuetify(),
     mocks: {
