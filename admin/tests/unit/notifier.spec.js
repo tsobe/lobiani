@@ -7,7 +7,7 @@ import Vuetify from 'vuetify'
 it('should not show notification initially', () => {
   mountComponent('Hello!')
 
-  expect(wrapper.findComponent(NotificationHolder).find('[data-notification]').text()).toBeFalsy()
+  expect(getNotificationContentWrapper().isVisible()).toBe(false)
 })
 
 it('should show notification when triggered with message text', async () => {
@@ -15,7 +15,7 @@ it('should show notification when triggered with message text', async () => {
 
   await wrapper.find('button').trigger('click')
 
-  expect(wrapper.findComponent(NotificationHolder).find('[data-notification]').text()).toBe('Hello!')
+  expect(getNotificationContentWrapper().text()).toBe('Hello!')
 })
 
 it('should show notification when triggered with message object', async () => {
@@ -25,7 +25,16 @@ it('should show notification when triggered with message object', async () => {
 
   await wrapper.find('button').trigger('click')
 
-  expect(wrapper.findComponent(NotificationHolder).find('[data-notification]').text()).toBe('You!')
+  expect(getNotificationContentWrapper().text()).toBe('You!')
+})
+
+it('should hide notification when dismissed', async () => {
+  mountComponent('Hello!')
+
+  await wrapper.find('button').trigger('click')
+  await wrapper.find('[data-dismiss]').trigger('click')
+
+  expect(getNotificationContentWrapper().isVisible()).toBe(false)
 })
 
 const HelperComponent = {
@@ -56,4 +65,8 @@ function mountComponent(message) {
     vuetify: new Vuetify(),
     data: () => ({message})
   })
+}
+
+function getNotificationContentWrapper() {
+  return wrapper.findComponent(NotificationHolder).find('[data-notification] .v-snack__content')
 }

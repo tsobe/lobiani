@@ -60,9 +60,9 @@ it('should not delete product when API call fails', async () => {
   })
   await mountComponent()
 
-  await deleteProduct('the-matrix-trilogy')
+  await deleteProduct(slug)
 
-  expect(findProductWrapper('the-matrix-trilogy').exists()).toBe(true)
+  expect(findProductWrapper(slug).exists()).toBe(true)
 })
 
 it('should not fetch products from the API when mounted and store already has data', async () => {

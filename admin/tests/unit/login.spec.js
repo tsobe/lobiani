@@ -7,6 +7,7 @@ afterEach(jest.resetAllMocks)
 
 it('should delegate to $auth with next in appState when logged in with next', async () => {
   await router.push('/login?next=%2Fprotected%3Fqp1%3Done%26qp2%3Dtwo')
+
   await login()
 
   expect(authMock.login).toHaveBeenCalledWith({
@@ -18,6 +19,7 @@ it('should delegate to $auth with next in appState when logged in with next', as
 
 it('should delegate to $auth with empty options when logged in without next', async () => {
   await router.push('/login')
+
   await login()
 
   expect(authMock.login).toHaveBeenCalledWith({})

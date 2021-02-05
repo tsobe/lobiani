@@ -1,5 +1,16 @@
 <template>
-  <v-snackbar v-model="visible" :color="color" data-notification>{{ text }}</v-snackbar>
+  <v-snackbar v-model="visible" :color="color" data-notification>
+    {{ text }}
+    <template v-slot:action="{ attrs }">
+      <v-btn
+        text
+        v-bind="attrs"
+        data-dismiss
+        @click="dismiss">
+        Dismiss
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script>
@@ -11,6 +22,16 @@
         visible: false
       }
     },
+    methods: {
+      show(message) {
+        this.visible = true
+        this.text = message.text
+        this.type = message.type
+      },
+      dismiss() {
+        this.visible = false
+      }
+    },
     computed: {
       color() {
         return this.type === 'info' ? 'dark' : 'red'
@@ -19,9 +40,7 @@
     created() {
       this.unsubscribe = this.$store.subscribe((mutation, state) => {
         if (mutation.type === 'notifier/setMessage') {
-          this.visible = true
-          this.text = state.notifier.text
-          this.type = state.notifier.type
+          this.show(state.notifier)
         }
       })
     },
