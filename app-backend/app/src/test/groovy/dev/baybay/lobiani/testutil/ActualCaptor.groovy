@@ -1,4 +1,4 @@
-package dev.baybaydev.lobiani.testutil
+package dev.baybay.lobiani.testutil
 
 import org.hamcrest.Description
 import org.hamcrest.TypeSafeMatcher

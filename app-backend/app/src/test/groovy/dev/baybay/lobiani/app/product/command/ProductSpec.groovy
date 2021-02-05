@@ -4,7 +4,7 @@ import dev.baybay.lobiani.app.product.api.DefineProduct
 import dev.baybay.lobiani.app.product.api.DeleteProduct
 import dev.baybay.lobiani.app.product.api.ProductDefined
 import dev.baybay.lobiani.app.product.api.ProductDeleted
-import dev.baybaydev.lobiani.testutil.AggregateSpec
+import dev.baybay.lobiani.testutil.AggregateSpec
 
 class ProductSpec extends AggregateSpec {
 

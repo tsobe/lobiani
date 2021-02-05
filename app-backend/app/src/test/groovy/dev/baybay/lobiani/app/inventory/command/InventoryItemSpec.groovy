@@ -1,7 +1,7 @@
 package dev.baybay.lobiani.app.inventory.command
 
 import dev.baybay.lobiani.app.inventory.api.*
-import dev.baybaydev.lobiani.testutil.AggregateSpec
+import dev.baybay.lobiani.testutil.AggregateSpec
 
 class InventoryItemSpec extends AggregateSpec {
 

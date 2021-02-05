@@ -1,7 +1,7 @@
 package dev.baybay.lobiani.app.common
 
 
-import dev.baybaydev.lobiani.testutil.AggregateSpec
+import dev.baybay.lobiani.testutil.AggregateSpec
 import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
