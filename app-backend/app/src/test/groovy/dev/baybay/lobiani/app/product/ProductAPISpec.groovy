@@ -17,10 +17,6 @@ import spock.util.concurrent.PollingConditions
 class ProductAPISpec extends Specification {
 
     private static final URI = "/api/products"
-    private static final SLUG = "the-matrix-trilogy"
-    private static final TITLE = "The Matrix Trilogy"
-    private static final DESCRIPTION = "Let's see how deep this Rabbit hole goes"
-    private static final PRODUCT = [slug: SLUG, title: TITLE, description: DESCRIPTION]
 
     @Autowired
     TestRestTemplate restTemplate
@@ -39,8 +35,11 @@ class ProductAPISpec extends Specification {
     }
 
     def "should return defined product eventually"() {
+        given:
+        def product = newProduct "the-matrix-trilogy"
+
         when:
-        def response = defineProduct PRODUCT
+        def response = defineProduct product
         def id = response.body.id
 
         then:
@@ -50,7 +49,7 @@ class ProductAPISpec extends Specification {
         conditions.eventually {
             def r = getProductEntity id
             r.statusCode == HttpStatus.OK
-            assertProduct r.body
+            assertProduct r.body, product
         }
     }
 
@@ -67,7 +66,8 @@ class ProductAPISpec extends Specification {
 
     def "product should not exist when deleted"() {
         given:
-        def id = productDefined PRODUCT
+        def product = newProduct "the-matrix-trilogy"
+        def id = productDefined product
 
         when:
         def response = deleteProduct id
@@ -84,7 +84,8 @@ class ProductAPISpec extends Specification {
 
     def "should return defined products eventually"() {
         given:
-        productDefined PRODUCT
+        def product = newProduct "the-matrix-trilogy"
+        productDefined product
 
         expect:
         conditions.eventually {
@@ -92,7 +93,7 @@ class ProductAPISpec extends Specification {
             r.statusCode == HttpStatus.OK
             def products = r.body
             products.size() == 1
-            assertProduct products[0]
+            assertProduct products[0], product
         }
     }
 
@@ -110,7 +111,7 @@ class ProductAPISpec extends Specification {
     @Unroll
     def "should return BadRequest for invalid slug '#slug'"() {
         when:
-        def product = [slug: slug, title: TITLE, description: DESCRIPTION]
+        def product = newProduct slug
         def response = defineProduct product
 
         then:
@@ -125,29 +126,36 @@ class ProductAPISpec extends Specification {
 
     def "should retrieve defined item by slug eventually"() {
         given:
-        def anotherProduct = [slug: "memento", title: "Memento", description: "This is Memento"]
+        def product = newProduct "the-matrix-trilogy"
+        def anotherProduct = newProduct "memento"
+        productDefined product
         productDefined anotherProduct
-        productDefined PRODUCT
 
         expect:
         conditions.eventually {
-            def response = getProductsEntityBySlug SLUG
+            def response = getProductsEntityBySlug product.slug
             response.statusCode == HttpStatus.OK
             def products = response.body
             products.size() == 1
-            assertProduct products[0]
+            assertProduct products[0], product
         }
     }
 
     def "should return empty list when queried by slug and no products are defined"() {
         when:
-        def response = getProductsEntityBySlug SLUG
+        def response = getProductsEntityBySlug "the-matrix-trilogy"
 
         then:
         response.statusCode == HttpStatus.OK
 
         and:
         response.body.empty
+    }
+
+    static def newProduct(slug) {
+        [slug       : slug,
+         title      : "$slug-title",
+         description: "$slug-description"]
     }
 
     ResponseEntity<Object> defineProduct(product) {
@@ -158,7 +166,7 @@ class ProductAPISpec extends Specification {
     }
 
     def productDefined(product) {
-        def response = defineProduct PRODUCT
+        def response = defineProduct product
         response.body.id
     }
 
@@ -171,17 +179,17 @@ class ProductAPISpec extends Specification {
     }
 
     ResponseEntity<Object> getProductEntity(id) {
-        restTemplate.getForEntity"$URI/$id", Object
+        restTemplate.getForEntity "$URI/$id", Object
     }
 
     ResponseEntity<Object> deleteProduct(id) {
         restTemplate.exchange "$URI/$id", HttpMethod.DELETE, null, Object
     }
 
-    static void assertProduct(product) {
-        assert product.id != null
-        assert product.slug == SLUG
-        assert product.title == TITLE
-        assert product.description == DESCRIPTION
+    static void assertProduct(actual, expected) {
+        assert actual.id != null
+        assert actual.slug == expected.slug
+        assert actual.title == expected.title
+        assert actual.description == expected.description
     }
 }
