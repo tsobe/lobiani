@@ -51,9 +51,9 @@ class InventoryItemAPISpec extends Specification {
 
         and:
         conditions.eventually {
-            def r = getItemEntity id
-            r.statusCode == HttpStatus.OK
-            assertDefinedItemHasSlug r.body, item.slug
+            def definedItemResponse = getItemEntity id
+            definedItemResponse.statusCode == HttpStatus.OK
+            assertDefinedItemHasSlug definedItemResponse.body, item.slug
         }
     }
 
@@ -79,9 +79,9 @@ class InventoryItemAPISpec extends Specification {
         conditions.eventually {
             def response = getItemsEntity()
             response.statusCode == HttpStatus.OK
-            def items = response.body
-            items.size() == 1
-            assertDefinedItemHasSlug items[0], item.slug
+            def definedItems = response.body
+            definedItems.size() == 1
+            assertDefinedItemHasSlug definedItems[0], item.slug
         }
     }
 
@@ -212,9 +212,9 @@ class InventoryItemAPISpec extends Specification {
         conditions.eventually {
             def response = getItemsEntityBySlug matrix.slug
             response.statusCode == HttpStatus.OK
-            def items = response.body
-            items.size() == 1
-            assertDefinedItemHasSlug items[0], matrix.slug
+            def definedItems = response.body
+            definedItems.size() == 1
+            assertDefinedItemHasSlug definedItems[0], matrix.slug
         }
     }
 

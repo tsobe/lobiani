@@ -47,9 +47,9 @@ class ProductAPISpec extends Specification {
 
         and:
         conditions.eventually {
-            def r = getProductEntity id
-            r.statusCode == HttpStatus.OK
-            assertProduct r.body, product
+            def definedProductResponse = getProductEntity id
+            definedProductResponse.statusCode == HttpStatus.OK
+            assertProduct definedProductResponse.body, product
         }
     }
 
@@ -66,7 +66,9 @@ class ProductAPISpec extends Specification {
 
     def "product should not exist when deleted"() {
         given:
-        def product = newProduct "the-matrix-trilogy"
+        def product = newProduct()
+
+        and:
         def id = productDefined product
 
         when:
@@ -77,23 +79,24 @@ class ProductAPISpec extends Specification {
 
         and:
         conditions.eventually {
-            def r = getProductEntity id
-            r.statusCode == HttpStatus.NOT_FOUND
+            getProductEntity(id).statusCode == HttpStatus.NOT_FOUND
         }
     }
 
     def "should return defined products eventually"() {
         given:
-        def product = newProduct "the-matrix-trilogy"
+        def product = newProduct()
+
+        and:
         productDefined product
 
         expect:
         conditions.eventually {
-            def r = getProductsEntity()
-            r.statusCode == HttpStatus.OK
-            def products = r.body
-            products.size() == 1
-            assertProduct products[0], product
+            def response = getProductsEntity()
+            response.statusCode == HttpStatus.OK
+            def definedProducts = response.body
+            definedProducts.size() == 1
+            assertProduct definedProducts[0], product
         }
     }
 
@@ -109,10 +112,12 @@ class ProductAPISpec extends Specification {
     }
 
     @Unroll
-    def "should return BadRequest for invalid slug '#slug'"() {
+    def "should return BadRequest for invalid slug '#invalidSlug'"() {
         when:
-        def product = newProduct slug
-        def response = defineProduct product
+        def invalidProduct = newProduct invalidSlug
+
+        and:
+        def response = defineProduct invalidProduct
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
@@ -121,29 +126,34 @@ class ProductAPISpec extends Specification {
         response.body.message == "Slug must consist of lowercase alpha-numeric and dash('-') characters"
 
         where:
-        slug << ['Uppercase', 'space cowboy', 'blah#', 'meh?']
+        invalidSlug << ['Uppercase', 'space cowboy', 'blah#', 'meh?']
     }
 
     def "should retrieve defined item by slug eventually"() {
         given:
-        def product = newProduct "the-matrix-trilogy"
-        def anotherProduct = newProduct "memento"
-        productDefined product
-        productDefined anotherProduct
+        def matrix = newProduct "the-matrix-trilogy"
+        def memento = newProduct "memento"
+
+        and:
+        productDefined matrix
+        productDefined memento
 
         expect:
         conditions.eventually {
-            def response = getProductsEntityBySlug product.slug
+            def response = getProductsEntityBySlug matrix.slug
             response.statusCode == HttpStatus.OK
-            def products = response.body
-            products.size() == 1
-            assertProduct products[0], product
+            def definedProducts = response.body
+            definedProducts.size() == 1
+            assertProduct definedProducts[0], matrix
         }
     }
 
     def "should return empty list when queried by slug and no products are defined"() {
+        given:
+        def undefinedProductSlug = "the-matrix-trilogy"
+
         when:
-        def response = getProductsEntityBySlug "the-matrix-trilogy"
+        def response = getProductsEntityBySlug undefinedProductSlug
 
         then:
         response.statusCode == HttpStatus.OK
@@ -152,7 +162,7 @@ class ProductAPISpec extends Specification {
         response.body.empty
     }
 
-    static def newProduct(slug) {
+    static def newProduct(slug = "the-matrix-trilogy") {
         [slug       : slug,
          title      : "$slug-title",
          description: "$slug-description"]
