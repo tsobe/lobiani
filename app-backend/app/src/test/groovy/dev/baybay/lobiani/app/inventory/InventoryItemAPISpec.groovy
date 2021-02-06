@@ -18,8 +18,6 @@ import spock.util.concurrent.PollingConditions
 class InventoryItemAPISpec extends Specification {
 
     private static final URI = "/api/inventory-items"
-    private static final THE_MATRIX_TRILOGY = "the-matrix-trilogy"
-    private static final MEMENTO = "memento"
 
     @Autowired
     TestRestTemplate restTemplate
@@ -38,21 +36,24 @@ class InventoryItemAPISpec extends Specification {
     }
 
     def "defined item should be retrieved eventually"() {
+        given:
+        def item = newItem()
+
         when:
-        def response = defineItem THE_MATRIX_TRILOGY
+        def response = defineItem item
         def id = response.body.id
 
         then:
         response.statusCode == HttpStatus.ACCEPTED
 
         and:
-        assertItem response.body
+        assertDefinedItemHasSlug response.body, item.slug
 
         and:
         conditions.eventually {
             def r = getItemEntity id
             r.statusCode == HttpStatus.OK
-            assertItem r.body
+            assertDefinedItemHasSlug r.body, item.slug
         }
     }
 
@@ -69,7 +70,10 @@ class InventoryItemAPISpec extends Specification {
 
     def "defined items are retrieved eventually"() {
         given:
-        itemDefined THE_MATRIX_TRILOGY
+        def item = newItem()
+
+        and:
+        itemDefined item
 
         expect:
         conditions.eventually {
@@ -77,7 +81,7 @@ class InventoryItemAPISpec extends Specification {
             response.statusCode == HttpStatus.OK
             def items = response.body
             items.size() == 1
-            assertItem items[0]
+            assertDefinedItemHasSlug items[0], item.slug
         }
     }
 
@@ -93,9 +97,12 @@ class InventoryItemAPISpec extends Specification {
     }
 
     @Unroll
-    def "BadRequest is returned for invalid slug '#slug'"() {
+    def "BadRequest is returned for invalid slug '#invalidSlug'"() {
+        given:
+        def invalidItem = newItem invalidSlug
+
         when:
-        def response = defineItem slug
+        def response = defineItem invalidItem
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
@@ -104,12 +111,15 @@ class InventoryItemAPISpec extends Specification {
         response.body.message == "Slug must consist of lowercase alpha-numeric and dash('-') characters"
 
         where:
-        slug << ['Uppercase', 'space cowboy', 'blah#', 'meh?']
+        invalidSlug << ['Uppercase', 'space cowboy', 'blah#', 'meh?']
     }
 
     def "defined item is deleted"() {
         given:
-        def id = itemDefined THE_MATRIX_TRILOGY
+        def item = newItem()
+
+        and:
+        def id = itemDefined item
 
         when:
         deleteItem(id)
@@ -133,7 +143,10 @@ class InventoryItemAPISpec extends Specification {
 
     def "item is added to stock"() {
         given:
-        def id = itemDefined THE_MATRIX_TRILOGY
+        def item = newItem()
+
+        and:
+        def id = itemDefined item
 
         when:
         def response = addItemToStock id, 10
@@ -148,12 +161,15 @@ class InventoryItemAPISpec extends Specification {
     }
 
     @Unroll
-    def "BadRequest is returned when #amount items are added to stock"() {
+    def "BadRequest is returned when #invalidAmount items are added to stock"() {
         given:
-        def id = itemDefined THE_MATRIX_TRILOGY
+        def item = newItem()
+
+        and:
+        def id = itemDefined item
 
         when:
-        def response = addItemToStock id, amount
+        def response = addItemToStock id, invalidAmount
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
@@ -162,42 +178,52 @@ class InventoryItemAPISpec extends Specification {
         response.body.message == "Amount must be a positive number"
 
         where:
-        amount << [0, -10]
+        invalidAmount << [0, -10]
     }
 
     @Ignore
     def "BadRequest is returned when item with same slug is already defined"() {
         given:
-        itemDefined THE_MATRIX_TRILOGY
+        def item = newItem()
+
+        and:
+        itemDefined item
 
         when:
-        def response = defineItem THE_MATRIX_TRILOGY
+        def response = defineItem item
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
 
         and:
-        response.body.message == "Item with slug $THE_MATRIX_TRILOGY is already defined"
+        response.body.message == "Item with slug ${item.slug} is already defined"
     }
 
     def "defined item should be retrieved by slug eventually"() {
         given:
-        itemDefined MEMENTO
-        itemDefined THE_MATRIX_TRILOGY
+        def memento = newItem "memento"
+        def matrix = newItem "the-matrix-trilogy"
+
+        and:
+        itemDefined memento
+        itemDefined matrix
 
         expect:
         conditions.eventually {
-            def response = getItemsEntityBySlug THE_MATRIX_TRILOGY
+            def response = getItemsEntityBySlug matrix.slug
             response.statusCode == HttpStatus.OK
             def items = response.body
             items.size() == 1
-            assertItem items[0]
+            assertDefinedItemHasSlug items[0], matrix.slug
         }
     }
 
     def "empty result is returned when queried by slug and no items are defined"() {
+        given:
+        def undefinedItemSlug = "the-matrix-trilogy"
+
         when:
-        def response = getItemsEntityBySlug THE_MATRIX_TRILOGY
+        def response = getItemsEntityBySlug undefinedItemSlug
 
         then:
         response.statusCode == HttpStatus.OK
@@ -206,8 +232,12 @@ class InventoryItemAPISpec extends Specification {
         response.body.empty
     }
 
-    ResponseEntity<Object> defineItem(slug) {
-        def response = restTemplate.postForEntity URI, [slug: slug], Object
+    static def newItem(slug = "the-matrix-trilogy") {
+        return [slug: slug]
+    }
+
+    ResponseEntity<Object> defineItem(item) {
+        def response = restTemplate.postForEntity URI, item, Object
         def id = response.body.id
         if (id) {
             definedItemIds.add id
@@ -215,8 +245,8 @@ class InventoryItemAPISpec extends Specification {
         response
     }
 
-    def itemDefined(slug) {
-        defineItem(slug).body.id
+    def itemDefined(item) {
+        defineItem(item).body.id
     }
 
     ResponseEntity<Object> getItemEntity(id) {
@@ -239,9 +269,9 @@ class InventoryItemAPISpec extends Specification {
         restTemplate.postForEntity"$URI/${id}/stock", [amount: amount], Object
     }
 
-    static void assertItem(item) {
-        assert item.id != null
-        assert item.slug == THE_MATRIX_TRILOGY
-        assert item.stockLevel == 0
+    static void assertDefinedItemHasSlug(definedItem, slug) {
+        assert definedItem.id != null
+        assert definedItem.slug == slug
+        assert definedItem.stockLevel == 0
     }
 }
