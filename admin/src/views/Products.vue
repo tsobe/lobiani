@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row justify="start">
+    <v-row justify="start" data-products>
       <product v-for="product in products" :key="product.id" :product="product"></product>
     </v-row>
     <v-btn
