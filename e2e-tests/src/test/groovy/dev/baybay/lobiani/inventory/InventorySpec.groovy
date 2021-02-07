@@ -6,6 +6,8 @@ import spock.lang.Stepwise
 @Stepwise
 class InventorySpec extends BaseAdminSpec {
 
+    public static final String SLUG = "the-matrix-trilogy"
+
     def "should navigate to new item page"() {
         given:
         def itemsPage = to InventoryItemsPage
@@ -19,51 +21,50 @@ class InventorySpec extends BaseAdminSpec {
 
     def "item should be visible when defined"() {
         given:
-        def slug = "the-matrix-trilogy"
-
-        and:
         def newItemPage = page as NewInventoryItemPage
 
         and:
-        newItemPage.enterSlug slug
+        newItemPage.enterSlug SLUG
 
         when:
         newItemPage.save()
 
         then:
-        at InventoryItemsPage
-
-        def itemsPage = to InventoryItemsPage
+        def itemsPage = at InventoryItemsPage
 
         and:
-        waitFor { itemsPage.hasItem slug }
+        waitFor { itemsPage.hasItem SLUG }
     }
 
     def "should increase stock level when items are added to stock"() {
         given:
-        def definedItemSlug = "the-matrix-trilogy"
-
-        and:
         def itemsPage = page as InventoryItemsPage
 
         when:
-        itemsPage.addItemToStock definedItemSlug, 100
+        itemsPage.addItemToStock SLUG, 100
 
         then:
-        waitFor { itemsPage.getItemStockLevel(definedItemSlug) == 100 }
+        waitFor { itemsPage.getItemStockLevel(SLUG) == 100 }
     }
 
     def "item should not be visible when deleted"() {
         given:
-        def definedItemSlug = "the-matrix-trilogy"
-
-        and:
         def itemsPage = page as InventoryItemsPage
 
         when:
-        itemsPage.deleteItem definedItemSlug
+        itemsPage.deleteItem SLUG
 
         then:
-        waitFor { !itemsPage.hasItem(definedItemSlug) }
+        waitFor { !itemsPage.hasItem(SLUG) }
+    }
+
+    void cleanupSpec() {
+        if (!page instanceof InventoryItemsPage) {
+            return
+        }
+        def itemsPage = page as InventoryItemsPage
+        if (itemsPage.hasItem(SLUG)) {
+            itemsPage.deleteItem SLUG
+        }
     }
 }

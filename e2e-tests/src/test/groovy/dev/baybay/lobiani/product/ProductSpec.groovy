@@ -6,6 +6,8 @@ import spock.lang.Stepwise
 @Stepwise
 class ProductSpec extends BaseAdminSpec {
 
+    public static final String SLUG = "the-matrix-trilogy"
+
     def "should navigate to new product page"() {
         given:
         def productsPage = to ProductsPage
@@ -22,19 +24,17 @@ class ProductSpec extends BaseAdminSpec {
         def newProductPage = page as NewProductPage
 
         and:
-        def product = [slug       : "the-matrix-trilogy",
+        def product = [slug       : SLUG,
                        title      : "The Matrix trilogy",
                        description: "This is Matrix"]
         and:
-        newProductPage.enterData(product)
+        newProductPage.enterData product
 
         when:
         newProductPage.save()
 
         then:
-        at ProductsPage
-
-        def productsPage = page as ProductsPage
+        def productsPage = at ProductsPage
 
         and:
         waitFor { productsPage.hasProduct product.slug }
@@ -42,7 +42,7 @@ class ProductSpec extends BaseAdminSpec {
 
     def "product should not be visible when deleted"() {
         given:
-        def definedProductSlug = "the-matrix-trilogy"
+        def definedProductSlug = SLUG
 
         and:
         def productsPage = page as ProductsPage
@@ -52,5 +52,15 @@ class ProductSpec extends BaseAdminSpec {
 
         then:
         waitFor { !productsPage.hasProduct(definedProductSlug) }
+    }
+
+    void cleanupSpec() {
+        if (!page instanceof ProductsPage) {
+            return
+        }
+        def productsPage = page as ProductsPage
+        if (productsPage.hasProduct(SLUG)) {
+            productsPage.deleteProduct SLUG
+        }
     }
 }

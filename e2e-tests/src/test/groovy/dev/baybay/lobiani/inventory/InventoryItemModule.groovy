@@ -4,18 +4,18 @@ class InventoryItemModule extends geb.Module {
 
     static content = {
         slug { $("[data-slug]").text() }
-        currentStockLevel { $("[data-stock-level]").text() as Integer }
-        increaseStockLevelBy { $("[data-amount]")  }
-        addToStockButton { $("[data-add-to-stock]")  }
-        deleteAction { $("[data-delete]") }
+        stockLevel { $("[data-stock-level]").text() as Integer }
+        amountInput { $("[data-amount]")  }
+        addToStockBtn { $("[data-add-to-stock]")  }
+        deleteBtn { $("[data-delete]") }
     }
 
     def delete() {
-        deleteAction.click()
+        deleteBtn.click()
     }
 
     def addToStock(amount) {
-        increaseStockLevelBy.value(amount)
-        addToStockButton.click()
+        amountInput.value(amount)
+        addToStockBtn.click()
     }
 }

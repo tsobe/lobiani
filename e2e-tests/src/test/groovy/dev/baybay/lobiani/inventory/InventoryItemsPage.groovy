@@ -30,6 +30,6 @@ class InventoryItemsPage extends AdminProtectedPageBase {
     }
 
     def getItemStockLevel(slug) {
-        items.find { it.slug == slug }.currentStockLevel
+        items.find { it.slug == slug }.stockLevel
     }
 }
