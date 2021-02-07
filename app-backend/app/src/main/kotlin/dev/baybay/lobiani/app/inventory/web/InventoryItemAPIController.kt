@@ -3,8 +3,10 @@ package dev.baybay.lobiani.app.inventory.web
 import dev.baybay.lobiani.app.common.APIError
 import dev.baybay.lobiani.app.inventory.api.*
 import dev.baybay.lobiani.app.inventory.query.InventoryItem
+import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.responsetypes.ResponseTypes
+import org.axonframework.modelling.command.AggregateNotFoundException
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -33,30 +35,35 @@ class InventoryItemAPIController(private val commandGateway: CommandGateway,
     }
 
     @PostMapping
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
     fun defineNewItem(@RequestBody definition: InventoryItemDefinition): InventoryItem {
         val defineInventoryItem = definition.asCommand()
         ensureItemIsNotDefined(defineInventoryItem.slug.value)
-        commandGateway.send<Void>(defineInventoryItem)
+        commandGateway.sendAndWait<Void>(defineInventoryItem)
         return InventoryItem(defineInventoryItem.id, defineInventoryItem.slug.value)
     }
 
     @PostMapping("/{id}/stock")
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
     fun addToStock(@PathVariable id: UUID, @RequestBody stock: Stock) {
-        commandGateway.send<Void>(
+        commandGateway.sendAndWait<Void>(
                 AddInventoryItemToStock(id, Quantity.count(stock.amount)))
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(code = HttpStatus.ACCEPTED)
     fun deleteItem(@PathVariable id: UUID) {
-        commandGateway.send<Void>(DeleteInventoryItem(id))
+        commandGateway.sendAndWait<Void>(DeleteInventoryItem(id))
     }
 
     @ExceptionHandler(ItemAlreadyDefinedException::class)
     fun handleDuplicateItem(e: ItemAlreadyDefinedException): ResponseEntity<APIError> {
         return badRequest("Item with slug ${e.slug} is already defined")
+    }
+
+    @ExceptionHandler(CommandExecutionException::class)
+    fun handle(e: CommandExecutionException): ResponseEntity<Void> {
+        if (e.cause is AggregateNotFoundException) {
+            return ResponseEntity.notFound().build()
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
     }
 
     private fun ensureItemIsNotDefined(slug: String) {

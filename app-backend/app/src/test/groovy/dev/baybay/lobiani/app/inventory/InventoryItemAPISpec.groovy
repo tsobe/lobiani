@@ -44,7 +44,7 @@ class InventoryItemAPISpec extends Specification {
         def id = response.body.id
 
         then:
-        response.statusCode == HttpStatus.ACCEPTED
+        response.statusCode == HttpStatus.OK
 
         and:
         assertDefinedItemHasSlug response.body, item.slug
@@ -130,7 +130,7 @@ class InventoryItemAPISpec extends Specification {
         }
     }
 
-    def "Accepted is returned when deleting undefined item"() {
+    def "NotFound is returned when deleting undefined item"() {
         given:
         def undefinedItemId = UUID.randomUUID()
 
@@ -138,7 +138,7 @@ class InventoryItemAPISpec extends Specification {
         def response = deleteItem undefinedItemId
 
         then:
-        response.statusCode == HttpStatus.ACCEPTED
+        response.statusCode == HttpStatus.NOT_FOUND
     }
 
     def "item is added to stock"() {
@@ -152,7 +152,7 @@ class InventoryItemAPISpec extends Specification {
         def response = addItemToStock id, 10
 
         then:
-        response.statusCode == HttpStatus.ACCEPTED
+        response.statusCode == HttpStatus.OK
 
         and:
         conditions.eventually {
