@@ -1,60 +1,69 @@
 package dev.baybay.lobiani.inventory
 
 import dev.baybay.lobiani.admin.BaseAdminSpec
+import spock.lang.Stepwise
 
+@Stepwise
 class InventorySpec extends BaseAdminSpec {
 
-    def "new inventory item defined, added to stock and then deleted"() {
+    def "should navigate to new item page"() {
         given:
-        def slug = "the-matrix-trilogy-blu-ray"
         def itemsPage = to InventoryItemsPage
-
 
         when:
         itemsPage.openNewItemPage()
 
         then:
         at NewInventoryItemPage
+    }
 
+    def "item should be visible when defined"() {
+        given:
+        def slug = "the-matrix-trilogy"
 
+        and:
         def newItemPage = page as NewInventoryItemPage
 
+        and:
+        newItemPage.enterSlug slug
+
         when:
-        newItemPage.enterSlug(slug)
         newItemPage.save()
 
         then:
-        at itemsPage
+        at InventoryItemsPage
+
+        def itemsPage = to InventoryItemsPage
+
+        and:
         waitFor { itemsPage.hasItem slug }
+    }
 
+    def "should increase stock level when items are added to stock"() {
+        given:
+        def definedItemSlug = "the-matrix-trilogy"
 
-        when:
-        itemsPage.addItemToStock(slug, 100)
-
-        then:
-        at itemsPage
-        waitFor { itemsPage.getItemStockLevel(slug) == 100 }
-
-
-        when:
-        itemsPage.addItemToStock(slug, 10)
-
-        then:
-        at itemsPage
-        waitFor { itemsPage.getItemStockLevel(slug) == 110 }
-
+        and:
+        def itemsPage = page as InventoryItemsPage
 
         when:
-        itemsPage.deleteItem slug
+        itemsPage.addItemToStock definedItemSlug, 100
 
         then:
-        at itemsPage
-        waitFor { !itemsPage.hasItem(slug) }
+        waitFor { itemsPage.getItemStockLevel(definedItemSlug) == 100 }
+    }
 
+    def "item should not be visible when deleted"() {
+        given:
+        def definedItemSlug = "the-matrix-trilogy"
 
-        cleanup:
-        if (itemsPage?.hasItem(slug)) {
-            itemsPage.deleteItem slug
-        }
+        and:
+        def itemsPage = page as InventoryItemsPage
+
+        when:
+        itemsPage.deleteItem definedItemSlug
+
+        then:
+        waitFor { !itemsPage.hasItem(definedItemSlug) }
     }
 }
