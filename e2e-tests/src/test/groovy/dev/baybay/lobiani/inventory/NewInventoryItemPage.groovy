@@ -1,9 +1,9 @@
 package dev.baybay.lobiani.inventory
 
-import geb.Page
+import dev.baybay.lobiani.admin.AdminProtectedPageBase
 import geb.module.FormElement
 
-class NewInventoryItemPage extends Page {
+class NewInventoryItemPage extends AdminProtectedPageBase {
 
     static at = { !saveBtn.empty }
 

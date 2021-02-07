@@ -1,0 +1,56 @@
+package dev.baybay.lobiani.product
+
+import dev.baybay.lobiani.admin.BaseAdminSpec
+import spock.lang.Stepwise
+
+@Stepwise
+class ProductSpec extends BaseAdminSpec {
+
+    def "should navigate to new product page"() {
+        given:
+        def productsPage = to ProductsPage
+
+        when:
+        productsPage.openNewProductPage()
+
+        then:
+        at NewProductPage
+    }
+
+    def "product should be visible when defined"() {
+        given:
+        def newProductPage = page as NewProductPage
+
+        and:
+        def product = [slug       : "the-matrix-trilogy",
+                       title      : "The Matrix trilogy",
+                       description: "This is Matrix"]
+        and:
+        newProductPage.enterData(product)
+
+        when:
+        newProductPage.save()
+
+        then:
+        at ProductsPage
+
+        def productsPage = page as ProductsPage
+
+        and:
+        waitFor { productsPage.hasProduct product.slug }
+    }
+
+    def "product should not be visible when deleted"() {
+        given:
+        def definedProductSlug = "the-matrix-trilogy"
+
+        and:
+        def productsPage = page as ProductsPage
+
+        when:
+        productsPage.deleteProduct definedProductSlug
+
+        then:
+        waitFor { !productsPage.hasProduct(definedProductSlug) }
+    }
+}

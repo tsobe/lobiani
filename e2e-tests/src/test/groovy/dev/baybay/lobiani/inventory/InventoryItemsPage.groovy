@@ -1,8 +1,8 @@
 package dev.baybay.lobiani.inventory
 
-import geb.Page
+import dev.baybay.lobiani.admin.AdminProtectedPageBase
 
-class InventoryItemsPage extends Page {
+class InventoryItemsPage extends AdminProtectedPageBase {
 
     static url = "/inventory"
 

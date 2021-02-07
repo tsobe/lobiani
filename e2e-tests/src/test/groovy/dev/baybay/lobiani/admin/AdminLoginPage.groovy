@@ -9,7 +9,7 @@ class AdminLoginPage extends Page {
     static at = { !loginBtn.empty }
 
     static content = {
-        loginBtn { $("[data-login]")}
+        loginBtn { $("[data-login]") }
     }
 
     def login() {
