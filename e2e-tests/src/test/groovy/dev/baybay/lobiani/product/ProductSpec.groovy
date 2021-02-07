@@ -55,7 +55,7 @@ class ProductSpec extends BaseAdminSpec {
     }
 
     void cleanupSpec() {
-        if (!page instanceof ProductsPage) {
+        if (!(page instanceof ProductsPage)) {
             return
         }
         def productsPage = page as ProductsPage

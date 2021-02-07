@@ -59,7 +59,7 @@ class InventorySpec extends BaseAdminSpec {
     }
 
     void cleanupSpec() {
-        if (!page instanceof InventoryItemsPage) {
+        if (!(page instanceof InventoryItemsPage)) {
             return
         }
         def itemsPage = page as InventoryItemsPage
