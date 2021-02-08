@@ -1,10 +1,10 @@
 package dev.baybay.lobiani.product
 
-import dev.baybay.lobiani.admin.BaseAdminSpec
+import dev.baybay.lobiani.admin.AdminSpec
 import spock.lang.Stepwise
 
 @Stepwise
-class ProductSpec extends BaseAdminSpec {
+class ProductSpec extends AdminSpec {
 
     public static final String SLUG = "the-matrix-trilogy"
 

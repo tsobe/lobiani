@@ -4,7 +4,7 @@ import geb.spock.GebSpec
 import spock.lang.Shared
 import spock.lang.Stepwise
 
-class BaseAdminSpec extends GebSpec {
+class AdminSpec extends GebSpec {
 
     @Shared
     def sessionManager = new SessionManager(this)

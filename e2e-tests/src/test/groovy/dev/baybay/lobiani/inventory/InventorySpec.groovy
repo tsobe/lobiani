@@ -1,10 +1,10 @@
 package dev.baybay.lobiani.inventory
 
-import dev.baybay.lobiani.admin.BaseAdminSpec
+import dev.baybay.lobiani.admin.AdminSpec
 import spock.lang.Stepwise
 
 @Stepwise
-class InventorySpec extends BaseAdminSpec {
+class InventorySpec extends AdminSpec {
 
     public static final String SLUG = "the-matrix-trilogy"
 
