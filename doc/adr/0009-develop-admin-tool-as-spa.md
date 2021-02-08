@@ -28,7 +28,7 @@ the page is loaded
 #### Pros
 
 - Frontend is more decoupled from backend technologies since they interact with each other via API
-- Backend API can be potentially used by other consumers too: CLI, Native & Mobile (as long as there it is general-purpose)
+- Backend API can be potentially used by other consumers too: CLI, Native & Mobile (as long as it is general-purpose)
 - Frontend and backend can be delivered independently (and hence faster) from each other
 - Provides greater level of interactivity
 
