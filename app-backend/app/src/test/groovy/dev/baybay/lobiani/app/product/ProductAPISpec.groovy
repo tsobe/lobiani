@@ -1,20 +1,16 @@
 package dev.baybay.lobiani.app.product
 
-import dev.baybay.lobiani.app.TestConfig
+
+import dev.baybay.lobiani.testutil.APISpec
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.test.context.ActiveProfiles
-import spock.lang.Specification
 import spock.lang.Unroll
 import spock.util.concurrent.PollingConditions
 
-@ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = TestConfig)
-class ProductAPISpec extends Specification {
+class ProductAPISpec extends APISpec {
 
     private static final URI = "/api/products"
 

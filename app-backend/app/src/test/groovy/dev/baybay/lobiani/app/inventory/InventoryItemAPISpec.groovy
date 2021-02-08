@@ -1,21 +1,17 @@
 package dev.baybay.lobiani.app.inventory
 
-import dev.baybay.lobiani.app.TestConfig
+
+import dev.baybay.lobiani.testutil.APISpec
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.test.context.ActiveProfiles
 import spock.lang.Ignore
-import spock.lang.Specification
 import spock.lang.Unroll
 import spock.util.concurrent.PollingConditions
 
-@ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = TestConfig)
-class InventoryItemAPISpec extends Specification {
+class InventoryItemAPISpec extends APISpec {
 
     private static final URI = "/api/inventory-items"
 
@@ -250,7 +246,7 @@ class InventoryItemAPISpec extends Specification {
     }
 
     ResponseEntity<Object> getItemEntity(id) {
-        restTemplate.getForEntity"$URI/$id", Object
+        restTemplate.getForEntity "$URI/$id", Object
     }
 
     ResponseEntity<List> getItemsEntity() {
@@ -258,15 +254,15 @@ class InventoryItemAPISpec extends Specification {
     }
 
     ResponseEntity<List> getItemsEntityBySlug(slug) {
-        restTemplate.getForEntity"$URI?slug=${slug}", List
+        restTemplate.getForEntity "$URI?slug=${slug}", List
     }
 
     ResponseEntity<Object> deleteItem(id) {
-        restTemplate.exchange"$URI/$id", HttpMethod.DELETE, null, Object
+        restTemplate.exchange "$URI/$id", HttpMethod.DELETE, null, Object
     }
 
     ResponseEntity<Object> addItemToStock(id, amount) {
-        restTemplate.postForEntity"$URI/${id}/stock", [amount: amount], Object
+        restTemplate.postForEntity "$URI/${id}/stock", [amount: amount], Object
     }
 
     static void assertDefinedItemHasSlug(definedItem, slug) {
