@@ -4,6 +4,7 @@ package dev.baybay.lobiani.app.product
 import dev.baybay.lobiani.testutil.APISpec
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -158,6 +159,31 @@ class ProductAPISpec extends APISpec {
         response.body.empty
     }
 
+    def "should have price when assigned"() {
+        given:
+        def product = newProduct()
+
+        and:
+        def id = productDefined product
+
+        and:
+        def price = [value: 17, currency: "EUR"]
+
+        when:
+        def response = assignPrice id, price
+
+        then:
+        response.statusCode == HttpStatus.OK
+
+        and:
+        conditions.eventually {
+            def definedProductResponse = getProductEntity id
+            definedProductResponse.statusCode == HttpStatus.OK
+            def definedProduct = definedProductResponse.body
+            definedProduct.price == price
+        }
+    }
+
     static def newProduct(slug = "the-matrix-trilogy") {
         [slug       : slug,
          title      : "$slug-title",
@@ -190,6 +216,11 @@ class ProductAPISpec extends APISpec {
 
     ResponseEntity<Object> deleteProduct(id) {
         restTemplate.exchange "$URI/$id", HttpMethod.DELETE, null, Object
+    }
+
+    ResponseEntity<Void> assignPrice(id, price) {
+        def priceEntity = new HttpEntity<Object>(price)
+        restTemplate.exchange "$URI/$id/price", HttpMethod.PUT, priceEntity, Void
     }
 
     static void assertProduct(actual, expected) {
