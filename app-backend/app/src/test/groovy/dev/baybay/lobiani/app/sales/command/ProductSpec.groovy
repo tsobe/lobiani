@@ -5,6 +5,7 @@ import dev.baybay.lobiani.app.sales.command.api.DefineProductInSales
 import dev.baybay.lobiani.app.sales.model.Price
 import dev.baybay.lobiani.app.sales.model.PriceAssignedToProduct
 import dev.baybay.lobiani.app.sales.model.ProductDefinedInSales
+import dev.baybay.lobiani.app.sales.model.ProductIdentifier
 import dev.baybay.lobiani.testutil.AggregateSpec
 
 class ProductSpec extends AggregateSpec {
@@ -15,26 +16,24 @@ class ProductSpec extends AggregateSpec {
 
     def "should define product"() {
         given:
-        def id = UUID.randomUUID()
-        def marketingProductID = UUID.randomUUID()
+        def id = new ProductIdentifier(UUID.randomUUID())
 
         when:
-        actingWith new DefineProductInSales(id, marketingProductID)
+        actingWith new DefineProductInSales(id)
 
         then:
         expectSuccess()
 
         and:
-        expectEvent new ProductDefinedInSales(id, marketingProductID)
+        expectEvent new ProductDefinedInSales(id)
     }
 
     def "should assign price"() {
         given:
-        def id = UUID.randomUUID()
-        def marketingProductID = UUID.randomUUID()
+        def id = new ProductIdentifier(UUID.randomUUID())
 
         and:
-        pastEvent new ProductDefinedInSales(id, marketingProductID)
+        pastEvent new ProductDefinedInSales(id)
 
         and:
         def price = new Price(17, "EUR")
@@ -46,6 +45,6 @@ class ProductSpec extends AggregateSpec {
         expectSuccess()
 
         and:
-        expectEvent new PriceAssignedToProduct(id, marketingProductID, price)
+        expectEvent new PriceAssignedToProduct(id, price)
     }
 }

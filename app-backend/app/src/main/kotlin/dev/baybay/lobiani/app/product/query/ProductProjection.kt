@@ -1,6 +1,7 @@
 package dev.baybay.lobiani.app.product.query
 
 import dev.baybay.lobiani.app.product.api.*
+import dev.baybay.lobiani.app.sales.model.PriceAssignedToProduct
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.queryhandling.QueryHandler
 import org.springframework.stereotype.Component
@@ -18,6 +19,11 @@ class ProductProjection {
     @EventHandler
     fun on(e: ProductDeleted) {
         products.removeIf { it.id == e.id }
+    }
+
+    @EventHandler
+    fun on(e: PriceAssignedToProduct) {
+        products.find { it.id == e.id.value }?.price = e.price
     }
 
     @QueryHandler

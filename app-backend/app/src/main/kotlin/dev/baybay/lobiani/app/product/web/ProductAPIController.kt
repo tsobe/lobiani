@@ -2,6 +2,9 @@ package dev.baybay.lobiani.app.product.web
 
 import dev.baybay.lobiani.app.product.api.*
 import dev.baybay.lobiani.app.product.query.Product
+import dev.baybay.lobiani.app.sales.command.api.AssignPriceToProduct
+import dev.baybay.lobiani.app.sales.model.Price
+import dev.baybay.lobiani.app.sales.model.ProductIdentifier
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
@@ -34,6 +37,11 @@ class ProductAPIController(private val commandGateway: CommandGateway,
         val defineProduct = definition.asCommand()
         commandGateway.sendAndWait<Void>(defineProduct)
         return Product(defineProduct.id, defineProduct.slug.value, definition.title, definition.description)
+    }
+
+    @PutMapping("/{id}/price")
+    fun assignPrice(@PathVariable id: UUID, @RequestBody price: Price) {
+        commandGateway.sendAndWait<Void>(AssignPriceToProduct(ProductIdentifier(id), price))
     }
 
     @DeleteMapping("/{id}")

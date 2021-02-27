@@ -1,6 +1,6 @@
 package dev.baybay.lobiani.app.sales.command.api
 
+import dev.baybay.lobiani.app.sales.model.ProductIdentifier
 import org.axonframework.modelling.command.TargetAggregateIdentifier
-import java.util.*
 
-data class DefineProductInSales(@TargetAggregateIdentifier val id: UUID, val marketingProductID: UUID)
+data class DefineProductInSales(@TargetAggregateIdentifier val id: ProductIdentifier)

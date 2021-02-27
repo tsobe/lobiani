@@ -26,7 +26,7 @@ class ProductAPISpec extends APISpec {
         definedProductIds.forEach { id ->
             deleteProduct id
             conditions.call {
-                getProductEntity id == HttpStatus.NOT_FOUND
+                getProductEntity(id).statusCode == HttpStatus.NOT_FOUND
             }
         }
     }
@@ -193,7 +193,9 @@ class ProductAPISpec extends APISpec {
     ResponseEntity<Object> defineProduct(product) {
         def response = restTemplate.postForEntity URI, product, Object
         def id = response.body.id
-        definedProductIds.add id
+        if (id) {
+            definedProductIds.add id
+        }
         response
     }
 
