@@ -1,9 +1,9 @@
 package dev.baybay.lobiani.app.sales.command
 
 import dev.baybay.lobiani.app.sales.command.api.AssignPriceToProduct
-import dev.baybay.lobiani.app.sales.command.api.DefineProductInSales
+import dev.baybay.lobiani.app.sales.command.api.DefineProduct
 import dev.baybay.lobiani.app.sales.model.PriceAssignedToProduct
-import dev.baybay.lobiani.app.sales.model.ProductDefinedInSales
+import dev.baybay.lobiani.app.sales.model.ProductDefined
 import dev.baybay.lobiani.app.sales.model.ProductIdentifier
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
@@ -20,8 +20,8 @@ class SalesProduct {
     constructor()
 
     @CommandHandler
-    constructor(c: DefineProductInSales) {
-        apply(ProductDefinedInSales(c.id))
+    constructor(c: DefineProduct) {
+        apply(ProductDefined(c.id))
     }
 
     @CommandHandler
@@ -30,7 +30,7 @@ class SalesProduct {
     }
 
     @EventSourcingHandler
-    fun on(e: ProductDefinedInSales) {
+    fun on(e: ProductDefined) {
         id = e.id
     }
 }
