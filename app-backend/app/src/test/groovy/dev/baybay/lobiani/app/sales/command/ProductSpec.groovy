@@ -16,7 +16,7 @@ class ProductSpec extends AggregateSpec {
 
     def "should define product"() {
         given:
-        def id = new ProductIdentifier(UUID.randomUUID())
+        def id = new ProductIdentifier()
 
         when:
         actingWith new DefineProduct(id)
@@ -30,7 +30,7 @@ class ProductSpec extends AggregateSpec {
 
     def "should assign price"() {
         given:
-        def id = new ProductIdentifier(UUID.randomUUID())
+        def id = new ProductIdentifier()
 
         and:
         pastEvent new ProductDefined(id)
