@@ -20,6 +20,9 @@ export function createStore() {
       },
       add(state, product) {
         state.products.push(product)
+      },
+      setPrice(state, payload) {
+        state.products.find(p => p.id === payload.id).price = payload.price
       }
     },
     actions: {
@@ -30,6 +33,10 @@ export function createStore() {
       async define(context, product) {
         const response = await axios.post('/products', product)
         context.commit('add', response.data)
+      },
+      async assignPrice(context, payload) {
+        await axios.put(`/products/${payload.id}/price`, payload.price)
+        context.commit('setPrice', payload)
       },
       async delete(context, id) {
         await axios.delete(`/products/${id}`)
