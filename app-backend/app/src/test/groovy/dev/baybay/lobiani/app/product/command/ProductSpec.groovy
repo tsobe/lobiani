@@ -43,4 +43,9 @@ class ProductSpec extends AggregateSpec {
         and:
         expectEvent new ProductDeleted(id)
     }
+
+    def "ProductIdentifier.toString() should return UUID"() {
+        expect:
+        id.toString() == id.value.toString()
+    }
 }
