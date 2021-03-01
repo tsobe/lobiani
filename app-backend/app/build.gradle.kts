@@ -9,7 +9,7 @@ plugins {
 
 val axonVersion = "4.4.7"
 val spockVersion = "2.0-M2-groovy-2.5"
-val openAPIVersion = "1.5.4"
+val openAPIVersion = "1.5.5"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
