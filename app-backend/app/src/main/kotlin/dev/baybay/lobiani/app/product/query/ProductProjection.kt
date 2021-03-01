@@ -13,17 +13,17 @@ class ProductProjection {
 
     @EventHandler
     fun on(e: ProductDefined) {
-        products.add(Product(e.id, e.slug, e.title, e.description))
+        products.add(Product(e.id.stringValue, e.slug.value, e.title, e.description))
     }
 
     @EventHandler
     fun on(e: ProductDeleted) {
-        products.removeIf { it.id == e.id }
+        products.removeIf { it.id == e.id.stringValue }
     }
 
     @EventHandler
     fun on(e: PriceAssignedToProduct) {
-        products.find { it.id == e.id.value }?.price = e.price
+        products.find { it.id == e.id.stringValue }?.price = e.price
     }
 
     @QueryHandler

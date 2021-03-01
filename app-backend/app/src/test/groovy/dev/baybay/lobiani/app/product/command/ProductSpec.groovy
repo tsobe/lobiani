@@ -1,15 +1,17 @@
 package dev.baybay.lobiani.app.product.command
 
+import dev.baybay.lobiani.app.common.Slug
 import dev.baybay.lobiani.app.product.api.DefineProduct
 import dev.baybay.lobiani.app.product.api.DeleteProduct
 import dev.baybay.lobiani.app.product.api.ProductDefined
 import dev.baybay.lobiani.app.product.api.ProductDeleted
+import dev.baybay.lobiani.app.product.api.ProductIdentifier
 import dev.baybay.lobiani.testutil.AggregateSpec
 
 class ProductSpec extends AggregateSpec {
 
-    def id = UUID.randomUUID()
-    def slug = "the-matrix-trilogy"
+    def id = new ProductIdentifier(UUID.randomUUID())
+    def slug = new Slug("the-matrix-trilogy")
     def title = "The Matrix Trilogy"
     def description = "This is Matrix"
 

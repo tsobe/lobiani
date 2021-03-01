@@ -12,6 +12,6 @@ class ProductDefinitionPolicy {
 
     @EventHandler
     fun on(e: ProductDefinedInMarketing, commandGateway: CommandGateway) {
-        commandGateway.send<Void>(DefineProductInSales(ProductIdentifier(e.id)))
+        commandGateway.send<Void>(DefineProductInSales(ProductIdentifier(e.id.value)))
     }
 }

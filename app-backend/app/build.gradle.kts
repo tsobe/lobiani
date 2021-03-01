@@ -21,6 +21,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-kotlin:$openAPIVersion")
     implementation("org.springdoc:springdoc-openapi-security:$openAPIVersion")
     implementation("org.axonframework:axon-spring-boot-starter:$axonVersion")
+    implementation("org.dom4j:dom4j:2.1.3")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
