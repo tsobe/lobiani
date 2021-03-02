@@ -1,4 +1,4 @@
-package dev.baybay.lobiani.app.product
+package dev.baybay.lobiani.app.product.upcasting
 
 
 import dev.baybay.lobiani.app.product.api.ProductDeleted
