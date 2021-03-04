@@ -1,7 +1,7 @@
 package dev.baybay.lobiani.app
 
-import dev.baybay.lobiani.app.inventory.api.QueryAllInventoryItems
-import dev.baybay.lobiani.app.inventory.query.InventoryItem
+import dev.baybay.lobiani.app.admin.inventory.query.QueryAllInventoryItems
+import dev.baybay.lobiani.app.admin.inventory.InventoryItem
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
 import org.slf4j.Logger
@@ -19,7 +19,8 @@ class HealthController(private val queryGateway: QueryGateway) {
 
     @GetMapping("/healthz")
     fun getStatus() {
-        queryGateway.query(QueryAllInventoryItems(),
+        queryGateway.query(
+            QueryAllInventoryItems(),
                 ResponseTypes.multipleInstancesOf(InventoryItem::class.java)).get()
     }
 

@@ -1,23 +1,28 @@
 package dev.baybay.lobiani.testutil
 
+import dev.baybay.lobiani.app.common.AxonConfig
 import org.axonframework.eventhandling.EventData
 import org.axonframework.serialization.SerializedMetaData
 import org.axonframework.serialization.SerializedObject
+import org.axonframework.serialization.Serializer
 import org.axonframework.serialization.SimpleSerializedObject
 import org.axonframework.serialization.upcasting.event.EventUpcaster
 import org.axonframework.serialization.upcasting.event.InitialEventRepresentation
 import org.axonframework.serialization.upcasting.event.IntermediateEventRepresentation
-import org.axonframework.serialization.xml.XStreamSerializer
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
 import java.time.Instant
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
+@SpringBootTest(classes = AxonConfig)
 class UpcasterSpec extends Specification {
 
+    @Autowired
+    Serializer serializer
     private EventUpcaster upcaster
-    def serializer = XStreamSerializer.builder().build()
 
     def use(EventUpcaster upcaster) {
         this.upcaster = upcaster
