@@ -1,13 +1,13 @@
 package dev.baybay.lobiani.app.admin.product.web
 
-import dev.baybay.lobiani.app.marketing.command.DeleteProduct
+import dev.baybay.lobiani.app.admin.product.Product
 import dev.baybay.lobiani.app.admin.product.query.QueryAllProducts
 import dev.baybay.lobiani.app.admin.product.query.QueryProductByID
 import dev.baybay.lobiani.app.admin.product.query.QueryProductBySlug
-import dev.baybay.lobiani.app.admin.product.Product
-import dev.baybay.lobiani.app.sales.command.AssignPriceToProduct
+import dev.baybay.lobiani.app.marketing.command.DeleteProduct
 import dev.baybay.lobiani.app.sales.Price
 import dev.baybay.lobiani.app.sales.ProductIdentifier
+import dev.baybay.lobiani.app.sales.command.AssignPriceToProduct
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
