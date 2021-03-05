@@ -1,7 +1,7 @@
 import {mount} from '@vue/test-utils'
 import Profile from '@/components/Profile'
 
-it('should show basic profile info when user inf is available', () => {
+it('should show basic profile info when user info is available', () => {
   const auth = {
     user: {
       picture: 'https://example.com/avatar.jpg',
