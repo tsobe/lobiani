@@ -177,24 +177,6 @@ class InventoryItemAPISpec extends APISpec {
         invalidAmount << [0, -10]
     }
 
-    @Ignore
-    def "BadRequest is returned when item with same slug is already defined"() {
-        given:
-        def item = newItem()
-
-        and:
-        itemDefined item
-
-        when:
-        def response = defineItem item
-
-        then:
-        response.statusCode == HttpStatus.BAD_REQUEST
-
-        and:
-        response.body.message == "Item with slug ${item.slug} is already defined"
-    }
-
     def "defined item should be retrieved by slug eventually"() {
         given:
         def memento = newItem "memento"
