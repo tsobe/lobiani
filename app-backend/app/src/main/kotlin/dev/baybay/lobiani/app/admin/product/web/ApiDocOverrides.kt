@@ -8,7 +8,7 @@ import org.springdoc.core.SpringDocUtils
 import org.springframework.stereotype.Component
 
 /**
- * A place to override API documentation for domain objects without polluting them with springdoc annotations
+ * A place to override API documentation for domain objects without polluting them with OpenAPI annotations
  */
 @Component
 class ApiDocOverrides {
