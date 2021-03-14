@@ -1,6 +1,6 @@
 package dev.baybay.lobiani.app.shopping.web
 
-import dev.baybay.lobiani.app.shopping.Product
+import dev.baybay.lobiani.app.shopping.PublishedProduct
 import dev.baybay.lobiani.app.shopping.query.QueryAllPublishedProducts
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController
 class ProductAPIController(private val queryGateway: QueryGateway) {
 
     @GetMapping
-    fun getProducts(): List<Product> {
+    fun getProducts(): List<PublishedProduct> {
         return queryGateway.query(
-            QueryAllPublishedProducts(), ResponseTypes.multipleInstancesOf(Product::class.java)
+            QueryAllPublishedProducts(), ResponseTypes.multipleInstancesOf(PublishedProduct::class.java)
         ).get()
     }
 }

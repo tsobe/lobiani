@@ -9,5 +9,5 @@ class Product {
     var stockLevel: Int = 0
     var price: Price? = null
     var inventoryItemId: String? = null
-    val published: Boolean get() = price != null
+    val published: Boolean get() = id != null && slug != null && title != null && description != null && price != null
 }

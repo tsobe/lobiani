@@ -17,7 +17,7 @@ class ProductProjection {
 
     @EventHandler
     fun on(e: ProductDefined) {
-        products.find { it.slug == e.slug.value }?.apply {
+        getProduct(e.slug.value).apply {
             id = e.id.stringValue
             slug = e.slug.value
             title = e.title
@@ -27,20 +27,20 @@ class ProductProjection {
 
     @EventHandler
     fun on(e: PriceAssignedToProduct) {
-        products.find { it.id == e.id.stringValue }?.price = Price(e.price.value, e.price.currency)
+        findById(e.id.stringValue)?.price = Price(e.price.value, e.price.currency)
     }
 
     @EventHandler
     fun on(e: InventoryItemDefined) {
-        products.add(Product().apply {
+        getProduct(e.slug).apply {
             slug = e.slug
             inventoryItemId = e.id.toString()
-        })
+        }
     }
 
     @EventHandler
     fun on(e: InventoryItemAddedToStock) {
-        products.find { it.inventoryItemId == e.inventoryItemId.toString() }?.apply {
+        findByInventoryItemId(e.inventoryItemId.toString())?.apply {
             stockLevel += e.quantity.value
         }
     }
@@ -51,7 +51,26 @@ class ProductProjection {
     }
 
     @QueryHandler
-    fun handle(q: QueryAllPublishedProducts): List<Product> {
-        return products.filter { it.published }
+    fun handle(q: QueryAllPublishedProducts): List<PublishedProduct> {
+        return products
+            .filter { it.published }
+            .map {
+                PublishedProduct(it.id!!, it.slug!!, it.title!!, it.description!!, it.stockLevel, it.price!!)
+            }
     }
+
+    private fun getProduct(slug: String): Product {
+        var product = products.find { it.slug == slug }
+        if (product == null) {
+            product = Product()
+            products.add(product)
+        }
+        return product
+    }
+
+    private fun findById(id: String) =
+        products.find { it.id == id }
+
+    private fun findByInventoryItemId(id: String) =
+        products.find { it.inventoryItemId == id }
 }
