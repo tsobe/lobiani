@@ -7,13 +7,9 @@ import dev.baybay.lobiani.app.admin.inventory.query.QueryInventoryItemBySlug
 import dev.baybay.lobiani.app.inventory.Quantity
 import dev.baybay.lobiani.app.inventory.command.AddInventoryItemToStock
 import dev.baybay.lobiani.app.inventory.command.DeleteInventoryItem
-import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.responsetypes.ResponseTypes
-import org.axonframework.modelling.command.AggregateNotFoundException
 import org.axonframework.queryhandling.QueryGateway
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import kotlin.NoSuchElementException
@@ -59,14 +55,6 @@ class InventoryItemAPIController(
     @DeleteMapping("/{id}")
     fun deleteItem(@PathVariable id: UUID) {
         commandGateway.sendAndWait<Void>(DeleteInventoryItem(id))
-    }
-
-    @ExceptionHandler(CommandExecutionException::class)
-    fun handle(e: CommandExecutionException): ResponseEntity<Void> {
-        if (e.cause is AggregateNotFoundException) {
-            return ResponseEntity.notFound().build()
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
     }
 
     private fun queryBySlug(slug: String) =

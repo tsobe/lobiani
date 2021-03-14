@@ -1,42 +1,31 @@
 package dev.baybay.lobiani.app.admin
 
-
 import dev.baybay.lobiani.testutil.APISpec
+import dev.baybaydev.lobiani.testutil.AdminAPITestClient
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import spock.lang.Ignore
 import spock.lang.Unroll
 import spock.util.concurrent.PollingConditions
 
+import static dev.baybay.lobiani.testutil.TestDataHelper.newInventoryItem
+
 class InventoryItemAPISpec extends APISpec {
 
-    private static final URI = "/api/inventory-items"
-
     @Autowired
-    TestRestTemplate restTemplate
+    AdminAPITestClient apiTestClient
 
     PollingConditions conditions = new PollingConditions(timeout: 5)
 
-    def definedItemIds = []
-
     void cleanup() {
-        definedItemIds.each { id ->
-            deleteItem id
-            conditions.call {
-                getItemEntity(id).statusCode == HttpStatus.NOT_FOUND
-            }
-        }
+        apiTestClient.cleanup()
     }
 
     def "defined item should be retrieved eventually"() {
         given:
-        def item = newItem()
+        def item = newInventoryItem()
 
         when:
-        def response = defineItem item
+        def response = apiTestClient.defineItem item
         def id = response.body.id
 
         then:
@@ -47,7 +36,7 @@ class InventoryItemAPISpec extends APISpec {
 
         and:
         conditions.eventually {
-            def definedItemResponse = getItemEntity id
+            def definedItemResponse = apiTestClient.getItemEntity id
             definedItemResponse.statusCode == HttpStatus.OK
             assertDefinedItemHasSlug definedItemResponse.body, item.slug
         }
@@ -58,7 +47,7 @@ class InventoryItemAPISpec extends APISpec {
         def undefinedItemId = UUID.randomUUID()
 
         when:
-        def response = getItemEntity undefinedItemId
+        def response = apiTestClient.getItemEntity undefinedItemId
 
         then:
         response.statusCode == HttpStatus.NOT_FOUND
@@ -66,14 +55,14 @@ class InventoryItemAPISpec extends APISpec {
 
     def "defined items are retrieved eventually"() {
         given:
-        def item = newItem()
+        def item = newInventoryItem()
 
         and:
         itemDefined item
 
         expect:
         conditions.eventually {
-            def response = getItemsEntity()
+            def response = apiTestClient.getItemsEntity()
             response.statusCode == HttpStatus.OK
             def definedItems = response.body
             definedItems.size() == 1
@@ -83,7 +72,7 @@ class InventoryItemAPISpec extends APISpec {
 
     def "empty result is returned when no items are defined"() {
         when:
-        def response = getItemsEntity()
+        def response = apiTestClient.getItemsEntity()
 
         then:
         response.statusCode == HttpStatus.OK
@@ -95,10 +84,10 @@ class InventoryItemAPISpec extends APISpec {
     @Unroll
     def "BadRequest is returned for invalid slug '#invalidSlug'"() {
         given:
-        def invalidItem = newItem invalidSlug
+        def invalidItem = newInventoryItem invalidSlug
 
         when:
-        def response = defineItem invalidItem
+        def response = apiTestClient.defineItem invalidItem
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
@@ -112,17 +101,17 @@ class InventoryItemAPISpec extends APISpec {
 
     def "defined item is deleted"() {
         given:
-        def item = newItem()
+        def item = newInventoryItem()
 
         and:
         def id = itemDefined item
 
         when:
-        deleteItem(id)
+        apiTestClient.deleteItem(id)
 
         then:
         conditions.eventually {
-            getItemEntity(id).statusCode == HttpStatus.NOT_FOUND
+            apiTestClient.getItemEntity(id).statusCode == HttpStatus.NOT_FOUND
         }
     }
 
@@ -131,7 +120,7 @@ class InventoryItemAPISpec extends APISpec {
         def undefinedItemId = UUID.randomUUID()
 
         when:
-        def response = deleteItem undefinedItemId
+        def response = apiTestClient.deleteItem undefinedItemId
 
         then:
         response.statusCode == HttpStatus.NOT_FOUND
@@ -139,33 +128,33 @@ class InventoryItemAPISpec extends APISpec {
 
     def "item is added to stock"() {
         given:
-        def item = newItem()
+        def item = newInventoryItem()
 
         and:
         def id = itemDefined item
 
         when:
-        def response = addItemToStock id, 10
+        def response = apiTestClient.addItemToStock id, 10
 
         then:
         response.statusCode == HttpStatus.OK
 
         and:
         conditions.eventually {
-            getItemEntity(id).body.stockLevel == 10
+            apiTestClient.getItemEntity(id).body.stockLevel == 10
         }
     }
 
     @Unroll
     def "BadRequest is returned when #invalidAmount items are added to stock"() {
         given:
-        def item = newItem()
+        def item = newInventoryItem()
 
         and:
         def id = itemDefined item
 
         when:
-        def response = addItemToStock id, invalidAmount
+        def response = apiTestClient.addItemToStock id, invalidAmount
 
         then:
         response.statusCode == HttpStatus.BAD_REQUEST
@@ -179,8 +168,8 @@ class InventoryItemAPISpec extends APISpec {
 
     def "defined item should be retrieved by slug eventually"() {
         given:
-        def memento = newItem "memento"
-        def matrix = newItem "the-matrix-trilogy"
+        def memento = newInventoryItem "memento"
+        def matrix = newInventoryItem "the-matrix-trilogy"
 
         and:
         itemDefined memento
@@ -188,7 +177,7 @@ class InventoryItemAPISpec extends APISpec {
 
         expect:
         conditions.eventually {
-            def response = getItemsEntityBySlug matrix.slug
+            def response = apiTestClient.getItemsEntityBySlug matrix.slug
             response.statusCode == HttpStatus.OK
             def definedItems = response.body
             definedItems.size() == 1
@@ -201,7 +190,7 @@ class InventoryItemAPISpec extends APISpec {
         def undefinedItemSlug = "the-matrix-trilogy"
 
         when:
-        def response = getItemsEntityBySlug undefinedItemSlug
+        def response = apiTestClient.getItemsEntityBySlug undefinedItemSlug
 
         then:
         response.statusCode == HttpStatus.OK
@@ -210,41 +199,8 @@ class InventoryItemAPISpec extends APISpec {
         response.body.empty
     }
 
-    static def newItem(slug = "the-matrix-trilogy") {
-        return [slug: slug]
-    }
-
-    ResponseEntity<Object> defineItem(item) {
-        def response = restTemplate.postForEntity URI, item, Object
-        def id = response.body.id
-        if (id) {
-            definedItemIds.add id
-        }
-        response
-    }
-
     def itemDefined(item) {
-        defineItem(item).body.id
-    }
-
-    ResponseEntity<Object> getItemEntity(id) {
-        restTemplate.getForEntity "$URI/$id", Object
-    }
-
-    ResponseEntity<List> getItemsEntity() {
-        restTemplate.getForEntity URI, List
-    }
-
-    ResponseEntity<List> getItemsEntityBySlug(slug) {
-        restTemplate.getForEntity "$URI?slug=${slug}", List
-    }
-
-    ResponseEntity<Object> deleteItem(id) {
-        restTemplate.exchange "$URI/$id", HttpMethod.DELETE, null, Object
-    }
-
-    ResponseEntity<Object> addItemToStock(id, amount) {
-        restTemplate.postForEntity "$URI/${id}/stock", [amount: amount], Object
+        apiTestClient.defineItem(item).body.id
     }
 
     static void assertDefinedItemHasSlug(definedItem, slug) {
