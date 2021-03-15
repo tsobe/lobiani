@@ -72,7 +72,7 @@ spec:
     spec:
       containers:
         - name: lobiani-admin
-          image: sevteen/lobiani-admin@sha256:884bb849dbc4ddc3992a55af0d5c8d1af43ebd832a7a6b64c264906720ab4d77 # Modified by CI at Mon Feb 15 08:30:59 UTC 2021
+          image: sevteen/lobiani-admin@sha256:5efb29c8f619dc69bc3af055ad97bd8df9b3ffd6ea7751a0b13b9d506650e73f # Modified by CI at Mon Mar 15 19:02:33 UTC 2021
           imagePullPolicy: Always
           ports:
             - containerPort: 80
