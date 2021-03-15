@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(ProductAPIController)
 class ProductAPIControllerTest extends Specification {
@@ -40,7 +40,6 @@ class ProductAPIControllerTest extends Specification {
 
     def "should return products when QueryBus returns results"() {
         given:
-        def id = "id"
         def slug = "slug"
         def title = "title"
         def description = "description"
@@ -48,7 +47,7 @@ class ProductAPIControllerTest extends Specification {
         def priceVal = 17
         def currency = "EUR"
         def price = new Price(new BigDecimal(priceVal), Currency.getInstance(currency))
-        def product = new PublishedProduct(id, slug, title, description, stockLevel, price)
+        def product = new PublishedProduct(slug, title, description, stockLevel, price)
 
         and:
         queryGateway.query(_ as QueryAllPublishedProducts, _) >> CompletableFuture.completedFuture([product])
@@ -58,7 +57,6 @@ class ProductAPIControllerTest extends Specification {
 
         then:
         result.andExpect(jsonPath("\$.length()").value(1))
-                .andExpect(jsonPath("\$[0].id").value(id))
                 .andExpect(jsonPath("\$[0].slug").value(slug))
                 .andExpect(jsonPath("\$[0].title").value(title))
                 .andExpect(jsonPath("\$[0].description").value(description))

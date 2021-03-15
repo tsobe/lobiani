@@ -55,7 +55,7 @@ class ProductProjection {
         return products
             .filter { it.published }
             .map {
-                PublishedProduct(it.id!!, it.slug!!, it.title!!, it.description!!, it.stockLevel, it.price!!)
+                PublishedProduct(it.slug!!, it.title!!, it.description!!, it.stockLevel, it.price!!)
             }
     }
 
