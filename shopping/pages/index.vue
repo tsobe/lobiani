@@ -1,8 +1,6 @@
 <template>
-  <div class="container">
-    <div v-for="product in products">
-      <product :product="product"/>
-    </div>
+  <div class="container mx-auto p-10">
+    <product class="mb-3" v-for="product in products" :key="product.slug" :product="product"/>
   </div>
 </template>
 
