@@ -10,10 +10,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.13.1",
     "core-js": "^3.8.3",
     "nuxt": "^2.14.12"
   },
   "devDependencies": {
+    "@nuxtjs/proxy": "^2.1.0",
     "@nuxtjs/tailwindcss": "^3.4.2",
     "@vue/test-utils": "^1.1.2",
     "babel-core": "7.0.0-bridge.0",
