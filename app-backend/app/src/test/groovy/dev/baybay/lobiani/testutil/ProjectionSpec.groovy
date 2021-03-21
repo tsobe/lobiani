@@ -25,7 +25,10 @@ import spock.lang.Specification
  *         event new SomeEvent()
  *
  *         when:
- *         query new QuerySomething(), ResponseTypes.multipleInstancesOf(QueryResult)
+ *         def result = query new QuerySomething(), ResponseTypes.multipleInstancesOf(QueryResult)
+ *
+ *         then:
+ *         // assert result
  *     }
  * }
  * </pre>
