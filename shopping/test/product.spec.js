@@ -31,13 +31,23 @@ it('should display stock summary as IN STOCK when stockLevel is far greater than
   expect(stockSummaryWrapper.classes('text-green-600')).toBe(true)
 })
 
-it('should display stock summary with warning when stockLevel is approaching 0', () => {
+it('should display stock summary with warning in plural when stockLevel is approaching 0', () => {
   const stockLevel = 4
   const product = newProduct(stockLevel)
 
   mountComponent(product)
 
   expect(stockSummaryWrapper.text()).toBe('only 4 items left')
+  expect(stockSummaryWrapper.classes('text-yellow-600')).toBe(true)
+})
+
+it('should display stock summary with warning in singular when stockLevel is approaching 0', () => {
+  const stockLevel = 1
+  const product = newProduct(stockLevel)
+
+  mountComponent(product)
+
+  expect(stockSummaryWrapper.text()).toBe('only 1 item left')
   expect(stockSummaryWrapper.classes('text-yellow-600')).toBe(true)
 })
 
