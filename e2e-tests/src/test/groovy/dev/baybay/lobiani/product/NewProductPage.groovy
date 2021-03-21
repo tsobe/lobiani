@@ -1,7 +1,7 @@
 package dev.baybay.lobiani.product
 
 import dev.baybay.lobiani.admin.AdminProtectedPageBase
-import geb.module.FormElement
+import dev.baybay.lobiani.admin.LoadingButtonModule
 
 class NewProductPage extends AdminProtectedPageBase {
 
@@ -13,7 +13,7 @@ class NewProductPage extends AdminProtectedPageBase {
         slugInput { $("[data-slug]") }
         titleInput { $("[data-title]") }
         descriptionInput { $("[data-description]") }
-        saveBtn { $("[data-save]") }
+        saveBtn { $("[data-save]").module(LoadingButtonModule) }
     }
 
     def enterData(product) {
@@ -23,7 +23,6 @@ class NewProductPage extends AdminProtectedPageBase {
     }
 
     def save() {
-        waitFor { saveBtn.module(FormElement).enabled }
         saveBtn.click()
     }
 }

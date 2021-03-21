@@ -1,7 +1,7 @@
 package dev.baybay.lobiani.inventory
 
 import dev.baybay.lobiani.admin.AdminProtectedPageBase
-import geb.module.FormElement
+import dev.baybay.lobiani.admin.LoadingButtonModule
 
 class NewInventoryItemPage extends AdminProtectedPageBase {
 
@@ -9,7 +9,7 @@ class NewInventoryItemPage extends AdminProtectedPageBase {
 
     static content = {
         slugInput { $("[data-slug]") }
-        saveBtn { $("[data-save]") }
+        saveBtn { $("[data-save]").module(LoadingButtonModule) }
     }
 
     def enterSlug(slug) {
@@ -17,7 +17,6 @@ class NewInventoryItemPage extends AdminProtectedPageBase {
     }
 
     def save() {
-        waitFor { saveBtn.module(FormElement).enabled }
         saveBtn.click()
     }
 }
