@@ -4,6 +4,10 @@ import geb.spock.GebSpec
 import spock.lang.Shared
 import spock.lang.Stepwise
 
+/**
+ * Base class for specs involving access to admin (protected) area.
+ * Automatically takes care of login/logout actions for the spec (if it's stepwise) or feature (if spec is not stepwise).
+ */
 class AdminSpec extends GebSpec {
 
     @Shared
