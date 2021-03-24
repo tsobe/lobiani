@@ -40,6 +40,17 @@ class ProductSpec extends AdminSpec {
         waitFor { productsPage.hasProduct product.slug }
     }
 
+    def "product should have price assigned"() {
+        given:
+        def productsPage = at ProductsPage
+
+        when:
+        productsPage.assignPrice SLUG, 17
+
+        then:
+        waitFor { productsPage.getProduct(SLUG).currentPrice == '17 EUR' }
+    }
+
     def "product should not be visible when deleted"() {
         given:
         def definedProductSlug = SLUG

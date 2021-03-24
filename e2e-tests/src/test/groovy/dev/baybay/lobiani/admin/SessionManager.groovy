@@ -36,7 +36,7 @@ class SessionManager {
         println "${new Date()} [${spec.class.simpleName}] - $msg"
     }
 
-    private waitForLogin() {
+    private static waitForLogin() {
         // this hack is needed cause sometimes application does not immediately get updated
         // with the login status from the authorization server
         sleep 1000

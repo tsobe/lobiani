@@ -1,5 +1,6 @@
 package dev.baybay.lobiani.admin
 
+import geb.module.FormElement
 import geb.navigator.Navigator
 
 /**
@@ -18,7 +19,7 @@ class LoadingButtonModule extends geb.Module {
 
     @Override
     Navigator click() {
-        waitFor { !isLoading() }
+        waitFor { !isLoading() && module(FormElement).enabled }
         return super.click()
     }
 }
