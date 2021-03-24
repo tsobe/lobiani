@@ -9,7 +9,6 @@ abstract class AdminProtectedPageBase extends Page {
         navigationDrawerToggle { $(".v-toolbar__content .v-app-bar__nav-icon") }
     }
 
-
     def logout() {
         if (!logoutBtn.displayed) {
             navigationDrawerToggle.click()

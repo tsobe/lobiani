@@ -15,7 +15,7 @@ class InventoryItemModule extends geb.Module {
     }
 
     def addToStock(amount) {
-        amountInput.value(amount)
+        amountInput.value amount
         addToStockBtn.click()
     }
 }

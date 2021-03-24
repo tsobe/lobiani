@@ -26,7 +26,7 @@ class InventoryItemsPage extends AdminProtectedPageBase {
     }
 
     def addItemToStock(slug, amount) {
-        items.find { it.slug == slug }.addToStock(amount)
+        items.find { it.slug == slug }.addToStock amount
     }
 
     def getItemStockLevel(slug) {

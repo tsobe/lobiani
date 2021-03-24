@@ -18,11 +18,9 @@ class ProductPublishedToShoppingSpec extends AdminSpec {
         def product = [slug       : SLUG,
                        title      : "The Matrix trilogy",
                        description: "This is Matrix"]
-        and:
-        newProductPage.enterData product
 
         when:
-        newProductPage.save()
+        newProductPage.defineProduct product
 
         then:
         def productsPage = at ProductsPage

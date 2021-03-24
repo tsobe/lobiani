@@ -7,6 +7,6 @@ class ProductModule extends geb.Module {
     }
 
     def getSlug() {
-        attr("data-product")
+        attr "data-product"
     }
 }

@@ -17,7 +17,7 @@ class ProductModule extends Module {
     }
 
     def assignPrice(price) {
-        priceToAssign.value(price)
+        priceToAssign.value price
         assignPriceBtn.click()
     }
 }

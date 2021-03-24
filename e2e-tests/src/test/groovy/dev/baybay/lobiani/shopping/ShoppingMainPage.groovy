@@ -4,7 +4,7 @@ import geb.Page
 
 class ShoppingMainPage extends Page {
 
-    static url = System.getProperty("test.shopping.baseUrl")
+    static url = System.getProperty "test.shopping.baseUrl"
 
     static content = {
         products { $("[data-product]").moduleList ProductModule }

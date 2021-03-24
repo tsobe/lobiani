@@ -13,16 +13,13 @@ class NewProductPage extends AdminProtectedPageBase {
         slugInput { $("[data-slug]") }
         titleInput { $("[data-title]") }
         descriptionInput { $("[data-description]") }
-        saveBtn { $("[data-save]").module(LoadingButtonModule) }
+        saveBtn { $("[data-save]").module LoadingButtonModule }
     }
 
-    def enterData(product) {
-        slugInput.value(product.slug)
-        titleInput.value(product.title)
-        descriptionInput.value(product.description)
-    }
-
-    def save() {
+    def defineProduct(product) {
+        slugInput.value product.slug
+        titleInput.value product.title
+        descriptionInput.value product.description
         saveBtn.click()
     }
 }
