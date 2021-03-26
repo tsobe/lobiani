@@ -5,6 +5,6 @@ import dev.baybay.lobiani.app.sales.ProductIdentifier
 import java.io.Serializable
 
 data class PriceAssignedToProduct(
-    val id: ProductIdentifier,
+    val productId: ProductIdentifier,
     val price: Price
 ) : Serializable

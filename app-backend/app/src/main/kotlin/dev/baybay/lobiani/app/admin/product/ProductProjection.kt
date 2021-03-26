@@ -26,7 +26,7 @@ class ProductProjection {
 
     @EventHandler
     fun on(e: PriceAssignedToProduct) {
-        products.find { it.id == e.id.stringValue }?.price = e.price
+        products.find { it.id == e.productId.stringValue }?.price = e.price
     }
 
     @QueryHandler

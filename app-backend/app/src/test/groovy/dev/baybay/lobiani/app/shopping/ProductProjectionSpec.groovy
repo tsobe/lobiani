@@ -1,6 +1,7 @@
 package dev.baybay.lobiani.app.shopping
 
 import dev.baybay.lobiani.app.common.Slug
+import dev.baybay.lobiani.app.inventory.InventoryItemIdentifier
 import dev.baybay.lobiani.app.inventory.Quantity
 import dev.baybay.lobiani.app.inventory.event.InventoryItemAddedToStock
 import dev.baybay.lobiani.app.inventory.event.InventoryItemDefined
@@ -191,7 +192,7 @@ class ProductProjectionSpec extends ProjectionSpec {
     }
 
     static InventoryItemDefined newInventoryItemDefined(slug = "the-matrix-trilogy") {
-        new InventoryItemDefined(UUID.randomUUID(), slug)
+        new InventoryItemDefined(new InventoryItemIdentifier(), new Slug(slug))
     }
 
     static ProductDefined newProductDefined(slug = "the-matrix-trilogy") {

@@ -15,17 +15,17 @@ class InventoryItemProjection {
 
     @EventHandler
     fun on(e: InventoryItemDefined) {
-        items.add(InventoryItem(e.id, e.slug))
+        items.add(InventoryItem(e.id.stringValue, e.slug.value))
     }
 
     @EventHandler
     fun on(e: InventoryItemDeleted) {
-        items.removeIf { it.id == e.id }
+        items.removeIf { it.id == e.id.stringValue }
     }
 
     @EventHandler
     fun on(e: InventoryItemAddedToStock) {
-        items.find { it.id == e.inventoryItemId }?.increaseStockLevelBy(e.quantity.value)
+        items.find { it.id == e.inventoryItemId.stringValue }?.increaseStockLevelBy(e.quantity.value)
     }
 
     @QueryHandler

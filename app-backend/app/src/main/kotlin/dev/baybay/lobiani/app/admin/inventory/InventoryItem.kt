@@ -1,8 +1,6 @@
 package dev.baybay.lobiani.app.admin.inventory
 
-import java.util.*
-
-data class InventoryItem(val id: UUID, val slug: String) {
+data class InventoryItem(val id: String, val slug: String) {
 
     var stockLevel: Int = 0
         private set

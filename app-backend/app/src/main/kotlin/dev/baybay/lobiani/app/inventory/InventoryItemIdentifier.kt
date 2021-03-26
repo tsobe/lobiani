@@ -1,9 +1,9 @@
-package dev.baybay.lobiani.app.marketing
+package dev.baybay.lobiani.app.inventory
 
 import java.io.Serializable
 import java.util.*
 
-data class ProductIdentifier(val value: UUID) : Serializable {
+data class InventoryItemIdentifier(val value: UUID) : Serializable {
 
     val stringValue: String get() = value.toString()
 

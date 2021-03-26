@@ -27,13 +27,13 @@ class ProductProjection {
 
     @EventHandler
     fun on(e: PriceAssignedToProduct) {
-        findById(e.id.stringValue)?.price = Price(e.price.value, e.price.currency)
+        findById(e.productId.stringValue)?.price = Price(e.price.value, e.price.currency)
     }
 
     @EventHandler
     fun on(e: InventoryItemDefined) {
-        getProduct(e.slug).apply {
-            slug = e.slug
+        getProduct(e.slug.value).apply {
+            slug = e.slug.value
             inventoryItemId = e.id.toString()
         }
     }
