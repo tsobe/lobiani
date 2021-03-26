@@ -30,7 +30,7 @@ class InventoryItem {
 
     @CommandHandler
     fun handle(c: DeleteInventoryItem) {
-        apply(InventoryItemDeleted(id, slug))
+        apply(InventoryItemDeleted(id))
     }
 
     @CommandHandler

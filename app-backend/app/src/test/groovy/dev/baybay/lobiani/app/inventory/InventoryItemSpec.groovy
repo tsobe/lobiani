@@ -37,7 +37,7 @@ class InventoryItemSpec extends AggregateSpec {
         actingWith new DeleteInventoryItem(id)
 
         then:
-        expectEvent new InventoryItemDeleted(id, slug)
+        expectEvent new InventoryItemDeleted(id)
     }
 
     def "should add inventory item to stock"() {
