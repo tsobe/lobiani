@@ -1,6 +1,6 @@
 package dev.baybay.lobiani.app
 
-import dev.baybaydev.lobiani.testutil.AdminAPITestClient
+import dev.baybay.lobiani.testutil.AdminAPITestClient
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine
 import org.axonframework.eventsourcing.eventstore.inmemory.InMemoryEventStorageEngine
 import org.springframework.boot.test.context.TestConfiguration

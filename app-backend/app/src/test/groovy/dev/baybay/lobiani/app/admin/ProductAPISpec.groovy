@@ -1,7 +1,7 @@
 package dev.baybay.lobiani.app.admin
 
 import dev.baybay.lobiani.testutil.APISpec
-import dev.baybaydev.lobiani.testutil.AdminAPITestClient
+import dev.baybay.lobiani.testutil.AdminAPITestClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import spock.lang.Unroll

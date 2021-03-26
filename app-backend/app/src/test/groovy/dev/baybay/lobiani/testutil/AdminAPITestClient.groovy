@@ -1,4 +1,4 @@
-package dev.baybaydev.lobiani.testutil
+package dev.baybay.lobiani.testutil
 
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpEntity
