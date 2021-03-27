@@ -1,6 +1,5 @@
 package dev.baybay.lobiani.testutil
 
-import dev.baybay.lobiani.app.common.AxonConfig
 import org.axonframework.eventhandling.EventData
 import org.axonframework.serialization.SerializedMetaData
 import org.axonframework.serialization.SerializedObject
@@ -9,23 +8,23 @@ import org.axonframework.serialization.SimpleSerializedObject
 import org.axonframework.serialization.upcasting.event.EventUpcaster
 import org.axonframework.serialization.upcasting.event.InitialEventRepresentation
 import org.axonframework.serialization.upcasting.event.IntermediateEventRepresentation
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
 import java.time.Instant
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
-@SpringBootTest(classes = AxonConfig)
+/**
+ * Base spec for upcasters
+ */
 class UpcasterSpec extends Specification {
 
-    @Autowired
-    Serializer serializer
+    private Serializer serializer
     private EventUpcaster upcaster
 
-    def use(EventUpcaster upcaster) {
+    def use(EventUpcaster upcaster, Serializer serializer) {
         this.upcaster = upcaster
+        this.serializer = serializer
     }
 
     protected <T> T upcastSinglePayload(SerializedObject serializedEvent) {
