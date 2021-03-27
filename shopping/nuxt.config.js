@@ -42,7 +42,11 @@ export default {
   build: {
   },
 
-  proxy: [
-    'http://localhost:9090/shopping/api/**'
-  ]
+  axios: {
+    prefix: '/api'
+  },
+
+  proxy: {
+    '/api/': 'http://localhost:9090/shopping'
+  }
 }

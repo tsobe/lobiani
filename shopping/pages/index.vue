@@ -12,7 +12,7 @@ export default {
     }
   },
   async fetch() {
-    const response = await this.$axios.get('http://localhost:9090/shopping/api/products')
+    const response = await this.$axios.get('/products')
     this.products = response.data
   }
 }
