@@ -43,10 +43,6 @@ export default {
   },
 
   axios: {
-    prefix: '/api'
+    baseURL: 'http://localhost:9090/shopping/api',
   },
-
-  proxy: {
-    '/api/': 'http://localhost:9090/shopping'
-  }
 }
