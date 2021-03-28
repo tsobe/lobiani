@@ -323,7 +323,9 @@ jobs:
       - run:
           name: Running e2e tests
           command: |
-            cd e2e-tests && ./gradlew test -Dgeb.build.baseUrl=${TEST_APP_BASE_URL}/ \
+            cd e2e-tests && ./gradlew test \
+              -Dgeb.build.baseUrl=${TEST_ADMIN_BASE_URL}/ \
+              -Dtest.shopping.baseUrl=${TEST_SHOPPING_BASE_URL}/ \
               -Dremote.webdriver.url=$REMOTE_WEBDRIVER_URL \
               -Dremote.webdriver.acceptInsecure=true \
               -Dtest.admin.user=$TEST_ADMIN_USER \
