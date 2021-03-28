@@ -18,6 +18,13 @@ resource "digitalocean_record" "lobiani-domain" {
   value = var.address
 }
 
+resource "digitalocean_record" "admin-domain" {
+  domain = data.digitalocean_domain.default.name
+  type = "A"
+  name = format("%s%s", var.subdomain-prefix, "admin.lobiani")
+  value = var.address
+}
+
 resource "digitalocean_record" "axonserver-gui-domain" {
   domain = data.digitalocean_domain.default.name
   type = "A"

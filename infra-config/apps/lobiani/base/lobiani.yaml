@@ -91,6 +91,48 @@ spec:
       nodeSelector:
         node-type: worker-pool
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: lobiani
+  name: lobiani-shopping
+  labels:
+    app: lobiani-shopping
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lobiani-shopping
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: lobiani-shopping
+    spec:
+      containers:
+        - name: lobiani-shopping
+          image: sevteen/lobiani-shopping@sha256:884bb849dbc4ddc3992a55af0d5c8d1af43ebd832a7a6b64c264906720ab4d77 # Modified by CI at Mon Feb 15 08:30:59 UTC 2021
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 30m
+              memory: 200Mi
+            requests:
+              cpu: 20m
+              memory: 10Mi
+          readinessProbe:
+            httpGet:
+              port: 3000
+              path: /
+      nodeSelector:
+        node-type: worker-pool
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -120,3 +162,18 @@ spec:
     - port: 80
       protocol: TCP
       targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: lobiani
+  name: lobiani-shopping
+  labels:
+    app: lobiani-shopping
+spec:
+  selector:
+    app: lobiani-shopping
+  ports:
+    - port: 3000
+      protocol: TCP
+      targetPort: 3000
