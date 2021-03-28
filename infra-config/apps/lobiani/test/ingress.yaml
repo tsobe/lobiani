@@ -10,7 +10,7 @@ spec:
   tls:
     - hosts:
         - test-admin.lobiani.baybay.dev
-      secretName: lobiani-tls
+      secretName: lobiani-admin-tls
   rules:
     - host: test-admin.lobiani.baybay.dev
       http:
@@ -54,7 +54,7 @@ spec:
   tls:
     - hosts:
         - test-lobiani.baybay.dev
-      secretName: lobiani-tls
+      secretName: lobiani-shopping-tls
   rules:
     - host: test-lobiani.baybay.dev
       http:
