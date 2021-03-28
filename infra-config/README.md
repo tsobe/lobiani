@@ -70,7 +70,9 @@ kubectl apply -f moon/argocd-app.yaml
 [App Of Apps pattern](https://argoproj.github.io/argo-cd/operator-manual/cluster-bootstrapping/) is followed
 here.
 
-## Production env
+### Production env
+
+1. Create uber app
 ```
 argocd app create production-apps --repo https://github.com/tsobe/lobiani \
     --path infra-config/argocd/aoa --dest-namespace argocd \
@@ -80,13 +82,24 @@ argocd app create production-apps --repo https://github.com/tsobe/lobiani \
     --values production-values.yaml
 ```
 
-Stop port-forwarding and switch to public argocd instance (with the same credentials as above) 
+2. Manually sync `production-cert-manager` first and then `production-cert-issuers`, leave the rest of the
+apps as is.
+
+3. Wait for certificates to get issued for Argo CD (i.e. until `READY` becomes `True`)
+```
+kubectl get certificate -n argocd
+NAME                 READY   SECRET               AGE
+argocd-grpc-secret   True    argocd-grpc-secret   15m
+argocd-gui-secret    True    argocd-gui-secret    15m
+```
+
+4. Stop port-forwarding and switch to public Argo CD instance (with the same credentials as before) 
 
 ```
 argocd login grpc.argocd.baybay.dev
 ```
 
-## Configure CI
+### Configure CI
 
 Following environment variables must be configured in Circle CI before triggering any pipeline
 
@@ -103,7 +116,7 @@ Following environment variables must be configured in Circle CI before triggerin
 - `AUTH0_DOMAIN` and `AUTH0_CLIENT_ID` - see [Applications in Auth0](https://auth0.com/docs/applications) for more
 - `TEST_ADMIN_USER` and `TEST_ADMIN_PASSWORD` - Admin credentials for e2e test
 
-## Test env
+### Test env
 
 Test environment now is booted up automatically as a part of the CI, so performing steps described in this section
 manually, is not required
