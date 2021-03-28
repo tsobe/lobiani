@@ -111,7 +111,7 @@ Following environment variables must be configured in Circle CI before triggerin
 - `DOCKER_PASSWORD`
 - `REMOTE_WEBDRIVER_URL` - e.g. `https://moon.baybay.dev/wd/hub`
 - `TEST_ADMIN_BASE_URL` - e.g. `https://test-admin.lobiani.baybay.dev`
-- `TEST_SHOPPING_BASE_URL` - e.g. `https://test.lobiani.baybay.dev`
+- `TEST_SHOPPING_BASE_URL` - e.g. `https://test-lobiani.baybay.dev`
 - `TEST_ADMIN_USER` and `TEST_ADMIN_PASSWORD` - Admin credentials for e2e test
 - `TF_API_TOKEN`
 - `SONAR_TOKEN` - visit [SonarCloud](https://sonarcloud.io/) for more
