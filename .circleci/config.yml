@@ -205,7 +205,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - /*
+            - ./*
   build-and-publish-shopping-image:
     executor: docker/docker
     steps:
