@@ -9,5 +9,5 @@ spec:
       containers:
         - name: lobiani-shopping
           env:
-            - name: API_URL
+            - name: BROWSER_BASE_URL
               value: https://test-lobiani.baybay.dev/api

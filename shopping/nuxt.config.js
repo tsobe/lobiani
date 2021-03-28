@@ -45,4 +45,16 @@ export default {
   axios: {
     baseURL: 'http://localhost:9090/shopping/api',
   },
+
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: process.env.BROWSER_BASE_URL
+    }
+  },
+
+  privateRuntimeConfig: {
+    axios: {
+      baseURL: process.env.BASE_URL
+    }
+  },
 }

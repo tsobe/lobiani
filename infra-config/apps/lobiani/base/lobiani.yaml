@@ -116,6 +116,9 @@ spec:
         - name: lobiani-shopping
           image: sevteen/lobiani-shopping@sha256:cd20604dad1e2389665a0cd2ae799aa816d3d587f32a24d8cb6d033920be7dc9 # Modified by CI at Sun Mar 28 13:34:25 UTC 2021
           imagePullPolicy: Always
+          env:
+            - name: BASE_URL
+              value: http://lobiani-app-backend:8080/shopping/api
           ports:
             - containerPort: 3000
               protocol: TCP
