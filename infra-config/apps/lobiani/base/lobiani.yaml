@@ -114,7 +114,7 @@ spec:
     spec:
       containers:
         - name: lobiani-shopping
-          image: sevteen/lobiani-shopping@sha256:884bb849dbc4ddc3992a55af0d5c8d1af43ebd832a7a6b64c264906720ab4d77 # Modified by CI at Mon Feb 15 08:30:59 UTC 2021
+          image: sevteen/lobiani-shopping@sha256:b4b350163fbbfba73d0b82d42b5fe645d095251addf8572d0d2c641078473c73 # Modified by CI at Sun Mar 28 13:06:05 UTC 2021
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
