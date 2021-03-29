@@ -25,3 +25,4 @@ pnpm-debug.log*
 .scannerwork
 coverage
 auth_config.json
+junit.xml

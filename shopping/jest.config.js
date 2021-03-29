@@ -13,9 +13,10 @@ module.exports = {
     '^.+\\.js$': 'babel-jest',
     '.*\\.(vue)$': 'vue-jest'
   },
-  collectCoverage: true,
+  collectCoverage: process.env.COLLECT_COVERAGE === 'true',
   collectCoverageFrom: [
     '<rootDir>/components/**/*.vue',
     '<rootDir>/pages/**/*.vue'
-  ]
+  ],
+  reporters: process.env.ADD_JUNIT_REPORTER === 'true' ? ['default', 'jest-junit'] : ['default']
 }

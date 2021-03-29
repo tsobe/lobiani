@@ -154,7 +154,7 @@ jobs:
             export JEST_JUNIT_OUTPUT_DIR=./reports/junit/
             npm run test:unit
       - store_test_results:
-          path: ./reports/junit/
+          path: ./reports/junit
       - store_artifacts:
           path: ./reports/junit
       - run:
@@ -197,11 +197,20 @@ jobs:
           name: Installing npm dependencies
           command: npm install
       - run:
-          name: Running unit tests
-          command: npm run test
+          name: Running unit tests with coverage
+          command: |
+            export COLLECT_COVERAGE=true
+            export ADD_JUNIT_REPORTER=true
+            export JEST_JUNIT_OUTPUT_DIR=./reports/junit/
+            npm run test
+      - store_test_results:
+          path: ./reports/junit
+      - store_artifacts:
+          path: ./reports/junit
       - run:
           name: Bundling the app
           command: npm run build
+      - sonarcloud/scan
       - persist_to_workspace:
           root: .
           paths:
