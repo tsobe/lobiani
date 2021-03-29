@@ -431,6 +431,12 @@ workflows:
       - trigger-test:
           requires:
             - build-and-publish-shopping-image
+  check-shopping:
+    jobs:
+      - build-shopping:
+          filters:
+            branches:
+              only: /dependabot\/npm_and_yarn\/shopping.*/
   test:
     when: << pipeline.parameters.test >>
     jobs:
