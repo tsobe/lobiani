@@ -5,9 +5,9 @@ updates:
     schedule:
       interval: daily
   - package-ecosystem: npm
-      directory: /shopping
-      schedule:
-        interval: daily
+    directory: /shopping
+    schedule:
+      interval: daily
   - package-ecosystem: gradle
     directory: /app-backend
     schedule:
