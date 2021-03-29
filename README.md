@@ -2,6 +2,7 @@
 |---|---|
 | Backend | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lobiani-app-backend&metric=alert_status)](https://sonarcloud.io/dashboard?id=lobiani-app-backend) |
 | Admin | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lobiani-admin&metric=alert_status)](https://sonarcloud.io/dashboard?id=lobiani-admin) |
+| Shopping | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lobiani-shopping&metric=alert_status)](https://sonarcloud.io/dashboard?id=lobiani-shopping) |
 | CI     | [![CircleCI](https://circleci.com/gh/tsobe/lobiani.svg?style=shield)](https://circleci.com/gh/tsobe/lobiani) |
 
 
