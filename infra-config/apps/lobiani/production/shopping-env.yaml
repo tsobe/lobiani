@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: lobiani
+  name: lobiani-shopping
+spec:
+  template:
+    spec:
+      containers:
+        - name: lobiani-shopping
+          env:
+            - name: BROWSER_BASE_URL
+              value: https://lobiani.baybay.dev/api

@@ -1,5 +1,6 @@
 package dev.baybay.lobiani.app.inventory
 
+import dev.baybay.lobiani.app.common.Slug
 import dev.baybay.lobiani.app.inventory.command.AddInventoryItemToStock
 import dev.baybay.lobiani.app.inventory.command.DefineInventoryItem
 import dev.baybay.lobiani.app.inventory.command.DeleteInventoryItem
@@ -10,8 +11,8 @@ import dev.baybay.lobiani.testutil.AggregateSpec
 
 class InventoryItemSpec extends AggregateSpec {
 
-    def id = UUID.randomUUID()
-    def slug = "the-matrix-trilogy"
+    def id = new InventoryItemIdentifier()
+    def slug = new Slug("the-matrix-trilogy")
 
     void setup() {
         useAggregate InventoryItem
@@ -36,7 +37,7 @@ class InventoryItemSpec extends AggregateSpec {
         actingWith new DeleteInventoryItem(id)
 
         then:
-        expectEvent new InventoryItemDeleted(id, slug)
+        expectEvent new InventoryItemDeleted(id)
     }
 
     def "should add inventory item to stock"() {

@@ -1,34 +1,36 @@
 package dev.baybay.lobiani.app.inventory
 
-import dev.baybay.lobiani.app.inventory.event.*
+import dev.baybay.lobiani.app.common.Slug
 import dev.baybay.lobiani.app.inventory.command.AddInventoryItemToStock
 import dev.baybay.lobiani.app.inventory.command.DefineInventoryItem
 import dev.baybay.lobiani.app.inventory.command.DeleteInventoryItem
+import dev.baybay.lobiani.app.inventory.event.InventoryItemAddedToStock
+import dev.baybay.lobiani.app.inventory.event.InventoryItemDefined
+import dev.baybay.lobiani.app.inventory.event.InventoryItemDeleted
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle.apply
 import org.axonframework.modelling.command.AggregateLifecycle.markDeleted
 import org.axonframework.spring.stereotype.Aggregate
-import java.util.*
 
 @Aggregate
 class InventoryItem {
 
     @AggregateIdentifier
-    private lateinit var id: UUID
-    private lateinit var slug: String
+    private lateinit var id: InventoryItemIdentifier
+    private lateinit var slug: Slug
 
     constructor()
 
     @CommandHandler
     constructor(c: DefineInventoryItem) {
-        apply(InventoryItemDefined(c.id, c.slug.value))
+        apply(InventoryItemDefined(c.id, c.slug))
     }
 
     @CommandHandler
     fun handle(c: DeleteInventoryItem) {
-        apply(InventoryItemDeleted(id, slug))
+        apply(InventoryItemDeleted(id))
     }
 
     @CommandHandler

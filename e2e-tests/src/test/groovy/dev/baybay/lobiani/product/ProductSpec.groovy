@@ -6,7 +6,7 @@ import spock.lang.Stepwise
 @Stepwise
 class ProductSpec extends AdminSpec {
 
-    public static final String SLUG = "the-matrix-trilogy"
+    private static final String SLUG = "the-matrix-trilogy"
 
     def "should navigate to new product page"() {
         given:
@@ -27,17 +27,26 @@ class ProductSpec extends AdminSpec {
         def product = [slug       : SLUG,
                        title      : "The Matrix trilogy",
                        description: "This is Matrix"]
-        and:
-        newProductPage.enterData product
 
         when:
-        newProductPage.save()
+        newProductPage.defineProduct product
 
         then:
         def productsPage = at ProductsPage
 
         and:
         waitFor { productsPage.hasProduct product.slug }
+    }
+
+    def "product should have price assigned"() {
+        given:
+        def productsPage = at ProductsPage
+
+        when:
+        productsPage.assignPrice SLUG, 17
+
+        then:
+        waitFor { productsPage.getProduct(SLUG).currentPrice == '17 EUR' }
     }
 
     def "product should not be visible when deleted"() {

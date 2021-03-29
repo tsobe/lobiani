@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: lobiani-app-backend
-          image: sevteen/lobiani-app-backend@sha256:ba3b074e27f485ca5b8bdb2a6782f386b52d7a370ade9d952199bde673087b77 # Modified by CI at Mon Feb 15 08:31:17 UTC 2021
+          image: sevteen/lobiani-app-backend@sha256:a8b45e2964a549e5437046a165f6685aee47dfbae0d7e5ac9eb702c28d7045e8 # Modified by CI at Sun Mar 28 10:00:18 UTC 2021
           imagePullPolicy: Always
           env:
             - name: AXON_AXONSERVER_SERVERS
@@ -72,7 +72,7 @@ spec:
     spec:
       containers:
         - name: lobiani-admin
-          image: sevteen/lobiani-admin@sha256:884bb849dbc4ddc3992a55af0d5c8d1af43ebd832a7a6b64c264906720ab4d77 # Modified by CI at Mon Feb 15 08:30:59 UTC 2021
+          image: sevteen/lobiani-admin@sha256:5efb29c8f619dc69bc3af055ad97bd8df9b3ffd6ea7751a0b13b9d506650e73f # Modified by CI at Mon Mar 15 19:02:33 UTC 2021
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -87,6 +87,51 @@ spec:
           readinessProbe:
             httpGet:
               port: 80
+              path: /
+      nodeSelector:
+        node-type: worker-pool
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: lobiani
+  name: lobiani-shopping
+  labels:
+    app: lobiani-shopping
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lobiani-shopping
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: lobiani-shopping
+    spec:
+      containers:
+        - name: lobiani-shopping
+          image: sevteen/lobiani-shopping@sha256:2dcc389bff389fdc0581a503f5bb6973590da0cb7c0d3bf326535c001aebe5af # Modified by CI at Sun Mar 28 15:11:07 UTC 2021
+          imagePullPolicy: Always
+          env:
+            - name: BASE_URL
+              value: http://lobiani-app-backend:8080/shopping/api
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 30m
+              memory: 200Mi
+            requests:
+              cpu: 20m
+              memory: 10Mi
+          readinessProbe:
+            httpGet:
+              port: 3000
               path: /
       nodeSelector:
         node-type: worker-pool
@@ -120,3 +165,18 @@ spec:
     - port: 80
       protocol: TCP
       targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: lobiani
+  name: lobiani-shopping
+  labels:
+    app: lobiani-shopping
+spec:
+  selector:
+    app: lobiani-shopping
+  ports:
+    - port: 3000
+      protocol: TCP
+      targetPort: 3000

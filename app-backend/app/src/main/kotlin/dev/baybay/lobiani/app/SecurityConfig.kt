@@ -24,6 +24,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                 authorize("/swagger-ui/**", permitAll)
                 authorize("/swagger-ui.html", permitAll)
                 authorize("/healthz", permitAll)
+                authorize("/shopping/**", permitAll)
                 authorize(anyRequest, authenticated)
             }
             oauth2ResourceServer {

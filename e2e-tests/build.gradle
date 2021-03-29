@@ -13,21 +13,29 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
     testImplementation 'org.spockframework:spock-core:2.0-M2-groovy-2.5'
     testImplementation 'org.seleniumhq.selenium:selenium-remote-driver:3.141.59'
+    testImplementation 'org.seleniumhq.selenium:selenium-firefox-driver:3.141.59'
     testImplementation('org.gebish:geb-spock:3.4') {
         exclude group: 'org.codehaus.groovy'
     }
 }
 
-def defaultBaseUrl = 'http://host.docker.internal:8080/'
-def defaultWebDriverUrl = 'http://localhost:4444/wd/hub'
-
 test {
     useJUnitPlatform()
-    systemProperty('geb.env', 'remote')
-    systemProperty('geb.build.baseUrl', System.getProperty('geb.build.baseUrl', defaultBaseUrl))
-    systemProperty('remote.webdriver.url', System.getProperty('remote.webdriver.url', defaultWebDriverUrl))
-    systemProperty('remote.webdriver.acceptInsecure', System.getProperty('remote.webdriver.acceptInsecure'))
-    systemProperty('remote.webdriver.enableVideo', System.getProperty('remote.webdriver.enableVideo', 'false'))
-    systemProperty('test.admin.user', System.getProperty('test.admin.user'))
-    systemProperty('test.admin.password', System.getProperty('test.admin.password'))
+    systemProperty 'geb.env', 'remote'
+    systemProperty 'geb.build.baseUrl', System.getProperty('geb.build.baseUrl', 'http://host.docker.internal:8080/')
+    systemProperty 'remote.webdriver.url', System.getProperty('remote.webdriver.url', 'http://localhost:4444/wd/hub')
+    systemProperty 'remote.webdriver.acceptInsecure', System.getProperty('remote.webdriver.acceptInsecure')
+    systemProperty 'remote.webdriver.enableVideo', System.getProperty('remote.webdriver.enableVideo', 'false')
+    systemProperty 'test.admin.user', System.getProperty('test.admin.user')
+    systemProperty 'test.admin.password', System.getProperty('test.admin.password')
+    systemProperty 'test.shopping.baseUrl', System.getProperty('test.shopping.baseUrl', 'http://host.docker.internal:3000/')
+}
+
+task localFirefox(type: Test) {
+    useJUnitPlatform()
+    systemProperty 'geb.env', 'localFirefox'
+    systemProperty 'geb.build.baseUrl', System.getProperty('geb.build.baseUrl', 'http://localhost:8080/')
+    systemProperty 'test.admin.user', System.getProperty('test.admin.user')
+    systemProperty 'test.admin.password', System.getProperty('test.admin.password')
+    systemProperty 'test.shopping.baseUrl', System.getProperty('test.shopping.baseUrl', 'http://localhost:3000/')
 }

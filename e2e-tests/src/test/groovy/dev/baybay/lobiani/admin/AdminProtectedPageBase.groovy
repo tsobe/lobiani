@@ -9,11 +9,10 @@ abstract class AdminProtectedPageBase extends Page {
         navigationDrawerToggle { $(".v-toolbar__content .v-app-bar__nav-icon") }
     }
 
-    def openNavigationDrawer() {
-        navigationDrawerToggle.click()
-    }
-
     def logout() {
+        if (!logoutBtn.displayed) {
+            navigationDrawerToggle.click()
+        }
         logoutBtn.click()
     }
 }

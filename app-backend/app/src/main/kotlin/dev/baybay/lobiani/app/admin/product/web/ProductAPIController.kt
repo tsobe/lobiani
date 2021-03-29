@@ -14,6 +14,7 @@ import org.axonframework.queryhandling.QueryGateway
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import kotlin.NoSuchElementException
+import dev.baybay.lobiani.app.marketing.ProductIdentifier as MarketingProductIdentifier
 
 @RestController
 @RequestMapping("/api/products")
@@ -52,6 +53,6 @@ class ProductAPIController(
 
     @DeleteMapping("/{id}")
     fun deleteProduct(@PathVariable id: UUID) {
-        commandGateway.sendAndWait<Void>(DeleteProduct(id))
+        commandGateway.sendAndWait<Void>(DeleteProduct(MarketingProductIdentifier(id)))
     }
 }

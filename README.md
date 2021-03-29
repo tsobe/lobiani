@@ -139,3 +139,4 @@ To build test and run, execute following commands from `admin` directory
 - [Strategic Domain Driven Design with Context Mapping](https://www.infoq.com/articles/ddd-contextmapping/)
 - [Modelling Reactive Systems with Event Storming and Domain-Driven Design](https://blog.redelastic.com/corporate-arts-crafts-modelling-reactive-systems-with-event-storming-73c6236f5dd7)
 - [CQRS: What? Why? How?](https://medium.com/@sderosiaux/cqrs-what-why-how-945543482313)
+- [DDD and Messaging Architectures](https://verraes.net/2019/05/ddd-msg-arch/)

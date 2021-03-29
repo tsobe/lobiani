@@ -15,6 +15,9 @@ parameters:
   build_admin:
     type: boolean
     default: false
+  build_shopping:
+    type: boolean
+    default: false
   test:
     type: boolean
     default: false
@@ -127,7 +130,7 @@ jobs:
             echo "Digest is: $(</tmp/backend_img_digest.txt)"
   build-admin:
     docker:
-      - image: circleci/node:14.8.0
+      - image: &node circleci/node:14.8.0
     working_directory: ~/project/admin
     steps:
       - checkout:
@@ -183,6 +186,47 @@ jobs:
       - run:
           command: |
             echo "Digest is: $(</tmp/admin_img_digest.txt)"
+  build-shopping:
+    docker:
+      - image: *node
+    working_directory: ~/project/shopping
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Installing npm dependencies
+          command: npm install
+      - run:
+          name: Running unit tests
+          command: npm run test
+      - run:
+          name: Bundling the app
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./*
+  build-and-publish-shopping-image:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - attach_workspace:
+          at: shopping
+      - docker/build:
+          path: shopping
+          image: sevteen/lobiani-shopping
+      - docker/push:
+          digest-path: /tmp/shopping_img_digest.txt
+          image: sevteen/lobiani-shopping
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - shopping_img_digest.txt
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/shopping_img_digest.txt)"
   trigger-test:
     docker:
       - image: &git alpine/git:v2.26.2
@@ -279,7 +323,9 @@ jobs:
       - run:
           name: Running e2e tests
           command: |
-            cd e2e-tests && ./gradlew test -Dgeb.build.baseUrl=${TEST_APP_BASE_URL}/ \
+            cd e2e-tests && ./gradlew test \
+              -Dgeb.build.baseUrl=${TEST_ADMIN_BASE_URL}/ \
+              -Dtest.shopping.baseUrl=${TEST_SHOPPING_BASE_URL}/ \
               -Dremote.webdriver.url=$REMOTE_WEBDRIVER_URL \
               -Dremote.webdriver.acceptInsecure=true \
               -Dtest.admin.user=$TEST_ADMIN_USER \
@@ -366,6 +412,16 @@ workflows:
           filters:
             branches:
               only: /dependabot\/npm_and_yarn\/admin.*/
+  build-shopping:
+    when: << pipeline.parameters.build_shopping >>
+    jobs:
+      - build-shopping
+      - build-and-publish-shopping-image:
+          requires:
+            - build-shopping
+      - trigger-test:
+          requires:
+            - build-and-publish-shopping-image
   test:
     when: << pipeline.parameters.test >>
     jobs:

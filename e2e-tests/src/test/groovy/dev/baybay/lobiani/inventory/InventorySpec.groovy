@@ -6,7 +6,7 @@ import spock.lang.Stepwise
 @Stepwise
 class InventorySpec extends AdminSpec {
 
-    public static final String SLUG = "the-matrix-trilogy"
+    private static final String SLUG = "the-matrix-trilogy"
 
     def "should navigate to new item page"() {
         given:

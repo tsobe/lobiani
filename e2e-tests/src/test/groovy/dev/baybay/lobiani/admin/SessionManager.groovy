@@ -18,6 +18,7 @@ class SessionManager {
             adminLoginPage.login()
             def authServerLoginPage = spec.at AuthorizationServerLoginPage
             authServerLoginPage.login()
+            waitForLogin()
             loggedIn = true
         }
     }
@@ -26,7 +27,6 @@ class SessionManager {
         if (loggedIn) {
             log"Stopping session"
             def protectedPage = spec.page as AdminProtectedPageBase
-            protectedPage.openNavigationDrawer()
             protectedPage.logout()
             loggedIn = false
         }
@@ -34,5 +34,11 @@ class SessionManager {
 
     private log(msg) {
         println "${new Date()} [${spec.class.simpleName}] - $msg"
+    }
+
+    private static waitForLogin() {
+        // this hack is needed cause sometimes application does not immediately get updated
+        // with the login status from the authorization server
+        sleep 1000
     }
 }

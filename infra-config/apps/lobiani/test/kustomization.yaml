@@ -6,3 +6,6 @@ bases:
 
 resources:
   - ingress.yaml
+
+patchesStrategicMerge:
+  - shopping-env.yaml

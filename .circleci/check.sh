@@ -10,7 +10,8 @@ function trigger_pipeline {
     local check=$1
     local build_backend=$2
     local build_admin=$3
-    local test=$4
+    local build_shopping=$4
+    local test=$5
 
     curl -s -u ${CIRCLE_API_USER_TOKEN}: \
 	   -H "Content-Type: application/json" \
@@ -19,6 +20,7 @@ function trigger_pipeline {
                 \"check\": $check,\
                 \"build_backend\": $build_backend,\
                 \"build_admin\": $build_admin,\
+                \"build_shopping\": $build_shopping,\
                 \"test\": $test\
               }
 		   }" \
@@ -53,6 +55,7 @@ collect_modified_dirs
 
 backend_dir="app-backend"
 admin_dir="admin"
+shopping_dir="shopping"
 infra_config_dir="infra-config"
 tests_dir="e2e-tests"
 
@@ -61,25 +64,32 @@ pipeline_triggered=false
 if was_modified $backend_dir
 then
     echo "Triggering pipeline: \"build_backend\""
-    trigger_pipeline false true false false
+    trigger_pipeline false true false false false
     pipeline_triggered=true
 fi
 
 if was_modified $admin_dir
 then
     echo "Triggering pipeline: \"build_admin\""
-    trigger_pipeline false false true false
+    trigger_pipeline false false true false false
+    pipeline_triggered=true
+fi
+
+if was_modified $shopping_dir
+then
+    echo "Triggering pipeline: \"build_shopping\""
+    trigger_pipeline false false false true false
     pipeline_triggered=true
 fi
 
 if was_modified $infra_config_dir || was_modified $tests_dir
 then
     echo "Triggering pipeline: \"test\""
-    trigger_pipeline false false false true
+    trigger_pipeline false false false false true
     pipeline_triggered=true
 fi
 
 if ! $pipeline_triggered
 then
-    echo "No changes made to $backend_dir, $admin_dir, $infra_config_dir or $tests_dir, not triggering any pipeline"
+    echo "No changes made to $backend_dir, $admin_dir, $shopping_dir, $infra_config_dir or $tests_dir, not triggering any pipeline"
 fi

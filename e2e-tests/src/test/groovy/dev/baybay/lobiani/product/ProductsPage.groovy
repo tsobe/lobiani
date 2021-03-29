@@ -22,6 +22,14 @@ class ProductsPage extends AdminProtectedPageBase {
     }
 
     def deleteProduct(slug) {
-        products.find { it.slug == slug}.delete()
+        getProduct(slug).delete()
+    }
+
+    def assignPrice(slug, price) {
+        getProduct(slug).assignPrice price
+    }
+
+    def getProduct(slug) {
+        products.find { it.slug == slug }
     }
 }

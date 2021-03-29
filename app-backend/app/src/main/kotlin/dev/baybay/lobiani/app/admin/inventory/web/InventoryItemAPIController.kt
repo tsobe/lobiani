@@ -4,16 +4,13 @@ import dev.baybay.lobiani.app.admin.inventory.InventoryItem
 import dev.baybay.lobiani.app.admin.inventory.query.QueryAllInventoryItems
 import dev.baybay.lobiani.app.admin.inventory.query.QueryInventoryItemByID
 import dev.baybay.lobiani.app.admin.inventory.query.QueryInventoryItemBySlug
+import dev.baybay.lobiani.app.inventory.InventoryItemIdentifier
 import dev.baybay.lobiani.app.inventory.Quantity
 import dev.baybay.lobiani.app.inventory.command.AddInventoryItemToStock
 import dev.baybay.lobiani.app.inventory.command.DeleteInventoryItem
-import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.responsetypes.ResponseTypes
-import org.axonframework.modelling.command.AggregateNotFoundException
 import org.axonframework.queryhandling.QueryGateway
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import kotlin.NoSuchElementException
@@ -38,7 +35,7 @@ class InventoryItemAPIController(
 
     @GetMapping("/{id}")
     fun getItem(@PathVariable id: UUID): InventoryItem {
-        return queryGateway.query(QueryInventoryItemByID(id), InventoryItem::class.java).get()
+        return queryGateway.query(QueryInventoryItemByID(id.toString()), InventoryItem::class.java).get()
             ?: throw NoSuchElementException()
     }
 
@@ -46,27 +43,19 @@ class InventoryItemAPIController(
     fun defineNewItem(@RequestBody definition: InventoryItemDefinition): InventoryItem {
         val defineInventoryItem = definition.asCommand()
         commandGateway.sendAndWait<Void>(defineInventoryItem)
-        return InventoryItem(defineInventoryItem.id, defineInventoryItem.slug.value)
+        return InventoryItem(defineInventoryItem.id.stringValue, defineInventoryItem.slug.value)
     }
 
     @PostMapping("/{id}/stock")
     fun addToStock(@PathVariable id: UUID, @RequestBody stock: Stock) {
         commandGateway.sendAndWait<Void>(
-            AddInventoryItemToStock(id, Quantity.count(stock.amount))
+            AddInventoryItemToStock(InventoryItemIdentifier(id), Quantity.count(stock.amount))
         )
     }
 
     @DeleteMapping("/{id}")
     fun deleteItem(@PathVariable id: UUID) {
-        commandGateway.sendAndWait<Void>(DeleteInventoryItem(id))
-    }
-
-    @ExceptionHandler(CommandExecutionException::class)
-    fun handle(e: CommandExecutionException): ResponseEntity<Void> {
-        if (e.cause is AggregateNotFoundException) {
-            return ResponseEntity.notFound().build()
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+        commandGateway.sendAndWait<Void>(DeleteInventoryItem(InventoryItemIdentifier(id)))
     }
 
     private fun queryBySlug(slug: String) =
