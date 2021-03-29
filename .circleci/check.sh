@@ -43,7 +43,7 @@ function collect_modified_dirs {
     fi
 
     git diff --name-only $commits | cut -d/ -f1 | sort -u > modified-dirs
-    echo -e "Since the last successful commit:\n$last_successful_commit_log\n\nfollowing directories were modified:\n`cat modified-dirs`\n"
+    echo -e "Following directories were modified:\n`cat modified-dirs`\n\nsince the last successful commit:\n$last_successful_commit_log"
 }
 
 function was_modified {
