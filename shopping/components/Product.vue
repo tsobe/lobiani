@@ -17,38 +17,38 @@
 </template>
 
 <script>
-export default {
-  props: {
-    product: {
-      type: Object,
-      required: true
-    }
-  },
-  computed: {
-    stockSummary() {
-      const stockLevel = this.product.stockLevel
-      if (stockLevel === 0) {
-        return {
-          text: 'out of stock',
-          class: 'text-red-600'
-        }
-      }
-      if (stockLevel <= 10) {
-        return {
-          text: stockLevel === 1
-            ? `only ${stockLevel} item left`
-            : `only ${stockLevel} items left`,
-          class: 'text-yellow-600'
-        }
-      }
-      return {
-        text: 'in stock',
-        class: 'text-green-600'
+  export default {
+    props: {
+      product: {
+        type: Object,
+        required: true
       }
     },
-    currencySign() {
-      return '€'
+    computed: {
+      stockSummary() {
+        const stockLevel = this.product.stockLevel
+        if (stockLevel === 0) {
+          return {
+            text: 'out of stock',
+            class: 'text-red-600'
+          }
+        }
+        if (stockLevel <= 10) {
+          return {
+            text: stockLevel === 1
+              ? `only ${stockLevel} item left`
+              : `only ${stockLevel} items left`,
+            class: 'text-yellow-600'
+          }
+        }
+        return {
+          text: 'in stock',
+          class: 'text-green-600'
+        }
+      },
+      currencySign() {
+        return '€'
+      }
     }
   }
-}
 </script>

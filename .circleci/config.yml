@@ -197,6 +197,9 @@ jobs:
           name: Installing npm dependencies
           command: npm install
       - run:
+          name: Running lint
+          command: npm run lint
+      - run:
           name: Running unit tests with coverage
           command: |
             export COLLECT_COVERAGE=true

@@ -5,15 +5,15 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      products: []
+  export default {
+    data() {
+      return {
+        products: []
+      }
+    },
+    async fetch() {
+      const response = await this.$axios.get('/products')
+      this.products = response.data
     }
-  },
-  async fetch() {
-    const response = await this.$axios.get('/products')
-    this.products = response.data
   }
-}
 </script>
