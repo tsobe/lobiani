@@ -1,32 +1,31 @@
 module.exports = {
   root: true,
   env: {
-    browser: true,
-    node: true,
-  },
-  parserOptions: {
-    parser: 'babel-eslint',
+    node: true
   },
   extends: [
     'plugin:vue/essential',
-    'plugin:nuxt/recommended'
+    '@vue/standard'
   ],
+  parserOptions: {
+    parser: 'babel-eslint'
+  },
   rules: {
     'vue/script-indent': [
       'error',
       2,
       {
-        'baseIndent': 1,
-        'switchCase': 0,
-        'ignores': []
+        baseIndent: 1,
+        switchCase: 0,
+        ignores: []
       }
     ],
     'space-before-function-paren': [
       'error',
       {
-        'anonymous': 'never',
-        'named': 'never',
-        'asyncArrow': 'always'
+        anonymous: 'never',
+        named: 'never',
+        asyncArrow: 'always'
       }
     ],
     'object-curly-spacing': [
@@ -36,20 +35,20 @@ module.exports = {
   },
   overrides: [
     {
-      'files': [
+      files: [
         '**/__tests__/*.{j,t}s?(x)',
-        '**/test/**/*.spec.{j,t}s?(x)'
+        '**/tests/unit/**/*.spec.{j,t}s?(x)'
       ],
-      'env': {
-        'jest': true
+      env: {
+        jest: true
       }
     },
     {
-      'files': [
+      files: [
         '*.vue'
       ],
-      'rules': {
-        'indent': 'off'
+      rules: {
+        indent: 'off'
       }
     }
   ]
