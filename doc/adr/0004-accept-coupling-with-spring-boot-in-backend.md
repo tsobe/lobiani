@@ -12,7 +12,7 @@ Also see [8. Use AxonFramework in backend](0008-use-axonframework-in-backend.md)
 
 Almost every software project needs to interact with the 3rd party libraries and frameworks to some extent. 
 Generally, the less coupled the code is with the 3rd party libraries and frameworks (usually thanks to additional abstraction 
-layers on top of them), more flexible the software becomes with regards to technology replacements in future.
+layers on top of them), more flexible the software becomes in regard to technology replacements in the future.
 
 However, sometimes it's quite viable to compromise this flexibility in favor of practical benefits that particular
 technology brings, in this case Spring Boot/Framework. Especially that it is designed with the abstraction and 

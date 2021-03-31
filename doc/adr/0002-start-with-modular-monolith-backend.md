@@ -30,7 +30,7 @@ easiest and safest way to start.
 We also acknowledge that as the project complexity and demand for shorter time-to-market increases, microservices 
 architecture becomes more and more valuable.
 
-Therefore we decide to start with the monolith, with the strict boundaries between the modules, in order to benefit from 
+Therefore, we decide to start with the monolith, with the strict boundaries between the modules, in order to benefit from 
 the ease of initial development and enable ourselves to evolve towards the microservices in the future  
 
 ## Consequences

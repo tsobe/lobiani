@@ -8,7 +8,7 @@ Accepted
 
 ## Context
 
-We need a communication mechanism between modules. We can let each module directly consume the API of another module or
+We need a communication mechanism between modules. We can let each module directly consume the API of another module, or
 we could let each module subscribe to events published by other modules   
 
 ## Decision

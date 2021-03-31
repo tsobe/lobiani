@@ -9,7 +9,7 @@ Accepted
 ## Context
 
 In non-trivial projects with complex business rules, it is often a challenge to come up with the model that scales well
-for reads and writes at the same time with regards to performance and maintainability. 
+for reads and writes at the same time in regard to performance and maintainability. 
 
 ## Decision
 
@@ -19,5 +19,5 @@ domain entities each respectively on the Command (write) and Query (read) sides
 ## Consequences
 
 - We will have 2 simpler models each having one responsibility, either read or write 
-- These 2 models will be optimized for read and write independently from each other
+- These 2 models will be optimized for read and write independently of each other
 - For entities without, or with simpler, business rules, we may get duplicated models 
