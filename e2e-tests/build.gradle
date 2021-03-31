@@ -31,7 +31,7 @@ test {
     systemProperty 'test.shopping.baseUrl', System.getProperty('test.shopping.baseUrl', 'http://host.docker.internal:3000/')
 }
 
-task localFirefox(type: Test) {
+task testLocalFirefox(type: Test) {
     useJUnitPlatform()
     systemProperty 'geb.env', 'localFirefox'
     systemProperty 'geb.build.baseUrl', System.getProperty('geb.build.baseUrl', 'http://localhost:8080/')

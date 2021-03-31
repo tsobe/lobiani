@@ -103,17 +103,39 @@ To build test and run, execute following commands from `admin` directory
     npm run test:unit
     npm run serve
 
-## Run e2e tests
+## The shopping
+
+To build test and run, execute following commands from `shopping` directory
+
+    npm install
+    npm run test
+    npm run dev
+    
+
+## Run e2e tests locally
+
+### Prerequisites
+- backend, admin and shopping are running
+- JDK 11 (hint [jenv](https://www.jenv.be/))
+
+### With a remote WebDriver 
 1. Download and start [selenoid](https://github.com/aerokube/selenoid) and optionally [selenoid-ui](https://github.com/aerokube/selenoid-ui)
     ```
     curl -s https://aerokube.com/cm/bash | bash \
         && ./cm selenoid start --vnc --tmpfs 128 \
         && ./cm selenoid-ui start
     ```
-2. First ensure backend and admin are both running, then execute the tests from `e2e-tests` directory 
-(use JDK 11, hint [jenv](https://www.jenv.be/))
+2. Execute the tests from `e2e-tests` directory
     ```
     ./gradlew test \
+        -Dtest.admin.user=<user> \
+        -Dtest.admin.password=<password>
+    ```
+### With a local Firefox
+1. Download [geckodriver](https://github.com/mozilla/geckodriver/releases) (0.29.0 or later)
+2. Execute the tests from `e2e-tests` directory
+    ```
+    ./gradlew testLocalFirefox \
         -Dtest.admin.user=<user> \
         -Dtest.admin.password=<password>
     ```
