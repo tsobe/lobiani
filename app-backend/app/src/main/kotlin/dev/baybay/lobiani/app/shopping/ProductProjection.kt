@@ -2,6 +2,7 @@ package dev.baybay.lobiani.app.shopping
 
 import dev.baybay.lobiani.app.inventory.event.InventoryItemAddedToStock
 import dev.baybay.lobiani.app.inventory.event.InventoryItemDefined
+import dev.baybay.lobiani.app.inventory.event.InventoryItemDeleted
 import dev.baybay.lobiani.app.marketing.event.ProductDefined
 import dev.baybay.lobiani.app.marketing.event.ProductDeleted
 import dev.baybay.lobiani.app.sales.event.PriceAssignedToProduct
@@ -34,13 +35,13 @@ class ProductProjection {
     fun on(e: InventoryItemDefined) {
         getProduct(e.slug.value).apply {
             slug = e.slug.value
-            inventoryItemId = e.id.toString()
+            inventoryItemId = e.id.stringValue
         }
     }
 
     @EventHandler
     fun on(e: InventoryItemAddedToStock) {
-        findByInventoryItemId(e.inventoryItemId.toString())?.apply {
+        findByInventoryItemId(e.inventoryItemId.stringValue)?.apply {
             stockLevel += e.quantity.value
         }
     }
@@ -48,6 +49,11 @@ class ProductProjection {
     @EventHandler
     fun on(e: ProductDeleted) {
         products.removeIf { it.id == e.id.stringValue }
+    }
+
+    @EventHandler
+    fun on(e: InventoryItemDeleted) {
+        findByInventoryItemId(e.id.stringValue)?.stockLevel = 0
     }
 
     @QueryHandler

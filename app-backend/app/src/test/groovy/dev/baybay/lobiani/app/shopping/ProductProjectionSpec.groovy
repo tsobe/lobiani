@@ -5,6 +5,7 @@ import dev.baybay.lobiani.app.inventory.InventoryItemIdentifier
 import dev.baybay.lobiani.app.inventory.Quantity
 import dev.baybay.lobiani.app.inventory.event.InventoryItemAddedToStock
 import dev.baybay.lobiani.app.inventory.event.InventoryItemDefined
+import dev.baybay.lobiani.app.inventory.event.InventoryItemDeleted
 import dev.baybay.lobiani.app.marketing.ProductIdentifier
 import dev.baybay.lobiani.app.marketing.event.ProductDefined
 import dev.baybay.lobiani.app.marketing.event.ProductDeleted
@@ -185,6 +186,44 @@ class ProductProjectionSpec extends ProjectionSpec {
 
         then:
         products.empty
+    }
+
+    def "product should not be in stock when inventory item is deleted"() {
+        given:
+        def slug = "the-matrix-trilogy"
+        def productDefined = newProductDefined(slug)
+        def priceAssignedToProduct = newPriceAssignedToProduct(productDefined.id.value)
+        def price = priceAssignedToProduct.price
+        def inventoryItemDefined = newInventoryItemDefined(slug)
+        def stockAmount = 17
+
+        and:
+        event productDefined
+
+        and:
+        event priceAssignedToProduct
+
+        and:
+        event inventoryItemDefined
+
+        and:
+        event new InventoryItemAddedToStock(inventoryItemDefined.id, Quantity.count(stockAmount))
+
+        and:
+        event new InventoryItemDeleted(inventoryItemDefined.id)
+
+        when:
+        def products = queryPublishedProducts()
+
+        then:
+        def publishedProduct = products[0]
+        publishedProduct.slug == productDefined.slug.value
+        publishedProduct.title == productDefined.title
+        publishedProduct.description == productDefined.description
+        publishedProduct.price != null
+        publishedProduct.price.value == price.value
+        publishedProduct.price.currency == price.currency
+        publishedProduct.stockLevel == 0
     }
 
     List<PublishedProduct> queryPublishedProducts() {
