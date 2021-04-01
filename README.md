@@ -40,7 +40,12 @@ However for the sake of this exercise (despite of DDD being one of the primary f
 
 ## Event Storming - Ubiquitous Language
 [![Event Storming](doc/images/Event%20Storming.jpg)](https://miro.com/app/board/o9J_lavSVJ0=/)
-(Click on the image for interactive diagram)
+(Click on the image for the interactive diagram)
+
+# CI/CD
+
+[![Monorepo CI/CD](doc/images/Monorepo%20CICD.jpeg)](https://miro.com/app/board/o9J_lMZvG8M=/)
+(Click on the image for the interactive diagram)
 
 # Backlog
 - As an inventory operator I want to define an item so that actual items can be added to stock
@@ -112,7 +117,7 @@ To build test and run, execute following commands from `shopping` directory
     npm run dev
     
 
-## Run e2e tests locally
+## Run E2E tests locally
 
 ### Prerequisites
 - backend, admin and shopping are running
