@@ -360,7 +360,6 @@ workflows:
     jobs:
       - build-app-backend-jar
       - build-and-publish-image:
-          name: build-and-publish-app-backend-image
           build_dir: app-backend/app
           image: lobiani-app-backend
           requires:
@@ -379,7 +378,6 @@ workflows:
     jobs:
       - build-admin
       - build-and-publish-image:
-          name: build-and-publish-admin-image
           build_dir: admin
           image: lobiani-admin
           requires:
