@@ -75,17 +75,9 @@ to microservices. There's going to be a separate deployment units for the admin 
 See [ADR](doc/adr) for more info.
 
 ## Milestones
-### Milestone 1 objectives
-- ✓ System allows defining and add inventory items to stock
-- ✕ System allows to see the products available for sale
-- ✓ User interface is not ugly
-- ✓ Admin area is accessible to authenticated users only
-- ✓ Basic metrics such as HTTP success rate, latency and etc. are available
-- ✓ Basic CI/CD pipeline exists 
-    - Build and deployment is automated, preferably via GitOps approach
-    - Deployments to production are made after end-to-end tests pass in test env
-    - No blue/green and canary deployments
-    - No automatic rollback in case of production failures
+| Milestone |  High level objectives | Date |
+| --- | --- | --- |
+| [Milestone 1](https://github.com/tsobe/lobiani/milestone/1?closed=1) |✓ System allows to define and add inventory items to stock<br/> ✓ System allows to define and see the products available for sale<br/> ✓ User interface is not ugly<br/> ✓ Admin area is accessible to authenticated users only<br/> ✓ Basic metrics such as HTTP success rate, latency and etc. are available<br/> ✓ Basic CI/CD pipeline exists<br/> | April 1 2021 |
 
 # Building and running
 ## The backend
