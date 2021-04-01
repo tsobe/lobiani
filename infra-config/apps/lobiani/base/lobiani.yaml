@@ -114,7 +114,7 @@ spec:
     spec:
       containers:
         - name: lobiani-shopping
-          image: sevteen/lobiani-shopping@sha256:4305ef72fe248ef9c9247dccd49ddd5e572b3b09aca1698e9f23e45ad0ef14bc # Modified by CI at Mon Mar 29 17:44:15 UTC 2021
+          image: sevteen/lobiani-shopping@sha256:a49fa76ed53cf4907dd29f5f4e62e65d79a7a3ada00931f5371335fdf5b509bd # Modified by CI at Thu Apr  1 19:12:40 UTC 2021
           imagePullPolicy: Always
           env:
             - name: BASE_URL
