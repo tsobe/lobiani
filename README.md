@@ -45,6 +45,9 @@ However, for the sake of this exercise (despite DDD being one of the primary foc
 
 # CI/CD
 
+Continuous Deployment is implemented as a [GitOps](https://www.gitops.tech/) fashion. This monorepo contains project 
+sources as well as manifest files (config).
+
 [![Monorepo CI/CD](doc/images/Monorepo%20CICD.jpeg)](https://miro.com/app/board/o9J_lMZvG8M=/)
 (Click on the image for the interactive diagram)
 
