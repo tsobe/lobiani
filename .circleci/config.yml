@@ -398,7 +398,6 @@ workflows:
     jobs:
       - build-shopping
       - build-and-publish-image:
-          name: build-and-publish-shopping-image
           build_dir: shopping
           image: lobiani-shopping
           requires:
