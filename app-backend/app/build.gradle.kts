@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.spring") version "1.4.32"
 }
 
-val axonVersion = "4.4.7"
+val axonVersion = "4.5"
 val spockVersion = "2.0-M2-groovy-2.5"
 val openAPIVersion = "1.5.6"
 
