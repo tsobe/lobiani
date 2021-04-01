@@ -87,13 +87,12 @@ class ProductProjectionSpec extends ProjectionSpec {
 
         and:
         def publishedProduct = products[0]
-        publishedProduct.slug == productDefined.slug.value
-        publishedProduct.title == productDefined.title
-        publishedProduct.description == productDefined.description
-        publishedProduct.price != null
-        publishedProduct.price.value == price.value
-        publishedProduct.price.currency == price.currency
-        publishedProduct.stockLevel == 0
+        assertProductPublished publishedProduct,
+                productDefined.slug.value,
+                productDefined.title,
+                productDefined.description,
+                price,
+                0
     }
 
     def "product should be published and out of stock when product with price and inventory item are defined"() {
@@ -121,13 +120,12 @@ class ProductProjectionSpec extends ProjectionSpec {
 
         and:
         def publishedProduct = products[0]
-        publishedProduct.slug == productDefined.slug.value
-        publishedProduct.title == productDefined.title
-        publishedProduct.description == productDefined.description
-        publishedProduct.price != null
-        publishedProduct.price.value == price.value
-        publishedProduct.price.currency == price.currency
-        publishedProduct.stockLevel == 0
+        assertProductPublished publishedProduct,
+                productDefined.slug.value,
+                productDefined.title,
+                productDefined.description,
+                price,
+                0
     }
 
     def "product should be published and in stock when product with price and inventory item with stock are defined"() {
@@ -159,13 +157,12 @@ class ProductProjectionSpec extends ProjectionSpec {
 
         and:
         def publishedProduct = products[0]
-        publishedProduct.slug == productDefined.slug.value
-        publishedProduct.title == productDefined.title
-        publishedProduct.description == productDefined.description
-        publishedProduct.price != null
-        publishedProduct.price.value == price.value
-        publishedProduct.price.currency == price.currency
-        publishedProduct.stockLevel == stockAmount
+        assertProductPublished publishedProduct,
+                productDefined.slug.value,
+                productDefined.title,
+                productDefined.description,
+                price,
+                stockAmount
     }
 
     def "no product should be published when product with price is defined and then deleted"() {
@@ -217,13 +214,12 @@ class ProductProjectionSpec extends ProjectionSpec {
 
         then:
         def publishedProduct = products[0]
-        publishedProduct.slug == productDefined.slug.value
-        publishedProduct.title == productDefined.title
-        publishedProduct.description == productDefined.description
-        publishedProduct.price != null
-        publishedProduct.price.value == price.value
-        publishedProduct.price.currency == price.currency
-        publishedProduct.stockLevel == 0
+        assertProductPublished publishedProduct,
+                productDefined.slug.value,
+                productDefined.title,
+                productDefined.description,
+                price,
+        0
     }
 
     List<PublishedProduct> queryPublishedProducts() {
@@ -243,5 +239,15 @@ class ProductProjectionSpec extends ProjectionSpec {
                 new SalesProductIdentifier(id),
                 new SalesPrice(17, "EUR")
         )
+    }
+
+    private static void assertProductPublished(product, slug, title, description, price, stockLevel) {
+        assert product.slug == slug
+        assert product.title == title
+        assert product.description == description
+        assert product.price != null
+        assert product.price.value == price.value
+        assert product.price.currency == price.currency
+        assert product.stockLevel == stockLevel
     }
 }
