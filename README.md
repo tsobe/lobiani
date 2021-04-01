@@ -7,7 +7,8 @@
 
 
 # Motivation
-This project is a personal exercise to gain/improve skills in various software engineering practices, will it be coding disciplines, architecture, technologies and anything in between or around them.
+This project is a personal exercise to gain/improve skills in various software engineering practices, will it be coding 
+disciplines, architecture, technologies and anything in between or around them.
 
 # Desired areas to examine
 - Event Sourcing
@@ -28,12 +29,12 @@ Develop eCommerce system capable of:
 
 # Domain model
 Disclaimer: I don't have a practical experience in the eCommerce domain, so model described here may seem utterly inadequate.
-However for the sake of this exercise (despite of DDD being one of the primary focus), I hope that something will work out from it   
+However, for the sake of this exercise (despite DDD being one of the primary focus), I hope that something will work out.   
 
 ## Bounded contexts
 - Inventory - managing stock levels
 - Marketing - describing and presenting products to sell
-- Sales - dealing with pricing rules and the overall shopping experience 
+- Sales - dealing with pricing rules, and the overall shopping experience 
 - Billing - charging customers to execute the orders
 - Shipping - delivering orders to customers
 - Personalization - recommending products to customers
@@ -56,7 +57,7 @@ However for the sake of this exercise (despite of DDD being one of the primary f
 - As a customer I want to browse through the list of all available products so that I can get some idea about what's available for sale
 - As a customer I want to search a particular product(s) by name or description so that I can filter out irrelevant items
 - As a customer I want to see the details of the particular product so that I can get more information
-- As a customer I want to add product to the cart so that I can purchase it later
+- As a customer I want to add the product to the cart so that I can purchase it later
 - As a customer I want to remove possibly mistakenly added product from the cart so that I can select a better option
 - As a customer I want to proceed to payment so that I can see the summary before I actually pay
 - As a customer I want to cancel the purchase if I changed my mind
@@ -67,12 +68,12 @@ However for the sake of this exercise (despite of DDD being one of the primary f
 # Development process and roadmap
 Monolith-first approach will be used where initially entire backend system is delivered as
 a single deployment unit, however it will be still modular internally, to allow easier transition
-to microservices. There's gonna be a separate deployment units for admin and frontend (SPAs).
-See [ADR](doc/adr) for more info
+to microservices. There's going to be a separate deployment units for the admin and frontend (SPAs).
+See [ADR](doc/adr) for more info.
 
 ## Milestones
 ### Milestone 1 objectives
-- ✓ System allows to define and add inventory items to stock
+- ✓ System allows defining and add inventory items to stock
 - ✕ System allows to see the products available for sale
 - ✓ User interface is not ugly
 - ✓ Admin area is accessible to authenticated users only
