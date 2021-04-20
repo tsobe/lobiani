@@ -7,16 +7,19 @@
 
 
 # Motivation
-This project is a personal exercise to gain/improve skills in various software engineering practices, will it be coding 
+This project is a personal exercise to improve skills in various software engineering practices, will it be coding 
 disciplines, architecture, technologies and anything in between or around them.
+
+See live demo [below](#live-demo).
 
 # Desired areas to examine
 - Event Sourcing
-- DDD/CQRS
+- DDD
+- CQRS
 - TDD/BDD
 - Microservices
 - CI/CD
-- Cloud native solutions
+- Cloud native technologies
 - Machine Learning
 
 # High level requirements
@@ -69,9 +72,9 @@ sources as well as manifest files (config).
 - As a courier I want to update delivery status so that customers see the progress
 
 # Development process and roadmap
-Monolith-first approach will be used where initially entire backend system is delivered as
+Monolith-first approach will be followed where initially entire backend system is delivered as
 a single deployment unit, however it will be still modular internally, to allow easier transition
-to microservices. There's going to be a separate deployment units for the admin and frontend (SPAs).
+to microservices. There's going to be a separate deployment units for the `admin` and `shopping` (SPAs).
 See [ADR](doc/adr) for more info.
 
 ## Milestones
@@ -140,6 +143,17 @@ To build test and run, execute following commands from `shopping` directory
         -Dtest.admin.user=<user> \
         -Dtest.admin.password=<password>
     ```
+
+# Live demo
+
+| Tool | Address | Comments |
+| --- | --- | --- |
+| Admin | [admin.lobiani.baybay.dev](https://admin.lobiani.baybay.dev/) | requires authentication |
+| Shopping | [lobiani.baybay.dev](https://lobiani.baybay.dev/) | main frontend for public use |
+
+For feature documentation, you may want to explore [these issues](https://github.com/tsobe/lobiani/issues?q=label%3A%22has+specification%22+is%3Aclosed).
+
+NOTE: system gets shut down from time to time to save the costs. 
 
 # Known issues
 - Gradle for Groovy DSL doesn't work with JDK 14, more info [here](https://github.com/gradle/gradle/issues/10248)
