@@ -46,6 +46,31 @@ However, for the sake of this exercise (despite DDD being one of the primary foc
 [![Event Storming](doc/images/Event%20Storming.jpg)](https://miro.com/app/board/o9J_lavSVJ0=/)
 (Click on the image for the interactive diagram)
 
+# Architecture Diagrams
+
+Diagram as a code is defined in [DSL](doc/c4/Lobiani.dsl) following the C4 modelling. Read more [here](https://c4model.com/). 
+
+## System Context
+
+![SystemContext](doc/c4/structurizr-49672-Lobiani-SystemContext.svg)
+
+### Legend
+![SystemContext](doc/c4/structurizr-49672-Lobiani-SystemContext-key.svg)
+
+## Container
+
+![Container](doc/c4/structurizr-49672-Lobiani-Container.svg)
+
+### Legend
+![Container](doc/c4/structurizr-49672-Lobiani-Container-key.svg)
+
+## Component
+
+![Component](doc/c4/structurizr-49672-Lobiani-Backend-Component.svg)
+
+### Legend
+![Component](doc/c4/structurizr-49672-Lobiani-Backend-Component-key.svg)
+
 # CI/CD
 
 Continuous Deployment is implemented in a [GitOps](https://www.gitops.tech/) fashion. This monorepo contains project 
@@ -156,7 +181,7 @@ For feature documentation, you may want to explore [these issues](https://github
 NOTE: system gets shut down from time to time to save the costs. 
 
 # Known issues
-- Gradle for Groovy DSL doesn't work with JDK 14, more info [here](https://github.com/gradle/gradle/issues/10248)
+- Gradle for Groovy DSL doesn't work with JDK 14, more info [here](https://github.com/gradle/gradle/issues/10248).
 
 # Resources
 - [Microservices, bounded context, cohesion. What do they have in common?](https://hackernoon.com/microservices-bounded-context-cohesion-what-do-they-have-in-common-1107b70342b3)
