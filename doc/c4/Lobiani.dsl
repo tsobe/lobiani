@@ -30,7 +30,7 @@ workspace "Lobiani" "Simple eCommerce system" {
             adminApp -> authServer "Uses" "OAuth 2.0"
             shoppingApp -> backend "Uses" "HTTP"
             backend -> adminApp "Authorizes" "JWT"
-            backend -> eventStore "Stored events" "gRPC"
+            backend -> eventStore "Stores events" "gRPC"
             backend -> messageBus "Dispatches commands, queries and events" "gRPC"
         }
         admin -> lobiani "Manages"
