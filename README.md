@@ -50,9 +50,9 @@ However, for the sake of this exercise (despite DDD being one of the primary foc
 
 Diagram as a code is defined in [DSL](doc/c4/Lobiani.dsl) following the C4 modelling. Read more [here](https://c4model.com/). 
 
-## System Context
+## System Context view
 
-![SystemContext](doc/c4/structurizr-49672-Lobiani-SystemContext.svg)
+<img alt="System Context view" src="doc/c4/structurizr-49672-Lobiani-SystemContext.svg" width="200"/>
 
 ### Legend
 ![SystemContext](doc/c4/structurizr-49672-Lobiani-SystemContext-key.svg)
