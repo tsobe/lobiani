@@ -53,14 +53,14 @@ Diagram as a code is defined in [DSL](doc/c4/Lobiani.dsl) following the C4 model
 ## System Context view
 
 <div>
-   <img style="float: left" alt="System Context view" src="doc/c4/structurizr-49672-Lobiani-SystemContext.svg" width="300"/>
+   <img style="float: left" alt="System Context view" src="doc/c4/structurizr-49672-Lobiani-SystemContext.svg" width="500"/>
    <img style="float: left" alt="System Context view legend" src="doc/c4/structurizr-49672-Lobiani-SystemContext-key.svg" width="300"/>
 </div>
 
 ## Container view
 
 <div>
-   <img style="float: left" alt="Container view" src="doc/c4/structurizr-49672-Lobiani-Container.svg" width="300"/>
+   <img style="float: left" alt="Container view" src="doc/c4/structurizr-49672-Lobiani-Container.svg" width="500"/>
    <img style="float: left" alt="Container view legend" src="doc/c4/structurizr-49672-Lobiani-Container-key.svg" width="300"/>
 </div>
 
@@ -68,7 +68,7 @@ Diagram as a code is defined in [DSL](doc/c4/Lobiani.dsl) following the C4 model
 ## Component view
 
 <div>
-   <img style="float: left" alt="Component view" src="doc/c4/structurizr-49672-Lobiani-Backend-Component.svg" width="300"/>
+   <img style="float: left" alt="Component view" src="doc/c4/structurizr-49672-Lobiani-Backend-Component.svg" width="500"/>
    <img style="float: left" alt="Component view legend" src="doc/c4/structurizr-49672-Lobiani-Backend-Component-key.svg" width="300"/>
 </div>
 
