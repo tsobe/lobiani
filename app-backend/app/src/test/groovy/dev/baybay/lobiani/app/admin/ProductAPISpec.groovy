@@ -67,6 +67,7 @@ class ProductAPISpec extends APISpec {
 
         and:
         conditions.eventually {
+            // TODO: possible runaway test, may pass early and report false positive
             apiTestClient.getProductEntity(id).statusCode == HttpStatus.NOT_FOUND
         }
     }
