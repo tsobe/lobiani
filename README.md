@@ -174,7 +174,7 @@ To build test and run, execute following commands from `shopping` directory
 
 | Tool | Address | Comments |
 | --- | --- | --- |
-| Admin | [admin.lobiani.baybay.dev](https://admin.lobiani.baybay.dev/) | requires authentication |
+| Admin | [admin.lobiani.baybay.dev](https://admin.lobiani.baybay.dev/) | requires authentication (but anyone can) |
 | Shopping | [lobiani.baybay.dev](https://lobiani.baybay.dev/) | main frontend for public use |
 
 For feature documentation, you may want to explore [these issues](https://github.com/tsobe/lobiani/issues?q=label%3A%22has+specification%22+is%3Aclosed).
