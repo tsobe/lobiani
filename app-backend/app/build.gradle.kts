@@ -4,7 +4,7 @@ plugins {
     id("org.springframework.boot") version "2.4.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("groovy")
-    kotlin("plugin.spring") version "1.4.32"
+    kotlin("plugin.spring") version "1.7.20"
 }
 
 val axonVersion = "4.5"
